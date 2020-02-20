@@ -1,0 +1,23 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Complete run</h6>
+                  <div class="mT-30" style="height:1100px;">
+                    <div style="display:block" id="input">
+                    <form onsubmit="return false;">
+                      <div class="form-group">
+                        <label for="text">Please enter a Romanian text</label>
+                        <textarea class="form-control" id="text" style="height:250px;">{{text}}</textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary" onclick="sendText();">Submit</button>
+                      <button type="submit" class="btn btn-secondary" onclick="demo();">DEMO</button>
+                    </form>
+                    </div>
+
+                    {{loading}}
+                    
+                    {{output}}
+
+
+                  </div>
+                </div>
+              </div>

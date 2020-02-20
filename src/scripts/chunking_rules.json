@@ -1,0 +1,21 @@
+{"rules":[
+
+{
+    "match":[
+      {"upos":"DET|PRON|ADJ|ADP","min":0,"max":1,"id":"0"},
+      {"upos":"PRON|ADJ|ADP","min":0,"id":"1"},
+      {"upos":"NOUN|PROPN","min":1,"id":"1"}
+    ],
+    "result":[{"id":"0","type":"B-NP"},{"id":"1","type":"I-NP"}]
+},
+
+{
+    "match":[
+      {"upos":"DET|ADP","min":0,"max":1,"id":"0"},
+      {"upos":"VERB","min":0,"id":"1"}
+    ],
+    "result":[{"id":"0","type":"B-VP"},{"id":"1","type":"I-VP"}]
+}
+
+
+]}

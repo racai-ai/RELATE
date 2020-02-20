@@ -1,0 +1,211 @@
+
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Corpus {{CORPUS_NAME_HTML}}
+                  <button type="button" class="btn cur-p btn-secondary" onclick="window.location='index.php?path=corpus/list'">Corpora</button>
+                  </h6>
+                  <div class="mT-30" style="height:1100px;">
+                    <div style="display:none" id="input">
+                    <form onsubmit="return false;">
+                      <div class="form-group">
+                        <label for="text">Please enter a Romanian text</label>
+                        <textarea class="form-control" id="text" style="height:250px;">{{text}}</textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary" onclick="sendText();">Submit</button>
+                      <button type="submit" class="btn btn-secondary" onclick="demo();">DEMO</button>
+                    </form>
+                    </div>
+
+<!--                   {{loading}} -->
+                    
+<!-- AICI INCEPE ZONA DE BUTOANE -->
+
+
+                    <div style="display:block" id="output">
+                        <div style="height: 40px;">
+                        <button type="button" id="bOutput1" class="btn cur-p btn-success" onclick="showOutput(1,8,'files');">Files</button>
+                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,8,'tasks');">Tasks</button>
+                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,8,'basictagging');">Annotated</button>
+                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,8,'statistics');">Statistics</button>
+                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,8,'archives');">Archives</button>
+                        </div>
+                        <div style="margin-top:10px; height:calc(100% - 40px);">
+                        <div id="output1">
+                                <div id="grid" style="margin:auto;"></div>
+                                
+                                <div id="popup-dialog-crud-csv" style="display:none;">
+                                <form id="crud-form-csv" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="csv">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Delimiter:</td><td><input type="text" name="delimiter" size="10" value=","/></td></tr>
+                                        <tr><td>Enclosure:</td><td><input type="text" name="enclosure" size="10" value='"'/></td></tr>
+                                        <tr><td>Escape:</td><td><input type="text" name="escape" size="10" value="\"/></td></tr>
+                                        <tr><td>Comment character:</td><td><input type="text" name="comment" size="10"/></td></tr>
+                                        <tr><td>Ignore rows:</td><td><input type="text" name="ignore_rows" size="10"/></td></tr>
+                                        <tr><td>Columns w text:</td><td><input type="text" name="columns" size="10"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="popup-dialog-crud-txt" style="display:none;">
+                                <form id="crud-form-txt" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="text">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="popup-dialog-crud-ziptext" style="display:none;">
+                                <form id="crud-form-ziptext" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="zip_text">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                        </div>
+                        
+                        <div style="display:none" id="output2">
+                                <div id="gridTasks" style="margin:auto;"></div>
+                                
+                                <div id="popup-dialog-crud-task-basic" style="display:none;">
+                                <form id="crud-form-task-basic" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="basic_tagging">
+                                    <table align="center"><tbody>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"/></td></tr>
+                                        <tr><td>Overwrite:</td><td><input type="checkbox" name="overwrite" id="overwrite" value="1"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="popup-dialog-crud-task-chunk" style="display:none;">
+                                <form id="crud-form-task-chunk" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="chunking">
+                                    <table align="center"><tbody>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="popup-dialog-crud-task-stat" style="display:none;">
+                                <form id="crud-form-task-stat" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="statistics">
+                                    <table align="center"><tbody>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="popup-dialog-crud-task-createziptxt" style="display:none;">
+                                <form id="crud-form-task-createziptxt" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="zip_text">
+                                    <table align="center"><tbody>
+                                        <tr><td>Filename:</td><td><input type="text" size="50" name="fname" id="fname"></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="popup-dialog-crud-task-createzipbasic" style="display:none;">
+                                <form id="crud-form-task-createzipbasic" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="zip_basic_tagging">
+                                    <table align="center"><tbody>
+                                        <tr><td>Filename:</td><td><input type="text" size="50" name="fname" id="fname"></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>    
+                                
+                                <div id="popup-dialog-crud-task-iateeurovoc" style="display:none;">
+                                <form id="crud-form-task-iateeurovoc" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="iate_eurovoc">
+                                    <table align="center"><tbody>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"/></td></tr>
+                                        <tr><td>Overwrite:</td><td><input type="checkbox" name="overwrite" id="overwrite" value="1"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                                                                  
+                                <div id="popup-dialog-crud-task-cleanup" style="display:none;">
+                                <form id="crud-form-task-cleanup" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="cleanup">
+                                    <table align="center"><tbody>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"/></td></tr>
+                                        <tr><td>Overwrite:</td><td><input type="checkbox" name="overwrite" id="overwrite" value="1"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                        </div>
+                        
+                        <div style="display:none" id="output3">
+                                <div id="gridBasicTagging" style="margin:auto;"></div>
+                                
+                        </div>
+                        
+                        <div style="display:none" id="output4">
+                                <div id="gridStatistics" style="margin:auto;"></div>
+                        </div>
+                        
+                        <div style="display:none" id="output5">
+                                <div id="gridArchives" style="margin:auto;"></div>
+                        </div>
+
+                        <div style="display:none" id="output6">
+                        </div>
+
+                        <div style="display:none" id="output7">
+                        </div>
+
+                        <div style="display:none" id="output8">
+                        </div>
+
+                        </div>
+                        
+                        <div id="popupIFrameDiv" style="display:none; background-color:white;">
+                            <div style="background-color:white;"><button type="button"  class="btn cur-p btn-secondary" onclick="hidePopupIFrame();">Back</button></div>
+                            <iframe style="width:100%; height: 100%;" id="popupIFrame" src=""></iframe>
+                        </div>
+                        
+                    </div>                    
+
+
+<!-- AICI SE TERMINA ZONA DE BUTOANE -->
+                  </div>
+                </div>
+              </div>

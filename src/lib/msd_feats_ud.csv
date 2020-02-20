@@ -1,0 +1,279 @@
+﻿Af;ADJ;_;maxima
+Afcms-n;ADJ;Definite=Ind|Degree=Cmp|Gender=Masc|Number=Sing;superior
+Afp;ADJ;Degree=Pos;așa, roz, rumŭněskŭ, mare, asemenea
+Afp-p-n;ADJ;Definite=Ind|Degree=Pos|Number=Plur;noi, mari, vechi, românești, proprii
+Afp-poy;ADJ;Case=Gen|Definite=Def|Degree=Pos|Number=Plur;lungilor, marilor
+Afpf--n;ADJ;Definite=Ind|Degree=Pos|Gender=Fem;creatoare, referitoare, îmbietoare, fondatoare, satisfăcătoare
+Afpfp-n;ADJ;Definite=Ind|Degree=Pos|Gender=Fem|Number=Plur;importante, europene, științifice, internaționale, grele
+Afpfpry;ADJ;Case=Nom|Definite=Def|Degree=Pos|Gender=Fem|Number=Plur;adevăratele, principalele, următoarele
+Afpfson;ADJ;Case=Gen|Definite=Ind|Degree=Pos|Gender=Fem|Number=Sing;literare, politice, culturale, religioase, geografice
+Afpfsoy;ADJ;Case=Gen|Definite=Def|Degree=Pos|Gender=Fem|Number=Sing;prezentei, înaltei
+Afpfsrn;ADJ;Case=Nom|Definite=Ind|Degree=Pos|Gender=Fem|Number=Sing;mare, română, românească, publică, cunoscută
+Afpfsry;ADJ;Case=Nom|Definite=Def|Degree=Pos|Gender=Fem|Number=Sing;întreaga, Proxima, marea, naiva, poetica
+Afpmp-n;ADJ;Definite=Ind|Degree=Pos|Gender=Masc|Number=Plur;români, înecați, fericiți, răniți, vrednici
+Afpmpoy;ADJ;Case=Gen|Definite=Def|Degree=Pos|Gender=Masc|Number=Plur;democraților, daco-romanilor, românilor
+Afpms-n;ADJ;Definite=Ind|Degree=Pos|Gender=Masc|Number=Sing;român, nou, internațional, bun, important
+Afpmsoy;ADJ;Case=Gen|Definite=Def|Degree=Pos|Gender=Masc|Number=Sing;marelui, responsabilului, noului, prezentului, viitorului
+Afpmsry;ADJ;Case=Nom|Definite=Def|Degree=Pos|Gender=Masc|Number=Sing;prezentul, fostul, Montanul, dezvăluitul, singurul
+Cccsp;CONJ;Negative=Pos;așa_că
+Ccssp;CONJ;Negative=Pos;sau, dar, însă, că, fie
+Crssp;CONJ;Negative=Pos;și, și-, iar
+Cscsp;SCONJ;Negative=Pos;pentru_că, de_vreme_ce
+Csssp;SCONJ;Negative=Pos;că, dacă, încât, deși, de
+Cssspy;SCONJ;Negative=Pos|Variant=Short;c-, dac-
+Dd3-po---e;DET;Case=Gen|Number=Plur|Person=3|Position=Prenom|PronType=Dem;acestor
+Dd3fpr;DET;Case=Nom|Gender=Fem|Number=Plur|Person=3|PronType=Dem;celelalte
+Dd3fpr---e;DET;Case=Nom|Gender=Fem|Number=Plur|Person=3|Position=Prenom|PronType=Dem;aceste, acele
+Dd3fso---e;DET;Case=Gen|Gender=Fem|Number=Sing|Person=3|Position=Prenom|PronType=Dem;acestei
+Dd3fsr---e;DET;Case=Nom|Gender=Fem|Number=Sing|Person=3|Position=Prenom|PronType=Dem;această
+Dd3fsr---o;DET;Case=Nom|Gender=Fem|Number=Sing|Person=3|Position=Postnom|PronType=Dem;aceea, aceasta
+Dd3mpo;DET;Case=Gen|Gender=Masc|Number=Plur|Person=3|PronType=Dem;celorlalți
+Dd3mso---e;DET;Case=Gen|Gender=Masc|Number=Sing|Person=3|Position=Prenom|PronType=Dem;acestui
+Dd3msr---e;DET;Case=Nom|Gender=Masc|Number=Sing|Person=3|Position=Prenom|PronType=Dem;acest, acel, același
+Dh3fs;DET;Gender=Fem|Number=Sing|Person=3|PronType=Emp;însăși
+Dh3ms;DET;Gender=Masc|Number=Sing|Person=3|PronType=Emp;însuși
+Di3--r;DET;Case=Nom|Person=3|PronType=Ind;orice, oarecare, niște
+Di3--r---e;DET;Case=Nom|Person=3|Position=Prenom|PronType=Ind;orice, cutare
+Di3-po;DET;Case=Gen|Number=Plur|Person=3|PronType=Ind;tuturor
+Di3-po---e;DET;Case=Gen|Number=Plur|Person=3|Position=Prenom|PronType=Ind;altor, multor
+Di3-sr;DET;Case=Nom|Number=Sing|Person=3|PronType=Ind;atâta, fiecare
+Di3-sr---e;DET;Case=Nom|Number=Sing|Person=3|Position=Prenom|PronType=Ind;fiecare
+Di3fp;DET;Gender=Fem|Number=Plur|Person=3|PronType=Ind;multe
+Di3fpr;DET;Case=Nom|Gender=Fem|Number=Plur|Person=3|PronType=Ind;toate, câteva, multele, alte
+Di3fpr---e;DET;Case=Nom|Gender=Fem|Number=Plur|Person=3|Position=Prenom|PronType=Ind;unele, alte
+Di3fsr;DET;Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Ind;toată, multă, vreo
+Di3fsr---e;DET;Case=Nom|Gender=Fem|Number=Sing|Person=3|Position=Prenom|PronType=Ind;altă, vreo
+Di3mp;DET;Gender=Masc|Number=Plur|Person=3|PronType=Ind;mulți
+Di3mpr;DET;Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Ind;mulți, câțiva, toți
+Di3mpr---e;DET;Case=Nom|Gender=Masc|Number=Plur|Person=3|Position=Prenom|PronType=Ind;alți
+Di3ms----e;DET;Gender=Masc|Number=Sing|Person=3|Position=Prenom|PronType=Ind;alt
+Di3mso---e;DET;Case=Gen|Gender=Masc|Number=Sing|Person=3|Position=Prenom|PronType=Ind;oricărui
+Di3msr;DET;Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Ind;mult
+Ds1fp-p;DET;Gender=Fem|Number=Plur|Number[psor]=Plur|Person=1|Poss=Yes|PronType=Prs;noastre
+Ds1fp-s;DET;Gender=Fem|Number=Plur|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs;mele
+Ds1fsos;DET;Case=Gen|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs;mele
+Ds1fsrp;DET;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Plur|Person=1|Poss=Yes|PronType=Prs;noastră
+Ds1fsrs;DET;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs;mea
+Ds1mp-s;DET;Gender=Masc|Number=Plur|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs;mei
+Ds1ms-s;DET;Gender=Masc|Number=Sing|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs;meu
+Ds2fsrp;DET;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Plur|Person=2|Poss=Yes|PronType=Prs;voastră
+Ds3---p;DET;Number[psor]=Plur|Person=3|Poss=Yes|PronType=Prs;lor
+Ds3---s;DET;Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;ei, lui
+Ds3fp-s;DET;Gender=Fem|Number=Plur|Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;sale
+Ds3fsos;DET;Case=Gen|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;sale
+Ds3fsrs;DET;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;sa
+Ds3mp-s;DET;Gender=Masc|Number=Plur|Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;săi
+Ds3ms-s;DET;Gender=Masc|Number=Sing|Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;său, -său
+Dw3--r---e;DET;Case=Nom|Person=3|Position=Prenom|PronType=Int,Rel;ce_fel_de, care, ce
+Dz3fsr---e;DET;Case=Nom|Gender=Fem|Number=Sing|Person=3|Position=Prenom|PronType=Neg;nicio
+Dz3msr---e;DET;Case=Nom|Gender=Masc|Number=Sing|Person=3|Position=Prenom|PronType=Neg;nici_un
+E;NUM;_;1916, 1923, 2005, 1928, 2004
+I;INTJ;_;Vai, bravo, na
+Mc-p-l;NUM;Number=Plur|NumForm=Word|NumType=Card;trei, patru, patruzeci, cinci, șapte
+Mcfp-l;NUM;Gender=Fem|Number=Plur|NumForm=Word|NumType=Card;două, douăsprezece
+Mcfp-ln;NUM;Definite=Ind|Gender=Fem|Number=Plur|NumForm=Word|NumType=Card;sute
+Mcfprln;NUM;Case=Nom|Definite=Ind|Gender=Fem|Number=Plur|NumForm=Word|NumType=Card;milioane
+Mcfsrln;NUM;Case=Nom|Definite=Ind|Gender=Fem|Number=Sing|NumForm=Word|NumType=Card;sută
+Mcmp-l;NUM;Gender=Masc|Number=Plur|NumForm=Word|NumType=Card;doi, doisprezece
+Mcms-ln;NUM;Definite=Ind|Gender=Masc|Number=Sing|NumForm=Word|NumType=Card;milion
+Mlfpr;DET;Case=Nom|Gender=Fem|Number=Plur|NumType=Card|PronType=Tot;ambele
+Mlmpr;DET;Case=Nom|Gender=Masc|Number=Plur|NumType=Card|PronType=Tot;Amândoi
+Mo-s-r;ADJ;Number=Sing|NumForm=Roman|NumType=Ord;I, XX, IV, II, V
+Mofpoly;ADJ;Case=Gen|Definite=Def|Gender=Fem|Number=Plur|NumForm=Word|NumType=Ord;ultimelor, primelor
+Mofprly;ADJ;Case=Nom|Definite=Def|Gender=Fem|Number=Plur|NumForm=Word|NumType=Ord;primele, ultimele
+Mofs-l;ADJ;Gender=Fem|Number=Sing|NumForm=Word|NumType=Ord;doua, treia, cincea
+Mofsoly;ADJ;Case=Gen|Definite=Def|Gender=Fem|Number=Sing|NumForm=Word|NumType=Ord;primei
+Mofsrly;ADJ;Case=Nom|Definite=Def|Gender=Fem|Number=Sing|NumForm=Word|NumType=Ord;prima, întâia, ultima
+Momprly;ADJ;Case=Nom|Definite=Def|Gender=Masc|Number=Plur|NumForm=Word|NumType=Ord;ultimii
+Moms-l;ADJ;Gender=Masc|Number=Sing|NumForm=Word|NumType=Ord;doilea, treilea
+Moms-ln;ADJ;Definite=Ind|Gender=Masc|Number=Sing|NumForm=Word|NumType=Ord;prim-
+Momsoly;ADJ;Case=Gen|Definite=Def|Gender=Masc|Number=Sing|NumForm=Word|NumType=Ord;primului
+Momsrly;ADJ;Case=Nom|Definite=Def|Gender=Masc|Number=Sing|NumForm=Word|NumType=Ord;primul, ultimul
+Nc;NOUN;_;mai, copii, cěra, sec
+Nc---n;NOUN;Definite=Ind;nume
+Ncf--n;NOUN;Definite=Ind|Gender=Fem;susținătoare, urbe
+Ncfp-n;NOUN;Definite=Ind|Gender=Fem|Number=Plur;zile, ori, date, autobuze, orașe
+Ncfpoy;NOUN;Case=Gen|Definite=Def|Gender=Fem|Number=Plur;universităților, valorilor, Principatelor, Forțelor, elementelor
+Ncfpry;NOUN;Case=Nom|Definite=Def|Gender=Fem|Number=Plur;forțele, gândurile, clădirile, proviziile, părțile
+Ncfson;NOUN;Case=Gen|Definite=Ind|Gender=Fem|Number=Sing;societăți, forme, pronunții, erupții, structuri
+Ncfsony;NOUN;Case=Gen|Definite=Ind|Gender=Fem|Number=Sing|Variant=Short;"""_lemma="
+Ncfsoy;NOUN;Case=Gen|Definite=Def|Gender=Fem|Number=Sing;țării, administrației, Constituției, echipei, datei
+Ncfsrn;NOUN;Case=Nom|Definite=Ind|Gender=Fem|Number=Sing;perioadă, viață, vedere, dezvoltare, parte
+Ncfsry;NOUN;Case=Nom|Definite=Def|Gender=Fem|Number=Sing;limba, zona, partea, perioada, Federația
+Ncfsvy;NOUN;Case=Voc|Definite=Def|Gender=Fem|Number=Sing;carpato-ponto
+Ncm--n;NOUN;Definite=Ind|Gender=Masc;C, m, e, b, d
+Ncmp-n;NOUN;Definite=Ind|Gender=Masc|Number=Plur;ani, oameni, locuitori, pacienți, cai
+Ncmpoy;NOUN;Case=Gen|Definite=Def|Gender=Masc|Number=Plur;oamenilor, studenților, românilor, reprezentanților, cititorilor
+Ncmpry;NOUN;Case=Nom|Definite=Def|Gender=Masc|Number=Plur;ochii, membrii, românii, părinții, sportivii
+Ncmpvy;NOUN;Case=Voc|Definite=Def|Gender=Masc|Number=Plur;Domnilor
+Ncms-n;NOUN;Definite=Ind|Gender=Masc|Number=Sing;număr, oraș, loc, punct, protocol
+Ncmsoy;NOUN;Case=Gen|Definite=Def|Gender=Masc|Number=Sing;secolului, guvernului, medicului, numelui, orașului
+Ncmsrn;NOUN;Case=Nom|Definite=Ind|Gender=Masc|Number=Sing;dor, târg, gând, suflet, deal
+Ncmsry;NOUN;Case=Nom|Definite=Def|Gender=Masc|Number=Sing;locul, anul, orașul, cazul, Iașul
+Ncmsvn;NOUN;Case=Voc|Definite=Ind|Gender=Masc|Number=Sing;Doamne
+Ncmsvy;NOUN;Case=Voc|Definite=Def|Gender=Masc|Number=Sing;domnule, software, Murgule, voinicule
+Np;PROPN;_;România, București, Iași, Nicolina, Roman
+Npfson;PROPN;Case=Gen|Definite=Ind|Gender=Fem|Number=Sing;Mediterane
+Npfsoy;PROPN;Case=Gen|Definite=Def|Gender=Fem|Number=Sing;României, Moldovei, Europei, Germaniei, dureri
+Npfsrn;PROPN;Case=Nom|Definite=Ind|Gender=Fem|Number=Sing;Sandy, Mary, țara_Românească
+Npfsry;PROPN;Case=Nom|Definite=Def|Gender=Fem|Number=Sing;Problema, Luminița, Dunărea, trântă, literatura
+Npmpoy;PROPN;Case=Gen|Definite=Def|Gender=Masc|Number=Plur;oamenilor
+Npmpry;PROPN;Case=Nom|Definite=Def|Gender=Masc|Number=Plur;Iașii
+Npms-n;PROPN;Definite=Ind|Gender=Masc|Number=Sing;Făt-frumos
+Npmsry;PROPN;Case=Nom|Definite=Def|Gender=Masc|Number=Sing;Bălăceanul, Ierusalimul, răbojul, Brâncovanul
+Pd3-po;PRON;Case=Gen|Number=Plur|Person=3|PronType=Dem;acestora, celor
+Pd3fpr;PRON;Case=Nom|Gender=Fem|Number=Plur|Person=3|PronType=Dem;cele, astea, acelea
+Pd3fso;PRON;Case=Gen|Gender=Fem|Number=Sing|Person=3|PronType=Dem;acesteia
+Pd3fsr;PRON;Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Dem;cea, aceasta, cealaltă, aceea
+Pd3mpr;PRON;Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Dem;cei, aceia
+Pd3mso;PRON;Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Dem;acestuia
+Pd3msr;PRON;Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Dem;acesta, ăsta, cel, celălalt
+Pi3--r;PRON;Case=Nom|Person=3|PronType=Ind;cele
+Pi3-po;PRON;Case=Gen|Number=Plur|Person=3|PronType=Ind;tuturor, tuturora
+Pi3-sr;PRON;Case=Nom|Number=Sing|Person=3|PronType=Ind;fiecare, ceva, Atâta, orice
+Pi3fpr;PRON;Case=Nom|Gender=Fem|Number=Plur|Person=3|PronType=Ind;multe, toate, Câteva, cele, altele
+Pi3fso;PRON;Case=Gen|Gender=Fem|Number=Sing|Person=3|PronType=Ind;alteia
+Pi3fsr;PRON;Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Ind;una, vreuna, alta
+Pi3mpr;PRON;Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Ind;unii, mulți, câțiva, toți, alții
+Pi3msr;PRON;Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Ind;unul, altul, tot, ceva, atât
+Pp1-pa--------w;PRON;Case=Acc|Number=Plur|Person=1|PronType=Prs|Strength=Weak;ne
+Pp1-pa--y-----w;PRON;Case=Acc|Number=Plur|Person=1|PronType=Prs|Strength=Weak|Variant=Short;ne-
+Pp1-pd--------w;PRON;Case=Dat|Number=Plur|Person=1|PronType=Prs|Strength=Weak;ne
+Pp1-pr--------s;PRON;Case=Nom|Number=Plur|Person=1|PronType=Prs|Strength=Strong;noi
+Pp1-sa--------s;PRON;Case=Acc|Number=Sing|Person=1|PronType=Prs|Strength=Strong;mine
+Pp1-sa--------w;PRON;Case=Acc|Number=Sing|Person=1|PronType=Prs|Strength=Weak;mă, m, m-
+Pp1-sa--y-----w;PRON;Case=Acc|Number=Sing|Person=1|PronType=Prs|Strength=Weak|Variant=Short;m-
+Pp1-sd--------w;PRON;Case=Dat|Number=Sing|Person=1|PronType=Prs|Strength=Weak;mi, -mi, îmi
+Pp1-sd--y-----w;PRON;Case=Dat|Number=Sing|Person=1|PronType=Prs|Strength=Weak|Variant=Short;-mi, mi-
+Pp1-sn--------s;PRON;Case=Nom|Number=Sing|Person=1|PronType=Prs|Strength=Strong;eu
+Pp2-----------s;PRON;Person=2|PronType=Prs|Strength=Strong;dumneavoastră
+Pp2-pa--------w;PRON;Case=Acc|Number=Plur|Person=2|PronType=Prs|Strength=Weak;vă, v
+Pp2-pa--y-----w;PRON;Case=Acc|Number=Plur|Person=2|PronType=Prs|Strength=Weak|Variant=Short;-V, v-
+Pp2-pd--------w;PRON;Case=Dat|Number=Plur|Person=2|PronType=Prs|Strength=Weak;vă, vi
+Pp2-pr--------s;PRON;Case=Nom|Number=Plur|Person=2|PronType=Prs|Strength=Strong;voi
+Pp2-sa--------s;PRON;Case=Acc|Number=Sing|Person=2|PronType=Prs|Strength=Strong;TINE
+Pp2-sa--------w;PRON;Case=Acc|Number=Sing|Person=2|PronType=Prs|Strength=Weak;te
+Pp2-sd--------w;PRON;Case=Dat|Number=Sing|Person=2|PronType=Prs|Strength=Weak;îți, ți, -ți
+Pp2-sd--y-----w;PRON;Case=Dat|Number=Sing|Person=2|PronType=Prs|Strength=Weak|Variant=Short;ți-, -ți
+Pp2-sn--------s;PRON;Case=Nom|Number=Sing|Person=2|PronType=Prs|Strength=Strong;Dumneata
+Pp3-pd--------w;PRON;Case=Dat|Number=Plur|Person=3|PronType=Prs|Strength=Weak;le, li, el
+Pp3-sd--------w;PRON;Case=Dat|Number=Sing|Person=3|PronType=Prs|Strength=Weak;îi, i, -i
+Pp3-sd--y-----w;PRON;Case=Dat|Number=Sing|Person=3|PronType=Prs|Strength=Weak|Variant=Short;i-, -i
+Pp3fpa--------w;PRON;Case=Acc|Gender=Fem|Number=Plur|Person=3|PronType=Prs|Strength=Weak;le
+Pp3fpa--y-----w;PRON;Case=Acc|Gender=Fem|Number=Plur|Person=3|PronType=Prs|Strength=Weak|Variant=Short;le-
+Pp3fpr--------s;PRON;Case=Nom|Gender=Fem|Number=Plur|Person=3|PronType=Prs|Strength=Strong;ele
+Pp3fsa--------w;PRON;Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs|Strength=Weak;o, -o
+Pp3fsa--y-----w;PRON;Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs|Strength=Weak|Variant=Short;-o
+Pp3fsr--------s;PRON;Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Prs|Strength=Strong;ea
+Pp3mpa--------w;PRON;Case=Acc|Gender=Masc|Number=Plur|Person=3|PronType=Prs|Strength=Weak;-i, îi, îl
+Pp3mpa--y-----w;PRON;Case=Acc|Gender=Masc|Number=Plur|Person=3|PronType=Prs|Strength=Weak|Variant=Short;-i
+Pp3mpr--------s;PRON;Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs|Strength=Strong;ei
+Pp3msa--------w;PRON;Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Strength=Weak;îl, -l, l
+Pp3msa--y-----w;PRON;Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Strength=Weak|Variant=Short;-l, l-, l
+Pp3mso--------s;PRON;Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Strength=Strong;lui
+Pp3msr--------s;PRON;Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs|Strength=Strong;el
+Ps1fsrp;PRON;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Plur|Person=1|Poss=Yes|PronType=Prs;noastră
+Ps1ms-s;PRON;Gender=Masc|Number=Sing|Number[psor]=Sing|Person=1|Poss=Yes|PronType=Prs;meu
+Ps2fsrs;PRON;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=2|Poss=Yes|PronType=Prs;ta
+Ps3---s;PRON;Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;lui
+Ps3fsrs;PRON;Case=Nom|Gender=Fem|Number=Sing|Number[psor]=Sing|Person=3|Poss=Yes|PronType=Prs;SA
+Pw3--r;PRON;Case=Nom|Person=3|PronType=Int,Rel;care, ce, cine, ceea_ce, ce-
+Pw3-po;PRON;Case=Gen|Number=Plur|Person=3|PronType=Int,Rel;cărora, celor_ce
+Pw3-so;PRON;Case=Gen|Number=Sing|Person=3|PronType=Int,Rel;cui
+Pw3fpr;PRON;Case=Nom|Gender=Fem|Number=Plur|Person=3|PronType=Int,Rel;câte
+Pw3fso;PRON;Case=Gen|Gender=Fem|Number=Sing|Person=3|PronType=Int,Rel;căreia
+Pw3mso;PRON;Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Int,Rel;căruia
+Px3--a--------w;PRON;Case=Acc|Person=3|PronType=Prs|Reflex=Yes|Strength=Weak;se, s-, -se, s
+Px3--a--y-----w;PRON;Case=Acc|Person=3|PronType=Prs|Reflex=Yes|Strength=Weak|Variant=Short;s-, -se, se-
+Px3--d--------w;PRON;Case=Dat|Person=3|PronType=Prs|Reflex=Yes|Strength=Weak;își, -și, și
+Px3--d--y-----w;PRON;Case=Dat|Person=3|PronType=Prs|Reflex=Yes|Strength=Weak|Variant=Short;-și, și-
+Pz3-sr;PRON;Case=Nom|Number=Sing|Person=3|PronType=Neg;nimeni, nimic
+Pz3msr;PRON;Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Neg;Nimeni, nimic
+Qn;PART;PartType=Inf;a, de_a
+Qs;PART;Mood=Sub;să, s-, ca_să
+Qz;PART;Negative=Neg;nu, n-, n
+Qz-y;PART;Negative=Neg|Variant=Short;n-
+Rc;ADV;_;ca, iar, decât, câte
+Rg;ADV;_;]
+Rgp;ADV;Degree=Pos;încă, doar, atât, bine, mult
+Rp;ADV;_;mai, și, foarte, rău, atât
+Rw;ADV;PronType=Int,Rel;când, cum, cât, unde, oare
+Rz;ADV;PronType=Neg;nici, rău, parcă
+Spca;ADP;AdpType=Prep|Case=Acc;de_la, până_la, înainte_de, de_după
+Spcg;ADP;AdpType=Prep|Case=Gen;în_jurul
+Spsa;ADP;AdpType=Prep|Case=Acc;de, în, la, din, cu
+Spsay;ADP;AdpType=Prep|Case=Acc|Variant=Short;într-, dintr-, printr-, de-, -a
+Spsd;ADP;AdpType=Prep|Case=Dat;potrivit, conform, datorită
+Spsg;ADP;AdpType=Prep|Case=Gen;asupra
+Td-po;DET;Case=Gen|Number=Plur|PronType=Dem;celor
+Tdfpr;DET;Case=Nom|Gender=Fem|Number=Plur|PronType=Dem;cele
+Tdfso;DET;Case=Gen|Gender=Fem|Number=Sing|PronType=Dem;celei
+Tdfsr;DET;Case=Nom|Gender=Fem|Number=Sing|PronType=Dem;cea
+Tdmpr;DET;Case=Nom|Gender=Masc|Number=Plur|PronType=Dem;cei
+Tdmsr;DET;Case=Nom|Gender=Masc|Number=Sing|PronType=Dem;cel
+Tf-so;DET;Case=Gen|Definite=Def|Number=Sing|PronType=Art;lui
+Tffs-y;DET;Definite=Def|Gender=Fem|Number=Sing|PronType=Art|Variant=Short;-a
+Tfms-y;DET;Definite=Def|Gender=Masc|Number=Sing|PronType=Art|Variant=Short;-lea
+Tfmsoy;DET;Case=Gen|Definite=Def|Gender=Masc|Number=Sing|PronType=Art|Variant=Short;-ului
+Tfmsry;DET;Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Art|Variant=Short;-ul
+Ti-po;DET;Case=Gen|Number=Plur|PronType=Ind;unor
+Tifso;DET;Case=Gen|Gender=Fem|Number=Sing|PronType=Ind;unei
+Tifsr;DET;Case=Nom|Gender=Fem|Number=Sing|PronType=Ind;o, -o
+Timso;DET;Case=Gen|Gender=Masc|Number=Sing|PronType=Ind;unui
+Timsr;DET;Case=Nom|Gender=Masc|Number=Sing|PronType=Ind;un
+Tsfp;DET;Gender=Fem|Number=Plur|Poss=Yes|PronType=Prs;ale
+Tsfs;DET;Gender=Fem|Number=Sing|Poss=Yes|PronType=Prs;a
+Tsmp;DET;Gender=Masc|Number=Plur|Poss=Yes|PronType=Prs;ai
+Tsms;DET;Gender=Masc|Number=Sing|Poss=Yes|PronType=Prs;al
+Vag;AUX;VerbForm=Ger;fiind
+Vaii3s;AUX;Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin;era
+Vail3p;AUX;Mood=Ind|Number=Plur|Person=3|Tense=Pqp|VerbForm=Fin;fuseseră
+Vaip1p;AUX;Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin;-am, am
+Vaip1s;AUX;Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin;-aș, voi, aș
+Vaip2s;AUX;Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin;-ai, ai, vei, -i
+Vaip3p;AUX;Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin;sunt, ar, au, -ar, vor
+Vaip3s;AUX;Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin;este, a, -a, e, îi
+Vanp;AUX;Tense=Pres|VerbForm=Inf;fi
+Vap--sm;AUX;Gender=Masc|Number=Sing|VerbForm=Part;fost, fi
+Vasp3;AUX;Mood=Sub|Person=3|Tense=Pres|VerbForm=Fin;fie
+Vmg;VERB;VerbForm=Ger;fiind, privind, începând, având, apărând
+Vmg-------y;VERB;Variant=Short|VerbForm=Ger;Plimbându, Schimbându, păstrându, confruntându, făcîndu
+Vmii1;VERB;Mood=Ind|Person=1|Tense=Imp|VerbForm=Fin;uitam, lăsam, găseam, așteptam, omoram
+Vmii1p;VERB;Mood=Ind|Number=Plur|Person=1|Tense=Imp|VerbForm=Fin;puteam, ridicam
+Vmii1s;VERB;Mood=Ind|Number=Sing|Person=1|Tense=Imp|VerbForm=Fin;gândeam, întrebam
+Vmii2p;VERB;Mood=Ind|Number=Plur|Person=2|Tense=Imp|VerbForm=Fin;intenționați, luați, impresionați, Ordonați
+Vmii2s;VERB;Mood=Ind|Number=Sing|Person=2|Tense=Imp|VerbForm=Fin;puteai, vedeai, Ieșeai, cunoșteai, aveai
+Vmii3p;VERB;Mood=Ind|Number=Plur|Person=3|Tense=Imp|VerbForm=Fin;erau, puteau, ,, simțeau, aveau
+Vmii3s;VERB;Mood=Ind|Number=Sing|Person=3|Tense=Imp|VerbForm=Fin;putea, era, avea, făcea, apropia
+Vmil1;VERB;Mood=Ind|Person=1|Tense=Pqp|VerbForm=Fin;tocisem
+Vmil3p;VERB;Mood=Ind|Number=Plur|Person=3|Tense=Pqp|VerbForm=Fin;făcuseră, îmbătaseră, revărsaseră
+Vmil3s;VERB;Mood=Ind|Number=Sing|Person=3|Tense=Pqp|VerbForm=Fin;văzuse, alesese, dosise, scăzuse, trecuse
+Vmip1p;VERB;Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin;rugăm, smulgem, evităm, ntîlnim, arborăm
+Vmip1s;VERB;Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin;știu, rog, duc, am, caut
+Vmip2p;VERB;Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin;spuneți, știți, alăptați, credeți, intenționați
+Vmip2s;VERB;Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin;poți, închizi, anunți, închipui, cultivi
+Vmip3;VERB;Mood=Ind|Person=3|Tense=Pres|VerbForm=Fin;trebuie, reprezintă, poartă, prezintă, urmează
+Vmip3p;VERB;Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin;pot, sunt, revin, fac, odihnesc
+Vmip3s;VERB;Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin;poate, este, face, e, devine
+Vmip3s----y;VERB;Mood=Ind|Number=Sing|Person=3|Tense=Pres|Variant=Short|VerbForm=Fin;-i
+Vmis1p;VERB;Mood=Ind|Number=Plur|Person=1|Tense=Past|VerbForm=Fin;puturăm
+Vmis1s;VERB;Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin;Aflai, iubii, prezentai, domnii, răspunsei
+Vmis3p;VERB;Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin;aflară, mâniară, putură, plecară, răsunară
+Vmis3s;VERB;Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin;află, putu, există, anunță, numără
+Vmm-2p;VERB;Mood=Imp|Number=Plur|Person=2|VerbForm=Fin;spuneți, Puteți, renumiți
+Vmm-2s;VERB;Mood=Imp|Number=Sing|Person=2|VerbForm=Fin;surprinde, fi, alegi, scuipa, Dă
+Vmnp;VERB;Tense=Pres|VerbForm=Inf;putea, fi, face, afla, lua
+Vmp--pf;VERB;Gender=Fem|Number=Plur|VerbForm=Part;aflate, efectuate, traduse, prevăzute, realizate
+Vmp--pm;VERB;Gender=Masc|Number=Plur|VerbForm=Part;împiedicați, numărați, trimiși, rugați, repartizați
+Vmp--sf;VERB;Gender=Fem|Number=Sing|VerbForm=Part;formată, conținută, publicată, îmbinată, legată
+Vmp--sm;VERB;Gender=Masc|Number=Sing|VerbForm=Part;fost, aflat, putut, început, făcut
+Vmsp1p;VERB;Mood=Sub|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin;cunoaștem, vedem
+Vmsp1s;VERB;Mood=Sub|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin;pun_la_adăpost, spui, scot, aflu, privesc
+Vmsp2p;VERB;Mood=Sub|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin;legați, prindeți, dormiți
+Vmsp2s;VERB;Mood=Sub|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin;crești, întrebi, lingi, dai, bei
+Vmsp3;VERB;Mood=Sub|Person=3|Tense=Pres|VerbForm=Fin;are, ia, fie, vină, cumpere
+Vmsp3s;VERB;Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin;fugă
+X;X;_;Ä­
+Y;X;Abbr=Yes;mp, O405, Rev
+Yn;NOUN;Abbr=Yes;C, km, F., PD, PIB
+Yr;ADV;Abbr=Yes;etc.
