@@ -281,6 +281,7 @@ class Corpus {
         $dirs=[
             "${base_dir}/zip_text",
             "${base_dir}/zip_$DirectoryAnnotated",
+            "${base_dir}/marcell-out",
         ];
         
         foreach($dirs as $dir){
