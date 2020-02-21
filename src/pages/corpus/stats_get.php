@@ -9,7 +9,8 @@ if(!$corpus->loadData())die("Invalid corpus");
 
 $stats=[];
 foreach($corpus->getStatistics() as $k=>$v){
-    $stats[]=[$k,$v];
+    if(strcasecmp($k,"Entropy.Romanian letters")!==0)
+        $stats[]=[$k,$v];
 }
 
 echo json_encode($stats);

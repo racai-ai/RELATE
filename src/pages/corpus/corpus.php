@@ -8,10 +8,12 @@ function getPageContent(){
     if(!$corpus->loadData())die("Invalid corpus");
 
     $html=file_get_contents(realpath(dirname(__FILE__))."/corpus.html");
+    $loading=file_get_contents(realpath(dirname(__FILE__))."/corpus_common_loading.html");
     
     $html=str_replace("{{CORPUS_NAME_HTML}}",htmlspecialchars($_REQUEST['name']),$html);
     $html=str_replace("{{CORPUS_NAME}}",$_REQUEST['name'],$html);
     $html=str_replace("{{CORPUS_LANG}}",$corpus->getData("lang",""),$html);
+    $html=str_replace("{{LOADING}}",$loading,$html);
     
     return $html;
 }

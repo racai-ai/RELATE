@@ -40,7 +40,7 @@ function runBasicTaggingText_ro($text,$fout){
                 }
             }
             
-            list($conllu,$sentId)=TEPROLIN_json2conllu("ro_legal",$json,$sentId);
+            list($conllu,$sentId)=TEPROLIN_json2conllu("ro_legal",$json,$sentId,false);
             
             if($parId==1){
                 file_put_contents($fout,implode("\n",$conllu));

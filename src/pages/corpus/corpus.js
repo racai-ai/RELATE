@@ -1,5 +1,45 @@
 var corpus_lang="{{CORPUS_LANG}}";
 
+function loadData(data,func,error){
+    loadDataComplete("index.php","POST",data,func,error);
+}
+
+function loadDataComplete(url,method,data,func,error){
+    var xhttp = false;
+    
+    if (window.XMLHttpRequest) {
+        // code for modern browsers
+        xhttp = new XMLHttpRequest();
+    } else {
+        // code for old IE browsers
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4){
+        if(this.status == 200) {
+          var response=this.responseText;
+          func(response);
+        }else{
+          if(error!==undefined && error!==null)
+            error();
+        }
+      }
+    };
+    if(error!==undefined && error!==null)
+      xhttp.error=error;    
+      
+    xhttp.open(method, url, true);
+    if(data!==undefined && data!==null){
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(data);
+    }else{
+        xhttp.send();
+    }
+}
+
+
+
 function setAttribute(obj,attr,value){
     var ob=document.getElementById(obj);
     if(ob!=null)
@@ -68,6 +108,24 @@ function gridAddTXT(){
             $("#popup-dialog-crud-txt").dialog("open");
 } 
 
+function gridAddStandoff(){
+
+            var $frm = $("form#crud-form-standoff");
+            //$frm.find("input").val("");
+
+            $("#popup-dialog-crud-standoff").dialog({ title: "Add Standoff Metadata File", buttons: {
+                Add: function () {
+                    $frm.submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+            });
+            $("#popup-dialog-crud-standoff").dialog("open");
+} 
+
+
 function gridAddZIPTXT(){
 
             var $frm = $("form#crud-form-ziptext");
@@ -116,26 +174,158 @@ function gridAddTaskCleanup(){ gridAddTask("cleanup","Add Cleanup task"); }
 function gridAddTaskIateEurovoc(){ gridAddTask("iateeurovoc","Add task for annotating with IATE and EUROVOC"); }
 
 function openStatsWordForm(){
-    window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_wordform.csv";
+    viewFileCSV("statistics/list_wordform.csv","csv2");
+    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_wordform.csv";
 }
 
 function openStatsLemma(){
-    window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_lemma.csv";
+    viewFileCSV("statistics/list_lemma.csv","csv2");
+    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_lemma.csv";
 }
 
 function openStatsWordFormDF(){
-    window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_wordformdf.csv";
+    viewFileCSV("statistics/list_wordformdf.csv","csv2");
+    ///window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_wordformdf.csv";
 }
 
 function openStatsLetters(){
-    window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_letters.csv";
+    viewFileCSV("statistics/list_letters.csv","csv2");
+    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_letters.csv";
 }
 
 var $grid=false;
+var $gridStandoff=false;
 var $gridTasks=false;
 var $gridBasicTagging=false;
 var $gridStatistics=false;
 var $gridArchives=false;
+
+var previousHash="";
+
+function closeFileViewerText(){
+    setAttribute("fileViewerText","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
+function viewFileText(file){
+    currentFileView=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:block;");
+    setAttribute("fileViewerTextDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewertext:"+file+":"+previousHash;
+
+    loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file,function(data){
+        document.getElementById('textFileViewerText').value=data;
+        setAttribute("loading","style","display:none;");
+        setAttribute("fileViewerText","style","display:block;");
+        document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";
+    },function(){
+        alert("Error loading text");
+        setAttribute("loading","style","display:none;");
+        setAttribute("output","style","display:block;");
+    });
+    
+}
+
+var $fileViewerCSVgrid=false;
+var currentFileView="";
+
+function closeFileViewerCSV(){
+    setAttribute("fileViewerCSV","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+    $fileViewerCSVgrid.pqGrid('destroy');
+    $fileViewerCSVgrid=false;
+    setAttribute("fileViewerCSVgrid","class","");
+}
+
+function viewFileCSV(file,type){
+    currentFileView=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:block;");
+    setAttribute("fileViewerCSVDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewercsv:"+file+":"+previousHash;
+
+    if($fileViewerCSVgrid!==false)$fileViewerCSVgrid.pqGrid('destroy');
+
+    var toolbar = { items: [ ] };
+
+    var obj = {
+        width: "100%"
+        , height: 400
+        , resizable: true
+        , title: "File View"
+        , showBottom: false
+        , editModel: {clicksToEdit: 2}
+        //, scrollModel: { autoFit: true }
+        //, toolbar: toolbar
+        , editable: false
+        , resizable: true
+        , selectionModel: { mode: 'single', type: 'row' }
+        
+        , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+        ,  wrap: true, hwrap: false
+    };
+    obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+
+    if(type==="conllu"){
+        obj.colModel = [
+                { title: "ID", dataType: "string", dataIndx: "0" },
+                { title: "Form", dataType: "string", dataIndx: "1" },
+                { title: "Lemma", dataType: "string", dataIndx: "2" },
+                { title: "UPOS", dataType: "string", dataIndx: "3" },
+                { title: "XPOS", dataType: "string", dataIndx: "4" },
+                { title: "Feats", dataType: "string", dataIndx: "5" },
+                { title: "Head", dataType: "string", dataIndx: "6" },
+                { title: "Deprel", dataType: "string", dataIndx: "7" },
+                { title: "Deps", dataType: "string", dataIndx: "8" },
+                { title: "Misc", dataType: "string", dataIndx: "9" },
+                { title: "NER", dataType: "string", dataIndx: "10" },
+                { title: "NP", dataType: "string", dataIndx: "11" },
+                { title: "IATE", dataType: "string", dataIndx: "12" },
+                { title: "EUROVOC", dataType: "string", dataIndx: "13" }
+            ];
+    }else if(type==="csv2"){
+        obj.colModel = [
+            { title: "0", dataType: "string", dataIndx: "0" },
+            { title: "1", dataType: "string", dataIndx: "1" },
+        ];
+
+    }else{
+        obj.colModel = [
+            { title: "C0", dataType: "string", dataIndx: "0" },
+            { title: "C1", dataType: "string", dataIndx: "1" },
+            { title: "C2", dataType: "string", dataIndx: "2" }
+        ];
+    }
+        obj.dataModel = {
+            location: "remote",
+            //sorting: "local",
+            //sortIndx: "name",
+            //sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/csv_get&corpus={{CORPUS_NAME}}&file="+file,
+            getData: function (dataJSON) {
+                setAttribute("loading","style","display:none;");
+                setAttribute("fileViewerCSV","style","display:block;");
+                document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";            
+                return { data: dataJSON };
+            }
+        };
+        
+        $fileViewerCSVgrid = $("#fileViewerCSVgrid").pqGrid(obj);
+}
+
 
 function initGridFiles(){
         var toolbar = { items: [
@@ -143,7 +333,7 @@ function initGridFiles(){
                 
                 { type: 'button', label: 'Add TEXT', listeners: [{ click: gridAddTXT}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Add CSV/TSV', listeners: [{ click: gridAddCSV}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'Add ZIP TEXT', listeners: [{ click: gridAddZIPTXT}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Add ZIP TEXT/StandoffMeta', listeners: [{ click: gridAddZIPTXT}], icon: 'ui-icon-plus' },
                 //{ type: 'button', label: 'Edit', listeners: [{ click: gridEdit}], icon: 'ui-icon-pencil' },
                 //{ type: 'button', label: 'Delete', listeners: [{ click: gridDelete}], icon: 'ui-icon-minus' }                
             ]
@@ -166,9 +356,11 @@ function initGridFiles(){
             
             , rowDblClick: function( event, ui ) {
                 if(ui.rowData.type=="csv"){
-                    window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
+                    viewFileCSV(ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
                 }else{
-                    window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
+                    viewFileText(ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
                 }
             }            
         };
@@ -198,31 +390,96 @@ function initGridFiles(){
         
         $grid = $("#grid").pqGrid(obj);
 
-          $("#popup-dialog-crud-csv").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-csv").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-txt").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-txt").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-ziptext").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-ziptext").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });
 }
 
+function initGridStandoff(){
+        var toolbar = { items: [
+                { type: 'button', label: 'Add Standoff Metadata file', listeners: [{ click: gridAddStandoff}], icon: 'ui-icon-plus' },
+            ]
+        };        
+
+        var obj = {
+            width: "100%"
+            , height: 400
+            , resizable: true
+            , title: "Standoff Metadata files list"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                if(ui.rowData.type=="csv"){
+                    viewFileCSV("standoff/"+ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }else{
+                    viewFileText("standoff/"+ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }
+            }            
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "Name", dataType: "string", dataIndx: "name" },
+            { title: "Type", dataType: "string", dataIndx: "type" },
+            { title: "Description", dataType: "string", dataIndx: "desc" },
+            { title: "User", dataType: "string", dataIndx: "created_by" },
+            { title: "Creation Date", dataType: "string", dataIndx: "created_date" }
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            sortIndx: "name",
+            sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/files_getstandoff&name={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridStandoff = $("#gridStandoff").pqGrid(obj);
+
+          $("#popup-dialog-crud-standoff").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#grid" }); },
+            autoOpen: false
+        });
+}
+
+
+
 function initGridTasks(){
         var toolbar = { items: [
-                { type: 'button', label: 'Add BASIC TAGGING', listeners: [{ click: gridAddTaskBasic}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'ANNOTATION', listeners: [{ click: gridAddTaskBasic}], icon: 'ui-icon-plus' },
                // { type: 'button', label: 'Add CHUNKING', listeners: [{ click: gridAddTaskChunking}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'Add STATISTICS', listeners: [{ click: gridAddTaskStatistics}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'IATE/EUROVOC', listeners: [{ click: gridAddTaskIateEurovoc}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'CLEANUP', listeners: [{ click: gridAddTaskCleanup}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'STATISTICS', listeners: [{ click: gridAddTaskStatistics}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Create ZIP TEXT', listeners: [{ click: gridAddTaskCreateZIPTXT}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Create ZIP ANNOTATED', listeners: [{ click: gridAddTaskCreateZIPBasicTagging}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'CLEANUP', listeners: [{ click: gridAddTaskCleanup}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'IATE/EUROVOC', listeners: [{ click: gridAddTaskIateEurovoc}], icon: 'ui-icon-plus' },
             ]
         };
         
@@ -275,37 +532,37 @@ function initGridTasks(){
         
         $gridTasks = $("#gridTasks").pqGrid(obj);
 
-          $("#popup-dialog-crud-task-basic").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-basic").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-task-chunk").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-chunk").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-task-stat").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-stat").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-task-createziptxt").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-createziptxt").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-task-createzipbasic").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-createzipbasic").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-task-cleanup").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-cleanup").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
         
-          $("#popup-dialog-crud-task-iateeurovoc").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud-task-iateeurovoc").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false
         });
@@ -331,7 +588,8 @@ function initGridBasicTagging(){
             ,  wrap: false, hwrap: false
             
             , rowDblClick: function( event, ui ) {
-                window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=conllu&file=basictagging/"+ui.rowData.name;
+                viewFileCSV("basictagging/"+ui.rowData.name,"conllu");
+                //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=conllu&file=basictagging/"+ui.rowData.name;
             }            
         };
         function formatCurrency(ui) {
@@ -511,10 +769,32 @@ function initGridArchives(){
         $gridArchives = $("#gridArchives").pqGrid(obj);
 }
 
-
+function showBasedOnHash(hash){
+    if(hash=="standoff")showOutput(2,8);      
+    else if(hash=="tasks")showOutput(3,8);      
+    else if(hash=="basictagging")showOutput(4,8);      
+    else if(hash=="statistics")showOutput(5,8);      
+    else if(hash=="archives")showOutput(6,8);      
+    else if(hash.startsWith("fileviewertext")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        viewFileText(file);
+    }else if(hash.startsWith("fileviewercsv")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        viewFileCSV(file);
+    }    
+}
 
 $(document).ready(function () {
     initGridFiles();
+    initGridStandoff();
     initGridTasks(); 
     initGridBasicTagging(); 
     initGridStatistics(); 
@@ -522,8 +802,5 @@ $(document).ready(function () {
     
     var h = window.location.hash.substr(1);
     
-    if(h=="tasks")showOutput(2,8);      
-    else if(h=="basictagging")showOutput(3,8);      
-    else if(h=="statistics")showOutput(4,8);      
-    else if(h=="archives")showOutput(5,8);      
+    showBasedOnHash(h);
 });

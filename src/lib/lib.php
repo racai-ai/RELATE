@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 $LIB_PATH=dirname(__FILE__);
 ini_set('display_errors', 1);

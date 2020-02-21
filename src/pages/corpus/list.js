@@ -92,7 +92,7 @@ $(document).ready(function () {
         obj.dataModel = {
             location: "remote",
             sorting: "local",
-            sortIndx: "name",
+            sortIndx: "created_date",
             sortDir: "down",
             dataType:"json",
             method:"GET",

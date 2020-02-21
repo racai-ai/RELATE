@@ -1,22 +1,12 @@
 
               <div class="masonry-item col-md-12">
                 <div class="bgc-white p-20 bd">
-                  <h6 class="c-grey-900">Corpus {{CORPUS_NAME_HTML}}
-                  <button type="button" class="btn cur-p btn-secondary" onclick="window.location='index.php?path=corpus/list'">Corpora</button>
+                  <h6 class="c-grey-900">Corpus: <b>{{CORPUS_NAME_HTML}}</b> &nbsp;&nbsp; <div style="display:inline" id="corpusfilename"></div> &nbsp;&nbsp;
+                  <button type="button" class="btn cur-p btn-secondary" onclick="window.location='index.php?path=corpus/list'">View Corpora</button>
                   </h6>
                   <div class="mT-30" style="height:1100px;">
-                    <div style="display:none" id="input">
-                    <form onsubmit="return false;">
-                      <div class="form-group">
-                        <label for="text">Please enter a Romanian text</label>
-                        <textarea class="form-control" id="text" style="height:250px;">{{text}}</textarea>
-                      </div>
-                      <button type="submit" class="btn btn-primary" onclick="sendText();">Submit</button>
-                      <button type="submit" class="btn btn-secondary" onclick="demo();">DEMO</button>
-                    </form>
-                    </div>
 
-<!--                   {{loading}} -->
+                   {{LOADING}}
                     
 <!-- AICI INCEPE ZONA DE BUTOANE -->
 
@@ -24,10 +14,11 @@
                     <div style="display:block" id="output">
                         <div style="height: 40px;">
                         <button type="button" id="bOutput1" class="btn cur-p btn-success" onclick="showOutput(1,8,'files');">Files</button>
-                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,8,'tasks');">Tasks</button>
-                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,8,'basictagging');">Annotated</button>
-                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,8,'statistics');">Statistics</button>
-                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,8,'archives');">Archives</button>
+                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,8,'standoff');">Standoff</button>
+                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,8,'tasks');">Tasks</button>
+                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,8,'basictagging');">Annotated</button>
+                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,8,'statistics');">Statistics</button>
+                        <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,8,'archives');">Archives</button>
                         </div>
                         <div style="margin-top:10px; height:calc(100% - 40px);">
                         <div id="output1">
@@ -66,6 +57,7 @@
                                 </div>                                      
 
                                 <div id="popup-dialog-crud-ziptext" style="display:none;">
+                                <p>All text files must have .txt extension. All other extensions will be considered standoff metadata.</p>
                                 <form id="crud-form-ziptext" method="POST" enctype="multipart/form-data" action="index.php">
                                     <input type="hidden" name="path" value="corpus/files_add">
                                     <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
@@ -79,8 +71,28 @@
                                 </div>                                      
 
                         </div>
-                        
+
                         <div style="display:none" id="output2">
+                                <div id="gridStandoff" style="margin:auto;"></div>
+                                
+                                <div id="popup-dialog-crud-standoff" style="display:none;">
+                                <form id="crud-form-standoff" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="standoff">
+                                    <input type="hidden" name="desc" value="">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                        </div>
+
+
+                        
+                        <div style="display:none" id="output3">
                                 <div id="gridTasks" style="margin:auto;"></div>
                                 
                                 <div id="popup-dialog-crud-task-basic" style="display:none;">
@@ -173,20 +185,17 @@
                                 </div>                                      
                         </div>
                         
-                        <div style="display:none" id="output3">
+                        <div style="display:none" id="output4">
                                 <div id="gridBasicTagging" style="margin:auto;"></div>
                                 
                         </div>
                         
-                        <div style="display:none" id="output4">
+                        <div style="display:none" id="output5">
                                 <div id="gridStatistics" style="margin:auto;"></div>
                         </div>
                         
-                        <div style="display:none" id="output5">
-                                <div id="gridArchives" style="margin:auto;"></div>
-                        </div>
-
                         <div style="display:none" id="output6">
+                                <div id="gridArchives" style="margin:auto;"></div>
                         </div>
 
                         <div style="display:none" id="output7">
@@ -203,9 +212,42 @@
                         </div>
                         
                     </div>                    
-
-
 <!-- AICI SE TERMINA ZONA DE BUTOANE -->
+
+                    <div style="display:none" id="fileViewerText">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerText();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextDownload" onclick="">Download</button>
+                      
+                      <div class="mT-30">
+                      
+                        <div id="inputFileViewerText">                  
+    
+                            <textarea id="textFileViewerText" cols="140" style="font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                        
+                        </div>
+                      </div>
+                    
+                    </div>
+                    
+                    <div style="display:none" id="fileViewerCSV">
+                    
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerCSV();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerCSVDownload" onclick="">Download</button>
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerCSV(); viewFileText(currentFileView);">View as Text</button>
+                      
+                      <div class="mT-30">
+                      
+                        <div id="fileViewerCSVinput">                  
+    
+                          <div id="fileViewerCSVgrid" style="margin:auto;"></div>
+    
+                        
+                        </div>
+                      </div>                    
+                    
+                    </div>
+                    
+
                   </div>
                 </div>
               </div>

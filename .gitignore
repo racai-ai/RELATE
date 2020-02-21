@@ -1,0 +1,4 @@
+/src/scripts/*.log
+/src/scripts/*.lock
+/src/DB/users
+/src/DB/corpora

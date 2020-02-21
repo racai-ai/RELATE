@@ -21,7 +21,14 @@ if(startsWith($fname,"statistics/")){
     $fname=substr($fname,strlen("statistics/"));
 }
 
-if(!$statistics && !$basicTagging){
+$standoff=false;
+if(startsWith($fname,"standoff/")){
+    $standoff=true;
+    $fname=substr($fname,strlen("standoff/"));
+}
+
+
+if(!$statistics && !$basicTagging && !$standoff){
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -47,6 +54,22 @@ if($basicTagging){
         echo json_encode($line,JSON_FORCE_OBJECT);
     }
     fclose($fp);
+}else if($standoff){
+    $fp=$corpus->openFileStandoff($fname);
+    while(!feof($fp)){
+        $line=fgetcsv($fp);
+        if($line===false || $line===null)break;
+
+        $lnum++;
+        
+        if($line[0]===null)continue;
+        
+        if($first)$first=false;
+        else echo ",\n";
+        echo json_encode($line,JSON_FORCE_OBJECT);
+    }
+    fclose($fp);
+
 }else if($statistics){
         $dir=$corpus->getFolderPath();
         $dir.="/statistics";

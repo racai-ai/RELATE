@@ -43,6 +43,8 @@ if($corpus->addUploadedFile($_FILES['file']['tmp_name'],$data)===false)addError(
 
 if($data['type']=="zip_text")
     header("Location: index.php?path=corpus/corpus&name=".$data['corpus']."#tasks");
+else if($data['type']=="standoff")
+    header("Location: index.php?path=corpus/corpus&name=".$data['corpus']."#standoff");
 else
     header("Location: index.php?path=corpus/corpus&name=".$data['corpus']);
 die();

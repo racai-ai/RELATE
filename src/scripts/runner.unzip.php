@@ -11,19 +11,32 @@ function runUnzip($fnameIn,$pathOut){
     $dir_meta.="/meta";
     @mkdir($dir_meta);
 
+    $dir_standoff=$corpus->getFolderPath();
+    $dir_standoff.="/standoff";
+    @mkdir($dir_standoff);
 
     $dh = opendir($pathOut);
     while (($file = readdir($dh)) !== false) {
-        if(is_file($pathOut."/".$file) && !is_file($dir_meta."/".$file)){
-            file_put_contents($dir_meta."/".$file.".meta",json_encode([
-                'name' => $file,
-                'corpus' => $corpus->getData("name","unknown"),
-                'type' => 'text',
-                'desc' => '',
-                'created_by' => $taskDesc['created_by'],
-                'created_date' => $taskDesc['created_date']
-            ]));
-            
+        $pathFile=$pathOut."/".$file;
+        if(!is_file($pathFile))continue;
+        
+        $pathMeta=$dir_meta."/".$file;
+        $pathStandoff=$dir_standoff."/".$file;
+        
+        if(endsWith(strtolower($file),".txt")){
+            if(!is_file($pathMeta)){
+                file_put_contents($dir_meta."/".$file.".meta",json_encode([
+                    'name' => $file,
+                    'corpus' => $corpus->getData("name","unknown"),
+                    'type' => 'text',
+                    'desc' => '',
+                    'created_by' => $taskDesc['created_by'],
+                    'created_date' => $taskDesc['created_date']
+                ]));
+                
+            }
+        }else{
+            @rename($pathFile,$pathStandoff);
         }
     }
     closedir($dh);

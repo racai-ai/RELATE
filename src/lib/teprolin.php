@@ -67,13 +67,13 @@ function TEPROLIN_getStat($stat,$period,$num){
     return $data;
 }
 
-function TEPROLIN_json2conllu($fname,$json,$sid){
+function TEPROLIN_json2conllu($fname,$json,$sid,$useSentId=true){
     $conllu=[];
     foreach($json['teprolin-result']['sentences'] as $k=>$sentence){
         $sid++;
         if($sid>1)$conllu[]="";
         
-        $conllu[]="# sent_id = ${fname}.{$sid}";
+        if($useSentId)$conllu[]="# sent_id = ${fname}.{$sid}";
         $conllu[]="# text = ${sentence}";
         $prev_ner="O";
         $prev_chunk="O";

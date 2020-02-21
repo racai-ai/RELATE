@@ -80,6 +80,7 @@ class Corpus {
        
         $dir_meta=$dir; 
         if($data['type']=="zip_text")$dir.="/zip_text";
+        else if($data['type']=="standoff")$dir.="/standoff";
         else $dir.="/files";
         @mkdir($dir);
         $dir_meta.="/meta";
@@ -95,10 +96,11 @@ class Corpus {
         
         if(move_uploaded_file($file,$dpath)!==true)return false;
         
-        if($data['type']=="text" || $data['type']=='csv')
+        if($data['type']=="text" || $data['type']=='csv'){
             file_put_contents($dir_meta."/".$data['name'].".meta",json_encode($data));
 
-        file_put_contents($base_dir."/changed_files.json",json_encode(["changed"=>time()]));
+            file_put_contents($base_dir."/changed_files.json",json_encode(["changed"=>time()]));
+        }
 
         if($data['type']=="zip_text"){
             $tasks=new Task($this);
@@ -214,6 +216,58 @@ class Corpus {
     
     }
     
+    public function getFilesStandoff(){
+        if($this->data===null || empty($this->data))return [];
+
+        $corpora=[];
+    
+        $dir=$this->getFolderPath();
+        if($dir===false)return [];
+        $base_dir=$dir;
+        
+        if(is_file($dir."/list_standoff.json") && is_file($dir."/changed_standoff.json") && filemtime($dir."/list_standoff.json")>=filemtime($dir."/changed_standoff.json")){
+            $corpora=json_decode(file_get_contents($dir."/list_standoff.json"),true);
+            return $corpora;
+        }
+        
+        $dir_meta=$dir;
+        $dir.="/standoff";
+        
+        if(!is_dir($dir))return [];
+        
+        $dh = opendir($dir);
+        if($dh===false)return [];
+        
+        while (($file = readdir($dh)) !== false) {
+            $dpath="$dir/$file";
+            if(!is_file($dpath))continue;
+            
+            $meta=[];
+            if(!isset($meta['name']))$meta['name']=$file;
+            
+            $meta['type']='text';
+            
+            $size=filesize($dpath);
+            $unit="b";
+            if($size>1024){$size/=1024.0;$unit="Kb";}
+            if($size>1024){$size/=1024.0;$unit="Mb";}
+            if($size>1024){$size/=1024.0;$unit="Gb";}
+            if($size>1024){$size/=1024.0;$unit="Tb";}
+            if($size==0 && $unit=="b")$unit="";
+            $size=round($size,2)." ".$unit;
+
+            $meta['size']=$size;
+            $corpora[]=$meta;
+        }
+        closedir($dh);
+
+        file_put_contents($base_dir."/list_standoff.json",json_encode($corpora));
+
+        
+        return $corpora;    
+    
+    }
+
     public function getArchives(){
         global $DirectoryAnnotated;
         if($this->data===null || empty($this->data))return [];
@@ -395,21 +449,36 @@ class Corpus {
         return fopen($fpath,$mode);
     }
     
-    public function openFileBasicTagging($name,$mode="r"){
-        global $DirectoryAnnotated;
+    public function getFilePath($name,$internalDir){
         if(!$this->isValidName($name))return false;
 
         $dir=$this->getFolderPath();
         if($dir===false)return false;
 
-        $dir.="/$DirectoryAnnotated";
+        $dir.="/$internalDir";
         if(!is_dir($dir))return false;
         
         $fpath=$dir."/$name";
         if(!is_file($fpath))return false;
-        
+        return $fpath;
+    }
+
+    public function getFilePathBasicTagging($name){ global $DirectoryAnnotated; return $this->getFilePath($name,$DirectoryAnnotated);}
+    public function getFilePathStandoff($name){ return $this->getFilePath($name,"standoff");}
+
+    public function openFileBasicTagging($name,$mode="r"){
+        $fpath=$this->getFilePathBasicTagging($name);
+        if($fpath===false)return false;
         return fopen($fpath,$mode);
     }
+    
+    public function openFileStandoff($name,$mode="r"){
+        $fpath=$this->getFilePathStandoff($name);
+        if($fpath===false)return false;
+                
+        return fopen($fpath,$mode);
+    }
+
 
     public function getFileMeta($name){
         if(!$this->isValidName($name))return false;

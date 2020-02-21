@@ -17,6 +17,12 @@ if(startsWith($fname,"basictagging/")){
     $fname=substr($fname,strlen("basictagging/"));
 }
 
+$standoff=false;
+if(startsWith($fname,"standoff/")){
+    $standoff=true;
+    $fname=substr($fname,strlen("standoff/"));
+}
+
 $statistics=false;
 if(startsWith($fname,"statistics/")){
     $statistics=true;
@@ -35,7 +41,7 @@ if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $fname=substr($fname,strlen("zip_$DirectoryAnnotated/"));
 }
 
-if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging){
+if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff){
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -45,6 +51,9 @@ if($basicTagging){
         $dir.="/$DirectoryAnnotated";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
+}else if($standoff){
+        $fpath=$corpus->getFilePathStandoff($fname);
+        if($fpath===false)die("Invalid file");
 }else if($statistics){
         $dir=$corpus->getFolderPath();
         $dir.="/statistics";
