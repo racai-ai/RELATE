@@ -1,3 +1,10 @@
+// Fix dropdowns that close automatically
+setInterval(function(){
+    var elements=document.getElementsByTagName("select");
+    for(var i=0;i<elements.length;i++)elements[i].onclick=function(e){e.stopPropagation();}
+},500);
+
+
 var corpus_lang="{{CORPUS_LANG}}";
 
 function loadData(data,func,error){
