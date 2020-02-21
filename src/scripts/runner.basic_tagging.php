@@ -5,7 +5,7 @@ function runBasicTaggingText($text,$fout){
     
     runBasicTaggingText_internal($text,$fout);
     
-    file_put_contents($corpus->getFolderPath()."/changed_annotated.json",json_encode(["changed"=>time()]));            
+    file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            
 }
 
 function runBasicTaggingText_internal($text,$fout){

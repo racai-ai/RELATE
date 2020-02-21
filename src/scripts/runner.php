@@ -11,6 +11,7 @@ require_once "runner.statistics.php";
 require_once "runner.zip.php";
 require_once "cleaner_marcell.php";
 require_once "runner.iateeurovoc.php";
+require_once "runner.export_marcell.php";
 
 if(count($argv)!=2){
     die("runner.php <NUMBER>");
@@ -96,6 +97,9 @@ function runTask($data){
        return ;
     }else if($taskDesc['type']=='zip_basic_tagging'){
        runZip($corpus->getFolderPath()."/$DirectoryAnnotated",$corpus->getFolderPath()."/zip_$DirectoryAnnotated",$taskDesc['fname']);
+       return ;
+    }else if($taskDesc['type']=='marcell'){
+       runExportMarcell($corpus->getFolderPath()."/$DirectoryAnnotated");
        return ;
     }
     

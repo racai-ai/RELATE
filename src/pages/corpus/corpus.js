@@ -4,6 +4,25 @@ setInterval(function(){
     for(var i=0;i<elements.length;i++)elements[i].onclick=function(e){e.stopPropagation();}
 },500);
 
+function convertSize(s){
+    if(s.length==0)return 0;
+    var data=s.split(" ");
+    var sz=parseInt(data[0]);
+    if(data[1]=="Kb")return sz*1024;
+    if(data[1]=="Mb")return sz*1024*1024;
+    if(data[1]=="Gb")return sz*1024*1024*1024;
+    if(data[1]=="Tb")return sz*1024*1024*1024*1024;
+    return sz;
+}
+
+function sizeSort(rowData1,rowData2,dataIndx){
+    var s1=convertSize(rowData1[dataIndx]);
+    var s2=convertSize(rowData2[dataIndx]);
+    
+    if(s1>s2)return 1;
+    if(s1<s2)return -1;
+    return 0;
+}
 
 var corpus_lang="{{CORPUS_LANG}}";
 
@@ -179,6 +198,7 @@ function gridAddTaskCreateZIPTXT(){ gridAddTask("createziptxt","Add task for ZIP
 function gridAddTaskCreateZIPBasicTagging(){  gridAddTask("createzipbasic","Add task for ZIP ANNOTATED creation"); }
 function gridAddTaskCleanup(){ gridAddTask("cleanup","Add Cleanup task"); }
 function gridAddTaskIateEurovoc(){ gridAddTask("iateeurovoc","Add task for annotating with IATE and EUROVOC"); }
+function gridAddTaskMarcell(){ gridAddTask("marcell","Add task for exporting to Marcell project"); }
 
 function openStatsWordForm(){
     viewFileCSV("statistics/list_wordform.csv","csv2");
@@ -278,6 +298,7 @@ function viewFileCSV(file,type){
         , editable: false
         , resizable: true
         , selectionModel: { mode: 'single', type: 'row' }
+        , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
         
         , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
         ,  wrap: true, hwrap: false
@@ -287,31 +308,31 @@ function viewFileCSV(file,type){
     if(type==="conllu"){
         obj.colModel = [
                 { title: "ID", dataType: "string", dataIndx: "0" },
-                { title: "Form", dataType: "string", dataIndx: "1" },
-                { title: "Lemma", dataType: "string", dataIndx: "2" },
-                { title: "UPOS", dataType: "string", dataIndx: "3" },
-                { title: "XPOS", dataType: "string", dataIndx: "4" },
-                { title: "Feats", dataType: "string", dataIndx: "5" },
-                { title: "Head", dataType: "string", dataIndx: "6" },
-                { title: "Deprel", dataType: "string", dataIndx: "7" },
-                { title: "Deps", dataType: "string", dataIndx: "8" },
-                { title: "Misc", dataType: "string", dataIndx: "9" },
-                { title: "NER", dataType: "string", dataIndx: "10" },
-                { title: "NP", dataType: "string", dataIndx: "11" },
-                { title: "IATE", dataType: "string", dataIndx: "12" },
-                { title: "EUROVOC", dataType: "string", dataIndx: "13" }
+                { title: "Form", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "Lemma", dataType: "string", dataIndx: "2", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "UPOS", dataType: "string", dataIndx: "3", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "XPOS", dataType: "string", dataIndx: "4", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "Feats", dataType: "string", dataIndx: "5", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "Head", dataType: "string", dataIndx: "6", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "Deprel", dataType: "string", dataIndx: "7", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "Deps", dataType: "string", dataIndx: "8", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "Misc", dataType: "string", dataIndx: "9", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "NER", dataType: "string", dataIndx: "10", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "NP", dataType: "string", dataIndx: "11", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "IATE", dataType: "string", dataIndx: "12", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+                { title: "EUROVOC", dataType: "string", dataIndx: "13", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  }
             ];
     }else if(type==="csv2"){
         obj.colModel = [
-            { title: "0", dataType: "string", dataIndx: "0" },
-            { title: "1", dataType: "string", dataIndx: "1" },
+            { title: "0", dataType: "string", dataIndx: "0", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+            { title: "1", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
         ];
 
     }else{
         obj.colModel = [
-            { title: "C0", dataType: "string", dataIndx: "0" },
-            { title: "C1", dataType: "string", dataIndx: "1" },
-            { title: "C2", dataType: "string", dataIndx: "2" }
+            { title: "C0", dataType: "string", dataIndx: "0", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+            { title: "C1", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+            { title: "C2", dataType: "string", dataIndx: "2", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  }
         ];
     }
         obj.dataModel = {
@@ -357,6 +378,7 @@ function initGridFiles(){
             , toolbar: toolbar
             , editable: false
             , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
             
             , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
             ,  wrap: false, hwrap: false
@@ -376,7 +398,7 @@ function initGridFiles(){
         }
         obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
         obj.colModel = [
-            { title: "Name", dataType: "string", dataIndx: "name" },
+            { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
             { title: "Type", dataType: "string", dataIndx: "type" },
             { title: "Description", dataType: "string", dataIndx: "desc" },
             { title: "User", dataType: "string", dataIndx: "created_by" },
@@ -430,6 +452,7 @@ function initGridStandoff(){
             , toolbar: toolbar
             , editable: false
             , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
             
             , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
             ,  wrap: false, hwrap: false
@@ -449,7 +472,7 @@ function initGridStandoff(){
         }
         obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
         obj.colModel = [
-            { title: "Name", dataType: "string", dataIndx: "name" },
+            { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
             { title: "Type", dataType: "string", dataIndx: "type" },
             { title: "Description", dataType: "string", dataIndx: "desc" },
             { title: "User", dataType: "string", dataIndx: "created_by" },
@@ -484,6 +507,7 @@ function initGridTasks(){
                // { type: 'button', label: 'Add CHUNKING', listeners: [{ click: gridAddTaskChunking}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'IATE/EUROVOC', listeners: [{ click: gridAddTaskIateEurovoc}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'CLEANUP', listeners: [{ click: gridAddTaskCleanup}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Export MARCELL', listeners: [{ click: gridAddTaskMarcell}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'STATISTICS', listeners: [{ click: gridAddTaskStatistics}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Create ZIP TEXT', listeners: [{ click: gridAddTaskCreateZIPTXT}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Create ZIP ANNOTATED', listeners: [{ click: gridAddTaskCreateZIPBasicTagging}], icon: 'ui-icon-plus' },
@@ -574,6 +598,10 @@ function initGridTasks(){
             autoOpen: false
         });
         
+          $("#popup-dialog-crud-task-marcell").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
+            autoOpen: false
+        });
 }
 
 function initGridBasicTagging(){
@@ -590,6 +618,7 @@ function initGridBasicTagging(){
             , toolbar: toolbar
             , editable: false
             , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
             
             , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
             ,  wrap: false, hwrap: false
@@ -604,9 +633,9 @@ function initGridBasicTagging(){
         }
         obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
         obj.colModel = [
-            { title: "Name", dataType: "string", dataIndx: "name" },
+            { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
             { title: "Type", dataType: "string", dataIndx: "type" },
-            { title: "Size", dataType: "string", dataIndx: "size" }
+            { title: "Size", dataType: "string", dataIndx: "size", sortType: sizeSort }
         ];
         obj.dataModel = {
             location: "remote",

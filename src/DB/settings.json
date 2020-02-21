@@ -6,6 +6,8 @@
 "tools.StanfordCoreNLP.path":"/data/vasile/stanford-corenlp-full-2018-10-05",
 "tools.wc.path":"/usr/bin/wc",
 
+"tools.java.path":"/data/programs/jdk1.8.0_231/bin/java",
+
 "owner_user":"apache",
 "owner_group":"apache"
 

@@ -61,6 +61,8 @@ foreach($corpora->getList() as $c){
             scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
         }else if($tdata['type']=='iate_eurovoc'){
             scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
+        }else if($tdata['type']=='marcell'){
+            scheduleFile($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
         }else if($tdata['type']=='statistics'){
             createFolder($corpus->getFolderPath()."/statistics/");
             clearFolder($corpus->getFolderPath()."/statistics/");

@@ -5,7 +5,7 @@ function runIateEurovoc($text,$fout){
     
     runIateEurovoc_internal($text,$fout);
     
-    file_put_contents($corpus->getFolderPath()."/changed_annotated.json",json_encode(["changed"=>time()]));            
+    file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            
 }
 
 function runIateEurovoc_internal($text,$fout){
