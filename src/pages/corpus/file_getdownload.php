@@ -35,6 +35,12 @@ if(startsWith($fname,"zip_text/")){
     $fname=substr($fname,strlen("zip_text/"));
 }
 
+$marcell_out=false;
+if(startsWith($fname,"marcell-out/")){
+    $marcell_out=true;
+    $fname=substr($fname,strlen("marcell-out/"));
+}
+
 $zip_bt=false;
 if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $zip_bt=true;
@@ -69,6 +75,12 @@ if($basicTagging){
 }else if($zip_bt){
         $dir=$corpus->getFolderPath();
         $dir.="/zip_$DirectoryAnnotated";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+        
+}else if($marcell_out){
+        $dir=$corpus->getFolderPath();
+        $dir.="/marcell-out";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
 
