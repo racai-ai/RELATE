@@ -368,7 +368,7 @@ function initGridFiles(){
         };        
 
         var obj = {
-            width: "100%"
+            width: "99%"
             , height: 400
             , resizable: true
             , title: "Files list"
@@ -442,7 +442,7 @@ function initGridStandoff(){
         };        
 
         var obj = {
-            width: "100%"
+            width: "99%"
             , height: 400
             , resizable: true
             , title: "Standoff Metadata files list"
@@ -519,7 +519,7 @@ function initGridTasks(){
         }        
 
         var obj = {
-            width: "100%"
+            width: "99%"
             , height: 400
             , resizable: true
             , title: "Corpus tasks"
@@ -608,7 +608,7 @@ function initGridBasicTagging(){
         var toolbar = { };
 
         var obj = {
-            width: "100%"
+            width: "99%"
             , height: 400
             , resizable: true
             , title: "Basic tagging"
@@ -715,7 +715,7 @@ function initGridStatistics(){
          ]};
 
         var obj = {
-            width: "100%"
+            width: "99%"
             , height: 400
             , resizable: true
             , title: "Statistics"
@@ -762,7 +762,7 @@ function initGridArchives(){
         var toolbar = { };
 
         var obj = {
-            width: "100%"
+            width: "99%"
             , height: 400
             , resizable: true
             , title: "Archives"

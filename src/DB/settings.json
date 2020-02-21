@@ -8,6 +8,8 @@
 
 "tools.java.path":"/data/programs/jdk1.8.0_231/bin/java",
 
+"tools.python.venv":"/data/venv_keras",
+
 "owner_user":"apache",
 "owner_group":"apache"
 
