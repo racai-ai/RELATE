@@ -6,7 +6,7 @@ function runExportMarcell($pathIn){
     @mkdir($pathOut);    
 
     @chdir("marcell");
-    passthru($settings->get("tools.java.path")." -cp MarcellCorrection.jar ".escapeshellarg($pathIn));
+    passthru($settings->get("tools.java.path")." -cp MarcellCorrection.jar Corrector ".escapeshellarg($pathIn));
 
     file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            
     
