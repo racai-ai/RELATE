@@ -98,7 +98,7 @@ if($basicTagging){
     header('Cache-Control: must-revalidate');
     header('Pragma: public');
     header('Content-Length: ' . filesize($fpath));
-    ob_end_flush();
+    @ob_end_flush();
     readfile($fpath);
     exit;
 
