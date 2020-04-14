@@ -24,7 +24,7 @@ require $HANDLERS[$PLATFORM['path']]['fname'];
 if(function_exists("PageInit"))PageInit();
 
 session_write_close();
-ob_end_flush();
+@ob_end_flush();
 
 if($HANDLERS[$PLATFORM['path']]['isData'])die();
 
