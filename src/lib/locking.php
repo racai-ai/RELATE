@@ -5,7 +5,7 @@ $FILE_LOCK=false;
 function LOCK_ON_FILE($fname){
     global $FILE_LOCK;
     
-    if(!is_file($fname))file_put_contents("",$fname);
+    if(!is_file($fname))file_put_contents($fname,"");
     
     $flock=fopen($fname,"r+b");
     if($flock===false){
