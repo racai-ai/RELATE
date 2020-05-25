@@ -101,10 +101,22 @@ class User {
     }
     
     public function getProfileHtml($key,$default){
+        return htmlspecialchars($this->getProfile($key,$default));
+    }
+    
+    public function getProfileJS($key,$default){
+				return trim(json_encode($this->getProfile($key,$default)),"\"");
+		}
+    
+    public function getProfile($key,$default){
         $ret=$default;
         if(isset($this->profile[$key]))$ret=$this->profile[$key];
-        return htmlspecialchars($ret);
-    }
+        return $ret;
+		}
+		
+		public function setProfile($key,$value){
+				$this->profile[$key]=$value;
+		}
     
     public function isLoggedIn(){
         return $this->username!==false;
@@ -202,6 +214,16 @@ class User {
         @file_put_contents($histFile,json_encode($h)."\n",FILE_APPEND);
         return true;
     }
+    
+    public function saveProfile(){
+        if(!$this->isLoggedIn())return false;
+        
+        $path=$this->getUserPath($this->username,false);
+        if($path===false)return false;   
+        
+        $fpath=$path."/user_profile.json";
+        file_put_contents($fpath,json_encode($this->profile));
+		}
     
     public function saveData(){
         if(!$this->isLoggedIn())return false;

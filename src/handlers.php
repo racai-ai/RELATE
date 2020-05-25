@@ -33,6 +33,7 @@ registerHandler("platform/login","pages/platform/login.php",false);
 registerHandler("platform/register","pages/platform/register.php",false);
 registerHandler("platform/logout","pages/platform/logout.php",false);
 registerHandler("platform/change_password","pages/platform/change_password.php",false);
+registerHandler("platform/set_profile_values","data/platform/set_profile_values.php",true,["user"]);
 
 registerHandler("downloads/private","pages/downloads/private.php",false,["user"]);
 registerHandler("downloads/data","pages/downloads/data.php",true);
@@ -53,9 +54,13 @@ registerHandler("corpus/file_getdownload","pages/corpus/file_getdownload.php",tr
 registerHandler("corpus/task_getallbycorpus","pages/corpus/task_getallbycorpus.php",true,["corpus"]);
 registerHandler("corpus/task_add","pages/corpus/task_add.php",true,["corpus"]);
 registerHandler("corpus/archives_get","pages/corpus/archives_get.php",true,["corpus"]);
+registerHandler("corpus/audio_get","pages/corpus/audio_get.php",true,["corpus"]);
+
+registerHandler("recorder/get_data","data/recorder/get_data.php",true,["corpus"]);
+registerHandler("recorder/upload","data/recorder/upload.php",true,["corpus"]);
+
 registerHandler("papers/papers","pages/papers/papers.php",false);
 
 registerHandler("my/authors","pages/my/authors.php",false,["pvf"]);
-
 
 ?>

@@ -320,6 +320,135 @@ class Corpus {
     
     }
 
+    public function getAudio(){
+        global $DirectoryAnnotated;
+        if($this->data===null || empty($this->data))return [];
+
+        $dir=$this->getFolderPath();
+        if($dir===false)return [];
+        $base_dir=$dir;
+
+        $audio=[];
+        
+        $dirs=[
+            "${base_dir}/audio",
+        ];
+        
+        foreach($dirs as $dir){
+            if(is_dir($dir)){
+            
+                $dh = opendir($dir);
+                if($dh!==false){
+                
+                    while (($file = readdir($dh)) !== false) {
+                        $dpath="$dir/$file";
+                        if(!is_file($dpath)) continue;
+                        $meta=[];
+                        $meta['fname']=substr($dir,strrpos($dir,'/')+1)."/".$file;
+                        $meta['type']='audio';
+                        
+                        $size=filesize($dpath);
+                        $unit="b";
+                        if($size>1024){$size/=1024.0;$unit="Kb";}
+                        if($size>1024){$size/=1024.0;$unit="Mb";}
+                        if($size>1024){$size/=1024.0;$unit="Gb";}
+                        if($size>1024){$size/=1024.0;$unit="Tb";}
+                        if($size==0 && $unit=="b")$unit="";
+                        $size=round($size,2)." ".$unit;
+            
+                        $meta['size']=$size;
+                        $audio[]=$meta;
+                    }
+                    closedir($dh);
+                }
+            }
+        }
+        //file_put_contents($base_dir."/list_basictagging.json",json_encode($corpora));
+
+        
+        return $audio;    
+    
+    }
+    
+    public function getAudioCurrent($uname){
+				$data=$this->getAudio();
+				
+				$current=-1;
+				$base= "audio/${uname}_";
+				foreach($data as $d){
+						if(startsWith($d['fname'],$base)){
+						    $num=substr($d['fname'],strlen($base));
+						    $num=substr($num,0,strrpos($num,"."));
+						    $num=intval($num);
+						    if($num>$current)$current=$num;
+						}
+				}
+				
+				return ($current+1);
+		}
+		
+		public function getAudioData_CSVFile($fpath,$fdata,$sentNum,$totalInit){
+				$total=$totalInit;
+				$sent="";
+    
+		    $fp=fopen($fpath,"r");
+		    if($fp===false)return ["total"=>$totalInit, "sent"=>""];
+		    
+		    $lnum=-1;
+		    while(!feof($fp)){
+		        $line=fgetcsv($fp,0,$fdata['delimiter'],$fdata['enclosure'],$fdata['escape']);
+		        if($line===false)break;
+		        
+		        $lnum++;
+		        if($lnum<intval($fdata['ignore_rows']))continue;
+		        
+		        if($line[0]===null)continue;
+		        
+		        if(strlen($fdata['comment'])>0 && startsWith($line[0],$fdata['comment']))continue;
+		
+						// add individual columns
+            foreach(explode(",",$fdata['columns']) as $col){
+                  $text=$line[intval($col)];
+                  if(strlen($text)>0){
+											$total++;
+											if($sentNum==$total-1)$sent=$text;
+									}
+						}
+		        
+		    }
+		    
+		    fclose($fp);
+		    
+		    return ["total"=>$total,"sent"=>$sent]; 
+		}
+		
+		public function getAudioData($sentNum){
+		
+				$total=0;
+				$sent="";
+				
+        foreach($this->getFiles() as $fdata){
+            if($fdata['type']=='csv'){
+            		$rdata=$this->getAudioData_CSVFile(
+                    $this->getFolderPath()."/files/".$fdata['name'],
+                    $fdata,
+                    $sentNum,
+                    $total
+                );
+                
+                $total=$rdata['total'];
+								if(strlen($rdata['sent'])>0)$sent=$rdata['sent'];
+            }else if($fdata['type']=='text'){
+            		$total++;
+            		if($sentNum===$total-1){
+										$sent=file_get_contents($corpus->getFolderPath()."/files/".$fdata['name']);
+								}
+            }
+        }
+        
+        return ["total"=>$total, "sent"=>$sent] ;
+		}
+
     private function mergeStatistics($fname,&$stat){
         $newStat=json_decode(file_get_contents($fname),true);
         foreach($newStat as $k=>$v){

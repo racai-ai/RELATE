@@ -41,13 +41,19 @@ if(startsWith($fname,"marcell-out/")){
     $fname=substr($fname,strlen("marcell-out/"));
 }
 
+$audio=false;
+if(startsWith($fname,"audio/")){
+    $audio=true;
+    $fname=substr($fname,strlen("audio/"));
+}
+
 $zip_bt=false;
 if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $zip_bt=true;
     $fname=substr($fname,strlen("zip_$DirectoryAnnotated/"));
 }
 
-if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out){
+if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$audio){
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -81,6 +87,12 @@ if($basicTagging){
 }else if($marcell_out){
         $dir=$corpus->getFolderPath();
         $dir.="/marcell-out";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+
+}else if($audio){
+        $dir=$corpus->getFolderPath();
+        $dir.="/audio";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
 

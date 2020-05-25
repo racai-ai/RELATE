@@ -19,6 +19,7 @@
                         <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,8,'basictagging');">Annotated</button>
                         <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,8,'statistics');">Statistics</button>
                         <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,8,'archives');">Archives</button>
+                        <button type="button" id="bOutput7"  class="btn cur-p btn-secondary" onclick="showOutput(7,8,'audio');">Audio</button>
                         </div>
                         <div style="margin-top:10px; height:calc(100% - 40px);">
                         <div id="output1">
@@ -218,6 +219,10 @@
                         </div>
 
                         <div style="display:none" id="output7">
+                        				<div style="margin:0 0 20px 30px">
+                        				<button type="button" id="bRecorder" class="btn cur-p btn-danger" onclick="recorderClick();">Recorder</button>
+                                </div>
+                                <div id="gridAudio" style="margin:auto;"></div>
                         </div>
 
                         <div style="display:none" id="output8">
@@ -247,7 +252,7 @@
                       </div>
                     
                     </div>
-                    
+
                     <div style="display:none" id="fileViewerCSV">
                     
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerCSV();">Back</button>
@@ -266,6 +271,43 @@
                     
                     </div>
                     
+                    <div style="display:none" id="recorderView">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeRecorder();">Back</button>
+                      Recording as: [<div id="divRecorderName" style="display:inline">{{RECORDER_NAME}}</div>]
+                      <div class="mT-30">
+
+													<div id="recorderSentence" style="font-weight:bold; color:navy; font-size:30px; text-align:center"></div>
+													
+													<div>&nbsp;</div>
+													
+													<div id="divRecorderControls" style="text-align:center">
+															<button type="button" id="bStartRecorder" class="btn cur-p btn-danger" style="width:100px; text-align:center" onclick="startRecorder();">START</button>
+															<div id="divRecording" style="display:none; font-color:red; width:100px;">Recording ...</div>
+															<button type="button" id="bStopRecorder" class="btn cur-p btn-danger" onclick="stopRecorder();">STOP</button>
+													</div>
+													
+													<div id="divRecorderDone" style="display:none">
+															Congratulations! You recorded everything!
+													</div>
+													
+													<div>&nbsp;</div>
+
+													<div style="text-align:center">
+															Sentence <div id="recorderCurrent" style="display:inline"></div> / <div id="recorderTotal" style="display:inline"></div>
+													</div>
+													
+													<div>
+													<br/><br/><br/><br/>
+													<ul>
+															<li>This app was tested on the Chrome Browser</li>
+															<li>For better results use headphones with mic for recording</li>
+															<li>If not using headphones, <b>TURN OFF YOUR COMPUTER SPEAKERS</b></li>
+													</ul>
+													</div>
+                      
+                      </div>
+                    
+                    </div>
 
                   </div>
                 </div>

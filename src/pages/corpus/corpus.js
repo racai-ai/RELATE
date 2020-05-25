@@ -25,6 +25,7 @@ function sizeSort(rowData1,rowData2,dataIndx){
 }
 
 var corpus_lang="{{CORPUS_LANG}}";
+var recorder_name="{{RECORDER_NAME}}";
 
 function loadData(data,func,error){
     loadDataComplete("index.php","POST",data,func,error);
@@ -57,7 +58,9 @@ function loadDataComplete(url,method,data,func,error){
       
     xhttp.open(method, url, true);
     if(data!==undefined && data!==null){
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		if(!(data instanceof FormData)){
+        		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        }
         xhttp.send(data);
     }else{
         xhttp.send();
@@ -226,8 +229,227 @@ var $gridTasks=false;
 var $gridBasicTagging=false;
 var $gridStatistics=false;
 var $gridArchives=false;
+var $gridAudio=false;
 
 var previousHash="";
+
+
+function recorderClick(){
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:block;");
+
+		if(recorder_name==="" || recorder_name===false || recorder_name===undefined || recorder_name===null || recorder_name.trim()===""){
+				recorder_name=window.prompt("Name used for recorded files:\n\n(Please keep it short, only letters and numbers are allowed)\n","");
+				if(recorder_name==="" || recorder_name===false || recorder_name===undefined || recorder_name===null || recorder_name.trim()===""){
+			    setAttribute("output","style","display:block;");
+			    setAttribute("loading","style","display:none;");
+					return ;
+				}						
+				recorder_name=recorder_name.trim();
+				
+			 loadData("path=platform/set_profile_values&k0=recorder_name&v0="+recorder_name,function(data){
+			 			console.log(data);
+			 			data=JSON.parse(data);
+			 			if(data["status"]==="OK"){
+			 					document.getElementById("divRecorderName").innerText=recorder_name;
+						 		recorderShow();
+						 }else{
+			        alert("Error setting RecorderName");
+			        setAttribute("loading","style","display:none;");
+			        setAttribute("output","style","display:block;");
+						 
+						 }
+			    },function(){
+			        alert("Error setting RecorderName");
+			        setAttribute("loading","style","display:none;");
+			        setAttribute("output","style","display:block;");
+			    });
+			    
+			    return ;
+						
+		}
+
+		recorderShow();
+    
+}
+
+function recorderShow(){
+			 loadData("path=recorder/get_data&corpus={{CORPUS_NAME}}",function(data){
+			 			console.log(data);
+			 			data=JSON.parse(data);
+			 			if(data["status"]==="OK"){
+							    var h=window.location.hash;
+							    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+							    window.location.hash="#recorder:"+previousHash;
+							    
+							    document.getElementById("recorderSentence").innerText=data["sentence"];
+							    document.getElementById("recorderCurrent").innerText=data["current"];
+							    document.getElementById("recorderTotal").innerText=data["total"];
+							    
+									    if(data['current']>data['total']){
+									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
+									    		setAttribute("divRecorderControls","style","display:none;");
+											}else{
+									    		setAttribute("divRecorderDone","style","display:none;");
+									    		setAttribute("divRecorderControls","style","display:block; text-align:center");
+											}
+							    
+
+							    setAttribute("loading","style","display:none;");
+								document.getElementById("bStopRecorder").disabled = true;
+								document.getElementById("bStartRecorder").disabled = false;
+						    setAttribute("bStartRecorder","style","display:inline; width:100px; text-align:center");
+						    setAttribute("divRecording","style","display:none;");
+							    setAttribute("recorderView","style","display:block;");
+						 }else{
+			        alert("Error loading recorder data");
+			        setAttribute("loading","style","display:none;");
+			        setAttribute("output","style","display:block;");
+						 
+						 }
+			    },function(){
+			        alert("Error loading recorder data");
+			        setAttribute("loading","style","display:none;");
+			        setAttribute("output","style","display:block;");
+			    });
+
+}
+
+function closeRecorder(){
+    setAttribute("recorderView","style","display:none;");
+    setAttribute("output","style","display:block;");
+    window.location.hash=previousHash;
+}
+
+var recorderStream=false;
+var recorderWebAudioRecorder=false;
+
+function startRecorder(){
+
+		navigator.mediaDevices.getUserMedia({audio:true,video:false}).then(function(stream) {
+				console.log("getUserMedia() success, stream created, initializing WebAudioRecorder...");
+
+				document.getElementById("bStartRecorder").disabled = true;
+				
+
+			 //assign to gumStream for later use 
+			 recorderStream = stream;
+			 
+			 var AudioContext = window.AudioContext || window.webkitAudioContext;			 
+			 var audioContext = new AudioContext();
+			 /* use the stream */
+			 var input = audioContext.createMediaStreamSource(stream);
+			 //stop the input from playing back through the speakers 
+			 input.connect(audioContext.destination) //get the encoding 
+			 var recorder = new WebAudioRecorder(input, {
+			     workerDir: "extern/web_audio_recorder/",
+			     encoding: "wav",
+			     onEncoderLoading: function(recorder, encoding) {
+			         // show "loading encoder..." display 
+			         console.log("Loading " + encoding + " encoder...");
+			     },
+			     onEncoderLoaded: function(recorder, encoding) {
+			         // hide "loading encoder..." display
+			         console.log(encoding + " encoder loaded");
+			     }
+			 });
+			 
+				recorder.onComplete = function(recorder, blob) {
+				    console.log("Encoding complete");
+				    
+						var data = new FormData();
+						data.append('path', 'recorder/upload');
+						data.append('corpus','{{CORPUS_NAME}}');
+						data.append('blob', blob);				    
+				    loadData(data,function(d){
+				    		console.log("Uploaded");
+				    		console.log(d);
+				    		$gridAudio.pqGrid('refreshDataAndView');
+				    		try{
+						    		var data=JSON.parse(d);
+						    		if(data["status"]==="OK"){
+									    document.getElementById("recorderSentence").innerText=data["sentence"];
+									    document.getElementById("recorderCurrent").innerText=data["current"];
+									    document.getElementById("recorderTotal").innerText=data["total"];
+									    
+									    if(data['current']>data['total']){
+									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
+									    		setAttribute("divRecorderControls","style","display:none;");
+											}
+						    				
+										}else{
+												alert("Error uploading file");
+										}
+								}catch(err){
+										console.log(err);
+										alert("Error uploading file");
+								}
+
+								document.getElementById("bStartRecorder").disabled = false;
+						    setAttribute("bStartRecorder","style","display:inline; width:100px; text-align:center");
+						    setAttribute("divRecording","style","display:none;");
+								document.getElementById("bStopRecorder").disabled = true;
+
+						},function(){
+								console.log("Error uploading");
+
+								document.getElementById("bStartRecorder").disabled = false;
+						    setAttribute("bStartRecorder","style","display:inline; width:100px; text-align:center");
+						    setAttribute("divRecording","style","display:none;");
+								document.getElementById("bStopRecorder").disabled = true;
+
+						});
+						
+						
+				}	
+				
+				recorder.onError = function(recorder, err) {
+						console.log("Recorder error ");
+						console.log(err);
+				}
+				
+				
+				recorder.setOptions({
+						timeLimit: 60 * 60, // 1h
+						encodeAfterRecord: false,
+						wav: {
+						},
+						mp3: {
+							bitRate: 160
+						}
+				});
+				
+				recorderWebAudioRecorder=recorder;
+				
+				recorder.startRecording();	
+
+				document.getElementById("bStartRecorder").disabled = false;
+		    setAttribute("bStartRecorder","style","display:none");
+		    setAttribute("divRecording","style","display:inline; font-color:red; width:100px;");
+				document.getElementById("bStopRecorder").disabled = false;
+					 
+
+		}).catch(function(err) {
+		
+				console.log(err); 
+				alert("Can not capture audio!");
+
+				document.getElementById("bStartRecorder").disabled = false;
+		    setAttribute("bStartRecorder","style","display:inline; width:100px; text-align:center");
+		    setAttribute("divRecording","style","display:none;");
+				document.getElementById("bStopRecorder").disabled = true;
+
+		});
+
+}
+
+function stopRecorder(){
+		document.getElementById("bStopRecorder").disabled = true;
+		console.log("Stopping recorder ...");
+		recorderStream.getAudioTracks()[0].stop();
+		recorderWebAudioRecorder.finishRecording();
+}
+
 
 function closeFileViewerText(){
     setAttribute("fileViewerText","style","display:none;");
@@ -805,12 +1027,60 @@ function initGridArchives(){
         $gridArchives = $("#gridArchives").pqGrid(obj);
 }
 
+function initGridAudio(){
+        var toolbar = { };
+
+        var obj = {
+            width: "99%"
+            , height: 400
+            , resizable: true
+            , title: "Audio"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                window.location.href="index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+ui.rowData.fname;
+            }           
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "File", dataType: "string", dataIndx: "fname", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Size", dataType: "string", dataIndx: "size" }
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            //sortIndx: "name",
+            //sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/audio_get&corpus={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridAudio = $("#gridAudio").pqGrid(obj);
+}
+
 function showBasedOnHash(hash){
     if(hash=="standoff")showOutput(2,8);      
     else if(hash=="tasks")showOutput(3,8);      
     else if(hash=="basictagging")showOutput(4,8);      
     else if(hash=="statistics")showOutput(5,8);      
     else if(hash=="archives")showOutput(6,8);      
+    else if(hash=="audio")showOutput(7,8);      
     else if(hash.startsWith("fileviewertext")){
         var data=hash.split(":",3);
         var file=data[1];
@@ -825,6 +1095,12 @@ function showBasedOnHash(hash){
         window.location.hash="#"+from;
         showBasedOnHash(from);
         viewFileCSV(file);
+    }else if(hash.startsWith("recorder")){
+        var data=hash.split(":",3);
+        var from=data[1];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        recorderClick();
     }    
 }
 
@@ -835,6 +1111,7 @@ $(document).ready(function () {
     initGridBasicTagging(); 
     initGridStatistics(); 
     initGridArchives(); 
+    initGridAudio(); 
     
     var h = window.location.hash.substr(1);
     
