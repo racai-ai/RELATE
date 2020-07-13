@@ -1,6 +1,6 @@
 <?php
 
-function TEPROLIN_call($data,$process=false){
+function TEPROLIN_call($data,$process=false,$debug=false){
     global $TEPROLIN_baseurl,$TEPROLIN_baseurls;
 
     if(!isset($data['text']))return false;
@@ -21,7 +21,7 @@ function TEPROLIN_call($data,$process=false){
     }
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-    //curl_setopt($ch, CURLOPT_VERBOSE, 1); 
+    if($debug)curl_setopt($ch, CURLOPT_VERBOSE, 1); 
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     
@@ -33,10 +33,18 @@ function TEPROLIN_call($data,$process=false){
 
 }
 
-function TEPROLIN_getOperations(){
-    global $TEPROLIN_baseurl;
+function TEPROLIN_getOperations($process=false){
+    global $TEPROLIN_baseurl,$TEPROLIN_baseurls;
 
-    $arr=json_decode(file_get_contents("${TEPROLIN_baseurl}/operations"),true);
+    if($process===false){
+        $url="${TEPROLIN_baseurl}/operations";
+    }else{
+        if($process>=count($TEPROLIN_baseurls))$process=0;
+        $url=$TEPROLIN_baseurls[$process]."/operations";
+    }
+
+
+    $arr=json_decode(file_get_contents($url),true);
     return $arr['can-do'];
 }
 

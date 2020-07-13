@@ -30,6 +30,16 @@ class User {
         }
     }
     
+    public function initFromHeaders(){
+	$headers=getallheaders();
+	
+	if(!isset($headers['Username']) || !isset($headers['Password']))return false;
+	
+	$un=$headers['Username'];
+	$pass=$headers['Password'];
+	return $this->doLoginInternal($un,$pass);
+    }
+    
     public function isValidUsernameString($un){
         return strlen($un)>2 && preg_match("/[^a-z0-9@.-]/",$un)===0 && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;
     }
@@ -127,6 +137,11 @@ class User {
         $pass=$_REQUEST['password'];
         
         unset($_SESSION['username']);
+        
+        return $this->doLoginInternal($un,$pass);
+    }
+    
+    public function doLoginInternal($un,$pass){
         
         if(!$this->loadUser($un)){
             $this->clear();

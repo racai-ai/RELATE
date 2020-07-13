@@ -55,6 +55,7 @@ registerHandler("corpus/task_getallbycorpus","pages/corpus/task_getallbycorpus.p
 registerHandler("corpus/task_add","pages/corpus/task_add.php",true,["corpus"]);
 registerHandler("corpus/archives_get","pages/corpus/archives_get.php",true,["corpus"]);
 registerHandler("corpus/audio_get","pages/corpus/audio_get.php",true,["corpus"]);
+registerHandler("corpus/data/add","data/corpus/add_file.php",true,["corpus"]);
 
 registerHandler("recorder/get_data","data/recorder/get_data.php",true,["corpus"]);
 registerHandler("recorder/upload","data/recorder/upload.php",true,["corpus"]);

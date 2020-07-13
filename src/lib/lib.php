@@ -15,6 +15,7 @@ mb_regex_encoding("UTF-8");
 
 require_once "${LIB_PATH}/mb_additionals.php";
 require_once "${LIB_PATH}/string_utils.php";
+require_once "${LIB_PATH}/header_utils.php";
 require_once "${LIB_PATH}/msd2upos.php";
 require_once "${LIB_PATH}/msd2feats.php";
 require_once "${LIB_PATH}/string.format.number.php";
@@ -33,6 +34,7 @@ require_once "${LIB_PATH}/handlers.php";
 require_once "${LIB_PATH}/theme_utils.php";
 require_once "${LIB_PATH}/tilde.php";
 require_once "${LIB_PATH}/robin.php";
+require_once "${LIB_PATH}/sentencesplit.php";
 
 require_once "${LIB_PATH}/corpus.php";
 require_once "${LIB_PATH}/corpora.php";

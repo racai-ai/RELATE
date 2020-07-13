@@ -1,6 +1,6 @@
 <?php
 
-function IATE_EUROVOC_Annotate($conllu,$process=false){
+function IATE_EUROVOC_Annotate($conllu,$process=false,$debug=false){
    global $IATE_EUROVOC_Server_URL, $IATE_EUROVOC_Server_URLS;
    $ch = curl_init();
    set_time_limit(0);
@@ -17,7 +17,7 @@ function IATE_EUROVOC_Annotate($conllu,$process=false){
     }
    
    curl_setopt($ch, CURLOPT_POST, 1);
-   //curl_setopt($ch, CURLOPT_VERBOSE, 1);
+   if($debug)curl_setopt($ch, CURLOPT_VERBOSE, 1);
    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
        'Content-Type: text/text',
        'Content-Length: ' . strlen($conllu))

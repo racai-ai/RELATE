@@ -12,11 +12,6 @@ $TEPROLIN_baseurls=[
   "http://dev.racai.ro:5012",
   "http://dev.racai.ro:5013",
   "http://dev.racai.ro:5014",
-  "http://dev.racai.ro:5015",
-  "http://dev.racai.ro:5016",
-  "http://dev.racai.ro:5017",
-  "http://dev.racai.ro:5018",
-  "http://dev.racai.ro:5019"
 ];
 
 $IATE_EUROVOC_Server_URL="http://127.0.0.1:9001";
@@ -34,5 +29,13 @@ $IATE_EUROVOC_Server_URLS=[
   "http://127.0.0.1:9009",
   "http://127.0.0.1:9010",
 ];
+
+$SSPLIT_baseurl="http://127.0.0.1:9021";
+
+$SSPLIT_baseurls=[
+  "http://127.0.0.1:9021", // called with PROCESS+1
+  "http://127.0.0.1:9021",
+];
+
 
 $DirectoryAnnotated="basic_tagging";
