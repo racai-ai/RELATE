@@ -40,7 +40,7 @@ function runUnzip($fnameIn,$pathOut){
                 ]));
                 
             }
-        }else if(endsWith(strtolower($file),".conllu") || endsWith(strtolower($file)".conllup")){
+        }else if(endsWith(strtolower($file),".conllu") || endsWith(strtolower($file),".conllup")){
             @rename($pathFile,$pathAnnotated);
         }else{
             @rename($pathFile,$pathStandoff);
