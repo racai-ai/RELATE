@@ -92,6 +92,9 @@ function runTask($data){
     if($taskDesc['type']=='unzip_text'){
        runUnzip($data['fpath'],$corpus->getFolderPath()."/files");
        return ;
+    }else if($taskDesc['type']=='unzip_annotated'){
+       runUnzipAnnotated($data['fpath'],$corpus->getFolderPath()."/".$DirectoryAnnotated);
+       return ;
     }else if($taskDesc['type']=='zip_text'){
        runZip($corpus->getFolderPath()."/files",$corpus->getFolderPath()."/zip_text",$taskDesc['fname']);
        return ;

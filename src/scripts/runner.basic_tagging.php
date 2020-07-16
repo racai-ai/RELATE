@@ -14,7 +14,7 @@ function runBasicTaggingText_internal($text,$fout){
     $path=$corpus->getFolderPath()."/$DirectoryAnnotated/";
     $finalFile=$path.$fout;
     if(is_file($finalFile)){
-        if(isset($taskDesc['overwrite']) && $taskDesc['overwrite']===false){
+        if(filesize($finalFile)>0 && isset($taskDesc['overwrite']) && $taskDesc['overwrite']===false){
             echo "SKIP $fout\n";
             return false;
         }

@@ -70,6 +70,7 @@ class Corpus {
     }
     
     public function addUploadedFile($file,$data){
+        global $DirectoryAnnotated;
         if($this->data===null || empty($this->data))return false;
         
         if(!$this->isValidName($this->data['name']))return false;
@@ -81,6 +82,8 @@ class Corpus {
         $dir_meta=$dir; 
         if($data['type']=="zip_text")$dir.="/zip_text";
         else if($data['type']=="standoff")$dir.="/standoff";
+        else if($data['type']=="annotated")$dir.="/".$DirectoryAnnotated;
+        else if($data['type']=="zip_annotated")$dir.="/zip_".$DirectoryAnnotated;
         else $dir.="/files";
         @mkdir($dir);
         $dir_meta.="/meta";
@@ -88,7 +91,7 @@ class Corpus {
         
         $dpath=$dir."/".$data['name'];
         if(is_file($dpath)){
-            if($data['type']=="zip_text")
+            if($data['type']=="zip_text" || $data['type']=="zip_annotated")
                 @unlink($dpath);
             else
                 return false;
@@ -100,6 +103,8 @@ class Corpus {
             file_put_contents($dir_meta."/".$data['name'].".meta",json_encode($data));
 
             file_put_contents($base_dir."/changed_files.json",json_encode(["changed"=>time()]));
+        }else if($data['type']=="annotated"){
+            file_put_contents($base_dir."/changed_annotated.json",json_encode(["changed"=>time()]));
         }
 
         if($data['type']=="zip_text"){
@@ -116,7 +121,20 @@ class Corpus {
             
             if($tasks->addTask($tdata)===false)return false;
         
-        }
+        }else if($data['type']=="zip_annotated"){
+            $tasks=new Task($this);
+            global $user;
+            $tdata=[
+                'corpus' => $data['corpus'],
+                'type' => "unzip_annotated",
+                'fname' => $data['name'],
+                'desc' => "Unzip ANNOTATED files from ".$data['name'],
+                'created_by'=>$user->getUsername(),
+                'created_date'=>strftime("%Y-%m-%d %H:%M:%S"),
+            ];
+            
+            if($tasks->addTask($tdata)===false)return false;
+	}
 
         return true;        
     }

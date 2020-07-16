@@ -1,7 +1,7 @@
 <?php
 
 function runUnzip($fnameIn,$pathOut){
-    global $runnerFolder,$corpus,$settings,$taskDesc;
+    global $runnerFolder,$corpus,$settings,$taskDesc, $DirectoryAnnotated;
     
     @mkdir($pathOut);    
 
@@ -15,6 +15,10 @@ function runUnzip($fnameIn,$pathOut){
     $dir_standoff.="/standoff";
     @mkdir($dir_standoff);
 
+    $dir_annotated=$corpus->getFolderPath();
+    $dir_annotated.="/".$DirectoryAnnotated;
+    @mkdir($dir_annotated);
+
     $dh = opendir($pathOut);
     while (($file = readdir($dh)) !== false) {
         $pathFile=$pathOut."/".$file;
@@ -22,6 +26,7 @@ function runUnzip($fnameIn,$pathOut){
         
         $pathMeta=$dir_meta."/".$file;
         $pathStandoff=$dir_standoff."/".$file;
+        $pathAnnotated=$dir_annotated."/".$file;
         
         if(endsWith(strtolower($file),".txt")){
             if(!is_file($pathMeta)){
@@ -35,6 +40,8 @@ function runUnzip($fnameIn,$pathOut){
                 ]));
                 
             }
+        }else if(endsWith(strtolower($file),".conllu") || endsWith(strtolower($file)".conllup")){
+            @rename($pathFile,$pathAnnotated);
         }else{
             @rename($pathFile,$pathStandoff);
         }
@@ -43,5 +50,16 @@ function runUnzip($fnameIn,$pathOut){
         
     file_put_contents($corpus->getFolderPath()."/changed_files.json",json_encode(["changed"=>time()]));            
     file_put_contents($corpus->getFolderPath()."/changed_standoff.json",json_encode(["changed"=>time()]));            
+    file_put_contents($corpus->getFolderPath()."/changed_annotated.json",json_encode(["changed"=>time()]));            
     
+}
+
+function runUnzipAnnotated($fnameIn,$pathOut){
+    global $runnerFolder,$corpus,$settings,$taskDesc;
+    
+    @mkdir($pathOut);    
+
+    passthru("unzip -j -o ".escapeshellarg($fnameIn)." -d ".escapeshellarg($pathOut));
+   
+    file_put_contents($corpus->getFolderPath()."/changed_annotated.json",json_encode(["changed"=>time()]));            
 }
