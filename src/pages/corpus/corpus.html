@@ -113,6 +113,19 @@
                                 </form>
                                 </div>                                      
 
+                                <div id="popup-dialog-crud-task-udpipe" style="display:none;">
+                                <form id="crud-form-task-udpipe" method="POST" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/task_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="udpipe">
+                                    <table align="center"><tbody>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        <tr><td>Runners (optional):</td><td><input type="text" size="50" name="runners" id="runners"/></td></tr>
+                                        <tr><td>Overwrite:</td><td><input type="checkbox" name="overwrite" id="overwrite" value="1"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
                                 <div id="popup-dialog-crud-task-chunk" style="display:none;">
                                 <form id="crud-form-task-chunk" method="POST" action="index.php">
                                     <input type="hidden" name="path" value="corpus/task_add">

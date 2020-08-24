@@ -14,6 +14,11 @@ $TEPROLIN_baseurls=[
   "http://dev.racai.ro:5014",
 ];
 
+$UDPIPE_baseurls=[
+	"en" => [ "http://127.0.0.1:8101" ],
+	"ro" => [ "http://127.0.0.1:8102" ]
+];
+
 $IATE_EUROVOC_Server_URL="http://127.0.0.1:9001";
 
 $IATE_EUROVOC_Server_URLS=[

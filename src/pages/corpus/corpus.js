@@ -790,6 +790,11 @@ function initGridTasks(){
             autoOpen: false
         });
 
+          $("#popup-dialog-crud-task-udpipe").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
+            autoOpen: false
+        });
+
           $("#popup-dialog-crud-task-chunk").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
             autoOpen: false

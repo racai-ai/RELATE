@@ -2,6 +2,7 @@
 
 require_once "../lib/lib.php";
 require_once "runner.basic_tagging.php";
+require_once "runner.udpipe.php";
 require_once "ro/basic_tagging.php";
 require_once "en/basic_tagging.php";
 require_once "tag_rules.php";
@@ -134,6 +135,8 @@ function runTask($data){
                   $text=$line[intval($col)];
                   if($taskDesc['type']=='basic_tagging'){
                       runBasicTaggingText($text,"${current['line']}_${col}_$fnameOut");
+                  }else if($taskDesc['type']=='udpipe'){
+                      runUdpipe($text,"${current['line']}_${col}_$fnameOut");
                   }else if($taskDesc['type']=='statistics'){
                       runStatistics($text,"${current['line']}_${col}_$fnameOut",$data['ftype'],false);
                   }
@@ -168,6 +171,8 @@ function runTask($data){
     }else if($data['ftype']=='text'){
         if($taskDesc['type']=='basic_tagging'){
             runBasicTaggingText(file_get_contents($data['fpath']),$fnameOut);
+        }else if($taskDesc['type']=='udpipe'){
+            runUdpipe(file_get_contents($data['fpath']),$fnameOut);
         }else if($taskDesc['type']=='statistics'){
             runStatistics(false,$fnameOut,$data['ftype'],$data['fpath']);
         }        
