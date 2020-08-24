@@ -14,8 +14,8 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
     curl_setopt($ch, CURLOPT_TIMEOUT_MS, 600 * 1000); //timeout in seconds
     curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
     if($process===false)$process=0;
-    if($process>=count($TEPROLIN_baseurls[$lang]))$process=0;
-    curl_setopt($ch, CURLOPT_URL,$TEPROLIN_baseurls[$lang][$process]."/process");
+    if($process>=count($UDPIPE_baseurls[$lang]))$process=0;
+    curl_setopt($ch, CURLOPT_URL,$UDPIPE_baseurls[$lang][$process]."/process");
     curl_setopt($ch, CURLOPT_POST, 1);
     $data=["data"=>$text,"tokenizer"=>"","tagger"=>"","parser"=>""];
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
