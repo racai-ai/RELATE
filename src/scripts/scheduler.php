@@ -55,6 +55,8 @@ foreach($corpora->getList() as $c){
         
         if($tdata['type']=='basic_tagging'){
             scheduleFilesFolder($corpus,$task_name,$c['name']);
+        }else if($tdata['type']=='udpipe'){
+            scheduleFilesFolder($corpus,$task_name,$c['name']);
         }else if($tdata['type']=='chunking'){
             scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
         }else if($tdata['type']=='cleanup'){
