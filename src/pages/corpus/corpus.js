@@ -195,6 +195,7 @@ function gridAddTask(htmlId,title){
 }
 
 function gridAddTaskBasic(){ gridAddTask("basic","Add Basic Tagging task"); }
+function gridAddTaskUdpipe(){ gridAddTask("udpipe","Add UDPIPE task"); }
 function gridAddTaskChunking(){ gridAddTask("chunk","Add Chunking task"); }
 function gridAddTaskStatistics(){ gridAddTask("stat","Add Statistics task"); }
 function gridAddTaskCreateZIPTXT(){ gridAddTask("createziptxt","Add task for ZIP TEXT creation"); }
@@ -726,6 +727,7 @@ function initGridStandoff(){
 function initGridTasks(){
         var toolbar = { items: [
                 { type: 'button', label: 'ANNOTATION', listeners: [{ click: gridAddTaskBasic}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'UDPIPE', listeners: [{ click: gridAddTaskUdpipe}], icon: 'ui-icon-plus' },
                // { type: 'button', label: 'Add CHUNKING', listeners: [{ click: gridAddTaskChunking}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'IATE/EUROVOC', listeners: [{ click: gridAddTaskIateEurovoc}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'CLEANUP', listeners: [{ click: gridAddTaskCleanup}], icon: 'ui-icon-plus' },
