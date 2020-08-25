@@ -39,6 +39,10 @@ if(!$corpus->loadData())addError("Invalid corpus");
 $data['created_by']=$user->getUsername();
 $data['created_date']=strftime("%Y-%m-%d");
 
+if($data['type']=='csv'){
+		$data['delimiter']=str_replace('\t',"\t",$data['delimiter']);
+}
+
 if($corpus->addUploadedFile($_FILES['file']['tmp_name'],$data)===false)addError("Error adding file");
 
 if($data['type']=="zip_text")
