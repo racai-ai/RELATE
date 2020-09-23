@@ -21,6 +21,7 @@ require_once "${LIB_PATH}/msd2feats.php";
 require_once "${LIB_PATH}/string.format.number.php";
 require_once "${LIB_PATH}/wav.php";
 require_once "${LIB_PATH}/files.php";
+require_once "${LIB_PATH}/modules.php";
 
 require_once "${LIB_PATH}/config.php";
 

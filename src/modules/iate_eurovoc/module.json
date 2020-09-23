@@ -1,0 +1,9 @@
+{
+
+"languages":["ro"],
+
+"tasks":[
+    {"name":"IATE/EuroVoc","type":"iate_eurovoc"}
+]
+
+}

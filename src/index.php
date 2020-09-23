@@ -11,6 +11,9 @@ require_once "menu.php";
 $settings=new Settings();
 $settings->load();
 
+$modules=new Modules();
+$modules->load();
+
 session_start();
 
 $user=new User();

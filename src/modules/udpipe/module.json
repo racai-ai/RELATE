@@ -1,0 +1,9 @@
+{
+
+"languages":["ro","en"],
+
+"tasks":[
+    {"name":"UDPipe","type":"udpipe"}
+]
+
+}

@@ -1,0 +1,9 @@
+{
+
+"languages":["*"],
+
+"tasks":[
+    {"name":"Statistics","type":"statistics"}
+]
+
+}

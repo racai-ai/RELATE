@@ -726,6 +726,7 @@ function initGridStandoff(){
 
 function initGridTasks(){
         var toolbar = { items: [
+                {{TASKS-BUTTONS}}
                 { type: 'button', label: 'ANNOTATION', listeners: [{ click: gridAddTaskBasic}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'UDPIPE', listeners: [{ click: gridAddTaskUdpipe}], icon: 'ui-icon-plus' },
                // { type: 'button', label: 'Add CHUNKING', listeners: [{ click: gridAddTaskChunking}], icon: 'ui-icon-plus' },
@@ -786,6 +787,8 @@ function initGridTasks(){
         };
         
         $gridTasks = $("#gridTasks").pqGrid(obj);
+
+        {{TASKS-INIT}}
 
           $("#popup-dialog-crud-task-basic").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#gridTasks" }); },
