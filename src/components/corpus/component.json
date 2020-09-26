@@ -1,0 +1,41 @@
+{
+"order":70,
+
+"menu":[
+      {
+        "label":"Corpora",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "rights":["corpus"],
+        "menu":[
+            {"label":"List", "path":"corpus/list","rights":["corpus"]}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"corpus/list","script":"pages/list.php","rights":["corpus"]},
+		{"path":"corpus/list_get","script":"pages/list_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/list_add","script":"pages/list_add.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/corpus","script":"pages/corpus.php","rights":["corpus"]},
+		{"path":"corpus/files_get","script":"pages/files_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/files_getbasictagging","script":"pages/files_getbasictagging.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/files_getstandoff","script":"pages/files_getstandoff.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/stats_get","script":"pages/stats_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/files_add","script":"pages/files_add.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/csv_view","script":"pages/csv_view.php","rights":["corpus"]},
+		{"path":"corpus/file_view","script":"pages/file_view.php","rights":["corpus"]},
+		{"path":"corpus/csv_get","script":"pages/csv_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_getdownload","script":"pages/file_getdownload.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/task_getallbycorpus","script":"pages/task_getallbycorpus.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/task_add","script":"pages/task_add.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/archives_get","script":"pages/archives_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/audio_get","script":"pages/audio_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/data/add","script":"data/add_file.php","data":true,"rights":["corpus"]},
+
+		{"path":"recorder/get_data","script":"data/recorder/get_data.php","data":true,"rights":["corpus"]},
+		{"path":"recorder/upload","script":"data/recorder/upload.php","data":true,"rights":["corpus"]}
+
+]
+
+}

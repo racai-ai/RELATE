@@ -1,9 +1,0 @@
-{
-
-"languages":["*"],
-
-"tasks":[
-    {"name":"ZIP Text","type":"zip_text"}
-]
-
-}

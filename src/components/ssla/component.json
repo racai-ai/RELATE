@@ -1,0 +1,12 @@
+{
+"order":10000,
+
+"menu":[
+],
+
+"handlers":[
+		{"path":"ssla/synthesize","script":"pages/synthesize.html","data":true}
+
+]
+
+}

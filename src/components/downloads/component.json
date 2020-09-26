@@ -1,0 +1,21 @@
+{
+"order":60,
+
+"menu":[
+      {
+        "label":"Downloads",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "rights":["user"],
+        "menu":[
+            {"label":"Internal", "path":"downloads/private","rights":["user"]}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"downloads/private","script":"pages/private.php","rights":["user"]},
+		{"path":"downloads/data","script":"pages/data.php","data":true}
+]
+
+}

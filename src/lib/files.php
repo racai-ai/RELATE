@@ -33,6 +33,16 @@ function renameFile($path1,$path2){
 
 }
 
+function createCorpusFolder($corpus,$path){
+		createFolder($corpus->getFolderPath()."/$path");
+}
+function clearCorpusFolder($corpus,$path){
+		clearFolder($corpus->getFolderPath()."/$path");
+}
+function storeCorpusFile($corpus,$path,$content,$flags=0){
+		storeFile($corpus->getFolderPath()."/$path",$content,$flags);
+}
+
 
 function createFolder($path){
     $newFile=false;

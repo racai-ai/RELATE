@@ -11,6 +11,8 @@ class Corpus {
         $this->corpora = $corpora;
     }
     
+    public function getName(){return $this->name;}
+    
     public function clear(){ $this->data=[]; }
 
     public function isValidName($name=false){
@@ -30,6 +32,16 @@ class Corpus {
         $this->data['name']=$this->name;
         return true;
     }
+    
+    public function getLang(){
+    		if(isset($this->data['lang']))return $this->data['lang'];
+    		return false;
+		}
+		
+		public function hasAudio(){
+				if(!isset($this->data['audio']))return false;
+				return $this->data['audio'];
+		}
     
     public function getFolderPath($create=false){
         if(!$this->isValidName($this->name))return false;

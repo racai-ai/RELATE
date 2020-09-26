@@ -1,0 +1,17 @@
+{
+
+"order":10,
+
+"languages":["en"],
+
+"tasks":[
+    {
+				"name":"CoreNLP",
+				"type":"corenlp",
+				"description":"Perform annotation using the Stanford CoreNLP package",
+				"scheduler":"scheduler.php:Modules\\corenlp\\schedule",
+				"runner":"runner.php:Modules\\corenlp\\runner"
+		}
+]
+
+}

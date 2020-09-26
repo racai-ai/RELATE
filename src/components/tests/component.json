@@ -1,0 +1,21 @@
+{
+"order":1000,
+
+"menu":[
+      {
+        "label":"MY",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "rights":["pvf"],
+        "menu":[
+            {"label":"Authors Format", "path":"my/authors","rights":["pvf"]}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"my/authors","script":"pages/my/authors.php","rights":["pvf"]}
+
+]
+
+}

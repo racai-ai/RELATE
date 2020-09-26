@@ -1,9 +1,17 @@
 {
 
+"order":50,
+
 "languages":["*"],
 
 "tasks":[
-    {"name":"Statistics","type":"statistics"}
+    {
+				"name":"Statistics",
+				"type":"statistics",
+				"description":"Compute statistics based on both raw and annotated text",
+				"scheduler":"scheduler.php:Modules\\statistics\\schedule",
+				"runner":"runner.php:Modules\\statistics\\runner"
+		}
 ]
 
 }

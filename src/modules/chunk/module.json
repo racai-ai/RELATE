@@ -1,0 +1,17 @@
+{
+
+"enabled":false,
+
+"languages":["en"],
+
+"tasks":[
+		{
+				"name":"Chunking",
+				"type":"chunking",
+				"description":"Identify NP",
+				"scheduler":"scheduler.php:Modules\\chunk\\schedule",
+				"runner":"runner.php:Modules\\chunk\\runner"
+		}
+]
+
+}

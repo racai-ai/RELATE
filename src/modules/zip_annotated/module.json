@@ -1,9 +1,0 @@
-{
-
-"languages":["*"],
-
-"tasks":[
-    {"name":"ZIP Annotated","type":"zip_basic_tagging"}
-]
-
-}

@@ -1,9 +1,17 @@
 {
 
+"order":20,
+
 "languages":["ro","en"],
 
 "tasks":[
-    {"name":"UDPipe","type":"udpipe"}
+    {
+				"name":"UDPipe",
+				"type":"udpipe",
+				"description":"Perform annotation using UDPipe",
+				"scheduler":"scheduler.php:Modules\\udpipe\\schedule",
+				"runner":"runner.php:Modules\\udpipe\\runner"
+		}
 ]
 
 }

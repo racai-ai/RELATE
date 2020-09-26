@@ -1,0 +1,16 @@
+{
+"order":10000,
+
+"menu":[
+],
+
+"handlers":[
+		{"path":"platform/login","script":"pages/login.php"},
+		{"path":"platform/register","script":"pages/register.php"},
+		{"path":"platform/logout","script":"pages/logout.php"},
+		{"path":"platform/change_password","script":"pages/change_password.php"},
+		{"path":"platform/set_profile_values","script":"data/set_profile_values.php","data":true,"rights":["user"]}
+
+]
+
+}
