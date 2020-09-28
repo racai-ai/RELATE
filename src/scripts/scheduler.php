@@ -101,7 +101,7 @@ function scheduleFilesFolder($corpus,$task_name){
 }
 
 
-function scheduleFolder($corpus, $folder,$task_name,$ftype){
+function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false){
 
 		$folder_path=$corpus->getFolderPath()."/".$folder;
     $dh = opendir($folder_path);
@@ -110,6 +110,8 @@ function scheduleFolder($corpus, $folder,$task_name,$ftype){
     while (($file = readdir($dh)) !== false) {
         $fpath="$folder_path/$file";
         if(!is_file($fpath))continue;
+        
+        if($ext!==false && !endsWith($fpath,$ext))continue;
         
         scheduleFile($corpus,"$folder/$file",$task_name,$ftype);
     }

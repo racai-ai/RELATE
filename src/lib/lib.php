@@ -25,6 +25,7 @@ require_once "${LIB_PATH}/modules.php";
 require_once "${LIB_PATH}/components.php";
 require_once "${LIB_PATH}/runner.php";
 require_once "${LIB_PATH}/brat_ann.php";
+require_once "${LIB_PATH}/brat2conllu.php";
 
 require_once "${LIB_PATH}/conllup.php";
 require_once "${LIB_PATH}/ConllupSentence.php";

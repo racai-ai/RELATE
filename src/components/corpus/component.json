@@ -36,6 +36,7 @@
 		{"path":"corpus/data/add","script":"data/add_file.php","data":true,"rights":["corpus"]},
 
 		{"path":"corpus/brat_ajax","script":"data/brat_ajax.php", "data":true, "rights":["corpus"]},
+		{"path":"corpus/savegold","script":"data/savegold.php", "data":true, "rights":["corpus"]},
 
 		{"path":"recorder/get_data","script":"data/recorder/get_data.php","data":true,"rights":["corpus"]},
 		{"path":"recorder/upload","script":"data/recorder/upload.php","data":true,"rights":["corpus"]}

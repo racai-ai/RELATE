@@ -488,13 +488,23 @@ function closeFileViewerText(){
     window.location.hash=previousHash;
 }
 
-function viewFileText(file){
+function closeFileViewerBRAT(){
+    setAttribute("fileViewerBrat","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
+function viewFileText(file,showBrat=false){
     currentFileView=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerTextDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
     setAttribute("fileViewerTextBrat","onclick","closeFileViewerText();viewFileBrat('"+file+"');");
 
+    if(!showBrat)setAttribute("fileViewerTextBrat","style","display:none;");
+		else setAttribute("fileViewerTextBrat","style","{{hidebratbutton}}"); 
+		
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
     window.location.hash="#fileviewertext:"+file+":"+previousHash;
@@ -512,11 +522,35 @@ function viewFileText(file){
     
 }
 
+function changeFileExtension(file,ext){
+		var p=file.lastIndexOf(".");
+		if(p==-1)return file+"."+ext;
+		return file.substring(0,p+1)+ext;
+}
+
+function saveToGold(corpus,file){
+    setAttribute("fileViewerBrat","style","display:none; ");
+    setAttribute("loading","style","display:block;");
+    
+    loadData("path=corpus/savegold&corpus={{CORPUS_NAME}}&file="+file,function(data){
+    		alert(data);
+        setAttribute("loading","style","display:none;");
+    		setAttribute("fileViewerBrat","style","display:block; height:100%;");
+    },function(){
+        alert("Error saving to GOLD");
+        setAttribute("loading","style","display:none;");
+    		setAttribute("fileViewerBrat","style","display:block; height:100%;");
+    });
+    
+}
+
 function viewFileBrat(file){
     currentFileView=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerBratDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+    setAttribute("fileViewerBratDownloadAnn","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file=standoff/"+changeFileExtension(file,"ann")+"';");
+    setAttribute("fileViewerBratSaveGold","onclick","saveToGold('{{CORPUS_NAME}}','"+file+"');");
 
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
@@ -660,7 +694,7 @@ function initGridFiles(){
                     viewFileCSV(ui.rowData.name);
                     //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
                 }else{
-                    viewFileText(ui.rowData.name);
+                    viewFileText(ui.rowData.name,true);
                     //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
                 }
             }            
@@ -1214,15 +1248,16 @@ function showBasedOnHash(hash){
     else if(hash=="statistics")showOutput(5,9);      
     else if(hash=="archives")showOutput(6,9);      
     else if(hash=="audio" && hasAudio)showOutput(7,9);      
-    else if(hash=="goldann" && hasGold)showOutput(8,9);      
-    else if(hash=="goldstandoff" && hasGold)showOutput(9,9);      
+    else if(hash=="goldann" && hasGold)showOutput(9,9);      
+    else if(hash=="goldstandoff" && hasGold)showOutput(8,9);      
     else if(hash.startsWith("fileviewertext")){
         var data=hash.split(":",3);
         var file=data[1];
         var from=data[2];
         window.location.hash="#"+from;
         showBasedOnHash(from);
-        viewFileText(file);
+        var vbrat=false; if(from=="files")vbrat=true;
+        viewFileText(file,vbrat);
     }else if(hash.startsWith("fileviewercsv")){
         var data=hash.split(":",3);
         var file=data[1];
@@ -1230,6 +1265,13 @@ function showBasedOnHash(hash){
         window.location.hash="#"+from;
         showBasedOnHash(from);
         viewFileCSV(file);
+    }else if(hash.startsWith("fileviewerbrat")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        viewFileBrat(file);
     }else if(hash.startsWith("recorder")){
         var data=hash.split(":",3);
         var from=data[1];

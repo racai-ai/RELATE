@@ -4,7 +4,21 @@ namespace Modules\ner_baseline;
 
 $NER_DATA=false;
 
-function init(){
+function loadResource($fname){
+		global $NER_DATA;
+        foreach(explode("\n",file_get_contents($fname)) as $line){
+            $line=trim($line);
+            if(empty($line) || $line[0]=='#')continue;
+            
+            $line=explode(" ",$line,2);
+            if(count($line)!=2)continue;
+            
+            $NER_DATA[$line[1]]=$line[0];
+            
+        }
+}
+
+function init($corpus){
     global $NER_DATA;
     
     $path=dirname(__FILE__);
@@ -21,22 +35,16 @@ function init(){
     for($i=0;$i<20;$i++){
         $fname="$path/ner_gazette.$i.txt";
         if(!is_file($fname))break;
-        foreach(explode("\n",file_get_contents($fname)) as $line){
-            $line=trim($line);
-            if(empty($line) || $line[0]=='#')continue;
-            
-            $line=explode(" ",$line,2);
-            if(count($line)!=2)continue;
-            
-            $NER_DATA[$line[1]]=$line[0];
-            
-        }
-    }    
+        loadResource($fname);
+    }                       
+    
+    $path=$corpus->getFolderPath()."/gold_standoff/ne.gazetteer";
+    if(is_file($path))loadResource($path);
 }
 
-function runBaseline($fcontent,$fpathOut){
+function runBaseline($fcontent,$fpathOut,$corpus){
     global $NER_DATA;
-    if($NER_DATA===false || $NER_DATA===null)init();
+    if($NER_DATA===false || $NER_DATA===null)init($corpus);
 
     
     $conllup=new \CONLLUP();
@@ -112,7 +120,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 */    
     @mkdir($path);    
     
-    runBaseline($contentIn,$finalFile);
+    runBaseline($contentIn,$finalFile,$corpus);
     
     file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            
 }

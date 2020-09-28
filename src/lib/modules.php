@@ -79,9 +79,11 @@ class Modules {
 												if(!isset($add['default']))$add['default']="";
 												$ret.="<tr><td>${add['description']}</td><td><input type=\"text\" size=\"50\" name=\"${add['name']}\" id=\"${add['name']}\" placeholder=\"${add['default']}\"/></td></tr>\n";
 										}
-								}      
+								}  
+								$valueRunners="";
+								if(isset($task['defaultRunners']))$valueRunners=$task['defaultRunners'];    
                 $ret.="                <tr><td>Description:</td><td><textarea name=\"desc\" rows=\"4\" cols=\"50\"></textarea></td></tr>\n".
-                      "                <tr><td>Runners (optional):</td><td><input type=\"text\" size=\"50\" name=\"runners\" id=\"runners\"/></td></tr>\n".
+                      "                <tr><td>Runners (optional):</td><td><input type=\"text\" size=\"50\" name=\"runners\" id=\"runners\" value=\"$valueRunners\"/></td></tr>\n".
                       "                <tr><td>Overwrite:</td><td><input type=\"checkbox\" name=\"overwrite\" id=\"overwrite\" value=\"1\"/></td></tr>\n".
                       "            </tbody></table>\n".
                       "        </form>\n".

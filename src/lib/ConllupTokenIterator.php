@@ -17,7 +17,7 @@ class CONLLUPTokenIterator implements Iterator {
     }
     
     public function findCurrent(){
-        for($line=$this->conllup->getLine($this->pos);$line['type']!=='data' && $this->pos<=$this->to;$this->pos++,$line=$this->conllup->getLine($this->pos));
+        for($line=$this->conllup->getLine($this->pos);$line!==false && $line['type']!=='data' && $this->pos<=$this->to;$this->pos++,$line=$this->conllup->getLine($this->pos));
         if($this->pos<=$this->to){
             $this->current=new CONLLUPToken($this->conllup,$this->pos);
         }

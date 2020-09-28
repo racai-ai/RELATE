@@ -7,7 +7,32 @@ header('Content-Type: application/json');
 if($a=="getCollectionInformation"){
 //$_REQUEST['collection']
 echo <<<EOT
-{"protocol": 1, "description": null, "parent": "_2002", "disambiguator_config": [], "header": [["Document", "string"], ["Modified", "time"], ["Entities", "int"], ["Relations", "int"], ["Events", "int"]], "entity_attribute_types": [], "event_types": [], "ui_names": {"entities": "entities", "events": "events", "relations": "relations", "attributes": "attributes"}, "action": "getCollectionInformation", "normalization_config": [], "items": [["c", null, ".."], ["d", null, "ned.train-doc-123", 1588771383.6057746, 38, 0, 0], ["d", null, "ned.train-doc-46", 1544454293.5455127, 34, 0, 0], ["d", null, "123", 1599210842.9890997, 3, 0, 0], ["d", null, "ned.train-doc-251", 1570642700.4768713, 24, 0, 0], ["d", null, "ned.train-doc-118", 1590637143.2979867, 47, 0, 0], ["d", null, "ned.train-doc-75", 1558703339.1213546, 17, 0, 0], ["d", null, "ned.train-doc-181", 1596835940.9163423, 106, 0, 0], ["d", null, "www", 1590637779.57792, 1, 0, 0], ["d", null, "longs", 1461109792.1669352, 2, 0, 0], ["d", null, "ned.train-doc-134", 1579417408.0313458, 31, 0, 0], ["d", null, "ned.train-doc-236", 1521605676.9869406, 27, 0, 0], ["d", null, "ned.train-doc-27", 1452371778.0, 23, 0, 0], ["d", null, "ned.train-doc-184", 1352355357.0, 29, 0, 0]], "unconfigured_types": [{"borderColor": "darken", "name": "SPAN_DEFAULT", "labels": null, "unused": true, "bgColor": "lightgreen", "type": "SPAN_DEFAULT", "fgColor": "black"}], "messages": [], "event_attribute_types": [], "annotation_logging": false, "search_config": [], "ner_taggers": [], "relation_types": [], "entity_types": [{"borderColor": "darken", "normalizations": [], "name": "ORG", "labels": null, "children": [], "unused": false, "bgColor": "#8fb2ff", "attributes": [], "type": "ORG", "fgColor": "black"}, {"borderColor": "darken", "normalizations": [], "name": "PER", "labels": null, "children": [], "unused": false, "bgColor": "#ffccaa", "attributes": [], "type": "PER", "fgColor": "black"}, {"borderColor": "darken", "normalizations": [], "name": "LOC", "labels": null, "children": [], "unused": false, "bgColor": "lightgreen", "attributes": [], "type": "LOC", "fgColor": "black"}, {"borderColor": "darken", "normalizations": [], "name": "MISC", "labels": null, "children": [], "unused": false, "bgColor": "#f1f447", "attributes": [], "type": "MISC", "fgColor": "black"}], "relation_attribute_types": []}
+{"protocol": 1, 
+"description": null, 
+"parent": "_2002", 
+"disambiguator_config": [], 
+"header": [["Document", "string"], ["Modified", "time"], ["Entities", "int"], ["Relations", "int"], ["Events", "int"]], 
+"entity_attribute_types": [], 
+"event_types": [], 
+"ui_names": {"entities": "entities", "events": "events", "relations": "relations", "attributes": "attributes"}, 
+"action": "getCollectionInformation", 
+"normalization_config": [], 
+"items": [
+		["d", null, "ned.train-doc-123", 1588771383.6057746, 38, 0, 0] 
+], 
+"unconfigured_types": [{"borderColor": "darken", "name": "SPAN_DEFAULT", "labels": null, "unused": true, "bgColor": "lightgreen", "type": "SPAN_DEFAULT", "fgColor": "black"}], 
+"messages": [], 
+"event_attribute_types": [], 
+"annotation_logging": false, 
+"search_config": [], 
+"ner_taggers": [], 
+"relation_types": [], 
+"entity_types": [
+	{"borderColor": "darken", "normalizations": [], "name": "ORG", "labels": null, "children": [], "unused": false, "bgColor": "#8fb2ff", "attributes": [], "type": "ORG", "fgColor": "black"}, 
+	{"borderColor": "darken", "normalizations": [], "name": "PER", "labels": null, "children": [], "unused": false, "bgColor": "#ffccaa", "attributes": [], "type": "PER", "fgColor": "black"}, 
+	{"borderColor": "darken", "normalizations": [], "name": "LOC", "labels": null, "children": [], "unused": false, "bgColor": "lightgreen", "attributes": [], "type": "LOC", "fgColor": "black"}, 
+	{"borderColor": "darken", "normalizations": [], "name": "TIME", "labels": null, "children": [], "unused": false, "bgColor": "#f1f447", "attributes": [], "type": "TIME", "fgColor": "black"}
+], "relation_attribute_types": []}
 EOT;
 die();
 }
@@ -151,6 +176,7 @@ if($a=="createSpan"){
 //attributes
 //normalizations
     $cdata=loadData();
+    if(isset($_REQUEST['id']))$cdata['ann']->deleteById($_REQUEST['id']);
     $newid=$cdata['ann']->addAnnotation($_REQUEST['type'],json_decode($_REQUEST['offsets']),$cdata['text']); 
     $cdata['ann']->save();
     echo json_encode([

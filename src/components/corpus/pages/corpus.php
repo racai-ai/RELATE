@@ -46,6 +46,7 @@ function getPageJS(){
     $hasAudio="false"; if($corpus->hasAudio())$hasAudio="true";
     $hasGold="false"; if($corpus->hasGoldAnnotations())$hasGold="true";
     $hasBrat="false"; if($corpus->hasBratProfiles())$hasBrat="true";
+    $hidebratbutton=""; if(!$corpus->hasBratProfiles())$hidebratbutton="display:none";
 
     $js=file_get_contents(realpath(dirname(__FILE__))."/corpus.js");
     $js=str_replace("{{TASKS-BUTTONS}}",$modules->getTaskButtons($corpus),$js);
@@ -57,6 +58,7 @@ function getPageJS(){
     $js=str_replace("{{HAS_AUDIO}}",$hasAudio,$js);
     $js=str_replace("{{HAS_GOLD}}",$hasGold,$js);
     $js=str_replace("{{HAS_BRAT}}",$hasBrat,$js);
+    $js=str_replace("{{hidebratbutton}}",$hidebratbutton,$js);
 
     return $js;
 }

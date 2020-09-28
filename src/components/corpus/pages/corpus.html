@@ -20,8 +20,8 @@
                         <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,9,'statistics');">Statistics</button>
                         <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,9,'archives');">Archives</button>
                         <button type="button" id="bOutput7"  class="btn cur-p btn-secondary" onclick="showOutput(7,9,'audio');" style="{{hideaudiobutton}}">Audio</button>
-                        <button type="button" id="bOutput8"  class="btn cur-p btn-secondary" onclick="showOutput(8,9,'goldann');" style="{{hidegoldbutton}}">Gold Annotation</button>
-                        <button type="button" id="bOutput9"  class="btn cur-p btn-secondary" onclick="showOutput(9,9,'goldstandoff');" style="{{hidegoldbutton}}">Gold Standoff</button>
+                        <button type="button" id="bOutput8"  class="btn cur-p btn-secondary" onclick="showOutput(8,9,'goldstandoff');" style="{{hidegoldbutton}}">Gold Standoff</button>
+                        <button type="button" id="bOutput9"  class="btn cur-p btn-secondary" onclick="showOutput(9,9,'goldann');" style="{{hidegoldbutton}}">Gold Annotated</button>
                         </div>
                         <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
                         <div id="output1">
@@ -124,28 +124,8 @@
                                 <div id="gridAudio" style="margin:auto;"></div>
                         </div>
 
-                        <!-- Gold Annotations -->
-                        <div style="display:none" id="output8">
-                                <div id="gridGoldAnn" style="margin:auto;"></div>
-
-                                <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
-                                
-                                <div id="popup-dialog-crud-goldann" style="display:none;">
-                                <form id="crud-form-goldann" method="POST" enctype="multipart/form-data" action="index.php">
-                                    <input type="hidden" name="path" value="corpus/files_add">
-                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
-                                    <input type="hidden" name="type" value="goldann">
-                                    <input type="hidden" name="desc" value="">
-                                    <table align="center"><tbody>
-                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
-                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
-                                    </tbody></table>
-                                </form>
-                                </div>                                      
-                        </div>
-                        
                         <!-- Gold Standoff -->
-                        <div style="display:none" id="output9">
+                        <div style="display:none" id="output8">
                                 <div id="gridGoldStandoff" style="margin:auto;"></div>
 
                                 <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
@@ -164,8 +144,27 @@
                                 </div>                                      
 
                         </div>
-                        
 
+                        <!-- Gold Annotations -->
+                        <div style="display:none" id="output9">
+                                <div id="gridGoldAnn" style="margin:auto;"></div>
+
+                                <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
+                                
+                                <div id="popup-dialog-crud-goldann" style="display:none;">
+                                <form id="crud-form-goldann" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="goldann">
+                                    <input type="hidden" name="desc" value="">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                        </div>
+                        
                         </div> <!-- End Output Area -->
                         
                         <div id="popupIFrameDiv" style="display:none; background-color:white;">
@@ -211,6 +210,10 @@
 
                     <!-- BRAT VIEWER -->                    
                     <div style="display:none" id="fileViewerBrat">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerBRAT();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratDownload" onclick="">Download</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratDownloadAnn" onclick="">Download ANN</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratSaveGold" onclick="">Save To GOLD</button>
                          <iframe style="width:100%; height:100%; border:0" id="bratIframe" name="bratIframe"></iframe>
                          <div style="display:none">
                             <form method="post" target="bratIframe" action="index.php" id="bratForm">

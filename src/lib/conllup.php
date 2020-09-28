@@ -36,12 +36,19 @@ class CONLLUP {
     }
     
     public function getNumLines(){return count($this->data);}
-    public function getLine($i){return $this->data[$i];}
+    public function getLine($i){
+				if($i>=count($this->data))return false;
+				return $this->data[$i];
+		}
     
     public function getSentenceIterator(){
         return new CONLLUPSentenceIterator($this);
     }
     
+    public function getTokenIterator(){
+        return new CONLLUPTokenIterator($this,0,count($this->data));
+    }
+
     public function getTokenData($i,$col){
         if(!isset($this->columnId[$col]))return false;
         if($i>=count($this->data) || $this->data[$i]['type']!=='data')return false;

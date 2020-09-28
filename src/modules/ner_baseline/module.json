@@ -8,7 +8,7 @@
 		{
 				"name":"NER Baseline",
 				"type":"ner_baseline",
-				"description":"Run NER baseline system, using gazetter resources",
+				"description":"Run NER baseline system, using gazetter resources. Will use ne.gazetteer from Gold Standoff metadata folder if present. This can be produced by the Gold NE List task once gold annotations are present. At the end of the annotation task, if you want to use BRAT, please run the CONLLU2BRAT task.",
 				"scheduler":"scheduler.php:Modules\\ner_baseline\\schedule",
 				"runner":"runner.php:Modules\\ner_baseline\\runner"
 		}

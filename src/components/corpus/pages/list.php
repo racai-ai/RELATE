@@ -7,8 +7,13 @@ function getPageContent(){
     $loading=file_get_contents(realpath(dirname(__FILE__))."/teprolin_common_loading.html");
 
 		$langs="";
-		foreach($modules->getLanguages() as $lang=>$t){
-				$langs.="<option value=\"${lang}\">${lang}</option>\n";
+		$languages=array_keys($modules->getLanguages());
+		sort($languages);
+		
+		foreach($languages as $lang){
+				$sel="";
+				if(strcasecmp($lang,"ro")==0)$sel="selected=\"true\"";
+				$langs.="<option value=\"${lang}\" $sel>${lang}</option>\n";
 		}
 
     $html=str_replace("{{loading}}",$loading,$html);
