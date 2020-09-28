@@ -27,6 +27,7 @@ function sizeSort(rowData1,rowData2,dataIndx){
 var corpus_lang="{{CORPUS_LANG}}";
 var recorder_name="{{RECORDER_NAME}}";
 var hasAudio={{HAS_AUDIO}};
+var hasGold={{HAS_GOLD}};
 
 function loadData(data,func,error){
     loadDataComplete("index.php","POST",data,func,error);
@@ -154,6 +155,42 @@ function gridAddStandoff(){
             });
             $("#popup-dialog-crud-standoff").dialog("open");
 } 
+
+
+function gridAddGoldStandoff(){
+
+            var $frm = $("form#crud-form-goldstandoff");
+            //$frm.find("input").val("");
+
+            $("#popup-dialog-crud-goldstandoff").dialog({ title: "Add Gold Standoff Metadata File", buttons: {
+                Add: function () {
+                    $frm.submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+            });
+            $("#popup-dialog-crud-goldstandoff").dialog("open");
+} 
+
+function gridAddGoldAnn(){
+
+            var $frm = $("form#crud-form-goldann");
+            //$frm.find("input").val("");
+
+            $("#popup-dialog-crud-goldann").dialog({ title: "Add Gold Annotation File", buttons: {
+                Add: function () {
+                    $frm.submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+            });
+            $("#popup-dialog-crud-goldann").dialog("open");
+} 
+
 
 
 function gridAddZIPTXT(){
@@ -456,6 +493,7 @@ function viewFileText(file){
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerTextDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+    setAttribute("fileViewerTextBrat","onclick","closeFileViewerText();viewFileBrat('"+file+"');");
 
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
@@ -473,6 +511,25 @@ function viewFileText(file){
     });
     
 }
+
+function viewFileBrat(file){
+    currentFileView=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:block;");
+    setAttribute("fileViewerBratDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewerbrat:"+file+":"+previousHash;
+
+    document.getElementById('bratForm').action="brat/index.xhtml#/{{CORPUS_NAME}}/"+file;  
+    document.getElementById('bratForm').submit(); 
+    
+    setAttribute("loading","style","display:none;");
+    setAttribute("fileViewerBrat","style","display:block; height:100%;");
+    
+}
+
 
 var $fileViewerCSVgrid=false;
 var currentFileView="";
@@ -714,6 +771,135 @@ function initGridStandoff(){
         });
 }
 
+function initGridGoldAnn(){
+    if(!hasGold)return ;
+        var toolbar = { items: [
+                { type: 'button', label: 'Add Gold Annotation file', listeners: [{ click: gridAddGoldAnn}], icon: 'ui-icon-plus' },
+            ]
+        };        
+
+        var obj = {
+            width: "99%"
+            , height: 400
+            , resizable: true
+            , title: "Gold Annotation files list"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                if(ui.rowData.type=="csv"){
+                    viewFileCSV("goldann/"+ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }else{
+                    viewFileText("goldann/"+ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }
+            }            
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+            { title: "Type", dataType: "string", dataIndx: "type" },
+            { title: "Description", dataType: "string", dataIndx: "desc" },
+            { title: "User", dataType: "string", dataIndx: "created_by" },
+            { title: "Creation Date", dataType: "string", dataIndx: "created_date" }
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            sortIndx: "name",
+            sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/files_getgoldann&name={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridGoldAnn = $("#gridGoldAnn").pqGrid(obj);
+
+          $("#popup-dialog-crud-goldann").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#grid" }); },
+            autoOpen: false
+        });
+}
+
+function initGridGoldStandoff(){
+    if(!hasGold)return ;
+        var toolbar = { items: [
+                { type: 'button', label: 'Add Gold Standoff Metadata file', listeners: [{ click: gridAddGoldStandoff}], icon: 'ui-icon-plus' },
+            ]
+        };        
+
+        var obj = {
+            width: "99%"
+            , height: 400
+            , resizable: true
+            , title: "Gold Standoff Metadata files list"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                if(ui.rowData.type=="csv"){
+                    viewFileCSV("goldstandoff/"+ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }else{
+                    viewFileText("goldstandoff/"+ui.rowData.name);
+                    //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }
+            }            
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
+            { title: "Type", dataType: "string", dataIndx: "type" },
+            { title: "Description", dataType: "string", dataIndx: "desc" },
+            { title: "User", dataType: "string", dataIndx: "created_by" },
+            { title: "Creation Date", dataType: "string", dataIndx: "created_date" }
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            sortIndx: "name",
+            sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/files_getgoldstandoff&name={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridGoldStandoff = $("#gridGoldStandoff").pqGrid(obj);
+
+          $("#popup-dialog-crud-goldstandoff").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#grid" }); },
+            autoOpen: false
+        });
+}
 
 
 function initGridTasks(){
@@ -1022,12 +1208,14 @@ function initGridAudio(){
 }
 
 function showBasedOnHash(hash){
-    if(hash=="standoff")showOutput(2,8);      
-    else if(hash=="tasks")showOutput(3,8);      
-    else if(hash=="basictagging")showOutput(4,8);      
-    else if(hash=="statistics")showOutput(5,8);      
-    else if(hash=="archives")showOutput(6,8);      
-    else if(hash=="audio" && hasAudio)showOutput(7,8);      
+    if(hash=="standoff")showOutput(2,9);      
+    else if(hash=="tasks")showOutput(3,9);      
+    else if(hash=="basictagging")showOutput(4,9);      
+    else if(hash=="statistics")showOutput(5,9);      
+    else if(hash=="archives")showOutput(6,9);      
+    else if(hash=="audio" && hasAudio)showOutput(7,9);      
+    else if(hash=="goldann" && hasGold)showOutput(8,9);      
+    else if(hash=="goldstandoff" && hasGold)showOutput(9,9);      
     else if(hash.startsWith("fileviewertext")){
         var data=hash.split(":",3);
         var file=data[1];
@@ -1059,6 +1247,8 @@ $(document).ready(function () {
     initGridStatistics(); 
     initGridArchives(); 
     initGridAudio(); 
+    initGridGoldAnn(); 
+    initGridGoldStandoff(); 
     
     var h = window.location.hash.substr(1);
     

@@ -49,6 +49,10 @@ if($data['type']=="zip_text")
     header("Location: index.php?path=corpus/corpus&name=".$data['corpus']."#tasks");
 else if($data['type']=="standoff")
     header("Location: index.php?path=corpus/corpus&name=".$data['corpus']."#standoff");
+else if($data['type']=="goldann")
+    header("Location: index.php?path=corpus/corpus&name=".$data['corpus']."#goldann");
+else if($data['type']=="goldstandoff")
+    header("Location: index.php?path=corpus/corpus&name=".$data['corpus']."#goldstandoff");
 else
     header("Location: index.php?path=corpus/corpus&name=".$data['corpus']);
 die();

@@ -13,6 +13,8 @@ function getPageContent(){
     $loading=file_get_contents(realpath(dirname(__FILE__))."/corpus_common_loading.html");
     
     $hideaudiobutton=""; if(!$corpus->hasAudio())$hideaudiobutton="display:none";
+    $hidegoldbutton=""; if(!$corpus->hasGoldAnnotations())$hidegoldbutton="display:none";
+    $hidebratbutton=""; if(!$corpus->hasBratProfiles())$hidebratbutton="display:none";
     
     $modules_task_dialog=$modules->getTaskDialog($corpus);
     $html=str_replace("{{TASK-DIALOG}}",$modules_task_dialog,$html);
@@ -23,6 +25,8 @@ function getPageContent(){
     $html=str_replace("{{RECORDER_NAME}}",$user->getProfileHTML("recorder_name",""),$html);
     $html=str_replace("{{LOADING}}",$loading,$html);
     $html=str_replace("{{hideaudiobutton}}",$hideaudiobutton,$html);
+    $html=str_replace("{{hidegoldbutton}}",$hidegoldbutton,$html);
+    $html=str_replace("{{hidebratbutton}}",$hidebratbutton,$html);
     
     return $html;
 }
@@ -40,6 +44,8 @@ function getPageJS(){
     if(!$corpus->loadData())die("Invalid corpus");
     
     $hasAudio="false"; if($corpus->hasAudio())$hasAudio="true";
+    $hasGold="false"; if($corpus->hasGoldAnnotations())$hasGold="true";
+    $hasBrat="false"; if($corpus->hasBratProfiles())$hasBrat="true";
 
     $js=file_get_contents(realpath(dirname(__FILE__))."/corpus.js");
     $js=str_replace("{{TASKS-BUTTONS}}",$modules->getTaskButtons($corpus),$js);
@@ -49,6 +55,8 @@ function getPageJS(){
     $js=str_replace("{{CORPUS_LANG}}",$corpus->getData("lang",""),$js);
     $js=str_replace("{{RECORDER_NAME}}",$user->getProfileJS("recorder_name",""),$js);
     $js=str_replace("{{HAS_AUDIO}}",$hasAudio,$js);
+    $js=str_replace("{{HAS_GOLD}}",$hasGold,$js);
+    $js=str_replace("{{HAS_BRAT}}",$hasBrat,$js);
 
     return $js;
 }

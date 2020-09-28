@@ -26,7 +26,7 @@ var Ajax = (function($, window, undefined) {
         }
 
         $.ajax({
-          url: 'ajax.cgi',
+          url: '../index.php?path=corpus/brat_ajax',
           data: data,
           type: 'POST',
           success: function(response) {

@@ -1,0 +1,5 @@
+ORG Autoritatea Electorală Permanentă
+ORG Partidul Național Liberal
+ORG Partidului Național Liberal
+ORG Filiala Diaspora
+ORG MONITORUL OFICIAL

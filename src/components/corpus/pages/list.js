@@ -15,7 +15,9 @@ function gridAdd(){
                         name:$frm.find("input[name='name']").val(),
                         lang:$frm.find("select[name='lang']").val(),
                         desc:$frm.find("textarea[name='desc']").val(),
-                        hasaudio:$frm.find("input[name='hasaudio']").is(":checked")?("yes"):("no")
+                        hasaudio:$frm.find("input[name='hasaudio']").is(":checked")?("yes"):("no"),
+                        hasgold:$frm.find("input[name='hasgold']").is(":checked")?("yes"):("no"),
+                        hasbrat:$frm.find("input[name='hasbrat']").is(":checked")?("yes"):("no"),
                     };
                     
                     var dia=$(this);
@@ -105,7 +107,7 @@ $(document).ready(function () {
         
         $grid = $("#grid").pqGrid(obj);
 
-          $("#popup-dialog-crud").dialog({ width: 500, modal: true,
+          $("#popup-dialog-crud").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });

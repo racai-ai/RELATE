@@ -13,15 +13,17 @@
 
                     <div style="display:block" id="output">
                         <div style="height: 40px;">
-                        <button type="button" id="bOutput1" class="btn cur-p btn-success" onclick="showOutput(1,8,'files');">Files</button>
-                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,8,'standoff');">Standoff</button>
-                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,8,'tasks');">Tasks</button>
-                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,8,'basictagging');">Annotated</button>
-                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,8,'statistics');">Statistics</button>
-                        <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,8,'archives');">Archives</button>
-                        <button type="button" id="bOutput7"  class="btn cur-p btn-secondary" onclick="showOutput(7,8,'audio');" style="{{hideaudiobutton}}">Audio</button>
+                        <button type="button" id="bOutput1"  class="btn cur-p btn-success"   onclick="showOutput(1,9,'files');">Files</button>
+                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,9,'standoff');">Standoff</button>
+                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,9,'tasks');">Tasks</button>
+                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,9,'basictagging');">Annotated</button>
+                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,9,'statistics');">Statistics</button>
+                        <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,9,'archives');">Archives</button>
+                        <button type="button" id="bOutput7"  class="btn cur-p btn-secondary" onclick="showOutput(7,9,'audio');" style="{{hideaudiobutton}}">Audio</button>
+                        <button type="button" id="bOutput8"  class="btn cur-p btn-secondary" onclick="showOutput(8,9,'goldann');" style="{{hidegoldbutton}}">Gold Annotation</button>
+                        <button type="button" id="bOutput9"  class="btn cur-p btn-secondary" onclick="showOutput(9,9,'goldstandoff');" style="{{hidegoldbutton}}">Gold Standoff</button>
                         </div>
-                        <div style="margin-top:10px; height:calc(100% - 40px);">
+                        <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
                         <div id="output1">
                                 <div id="grid" style="margin:auto;"></div>
                                 
@@ -92,11 +94,8 @@
                                     </tbody></table>
                                 </form>
                                 </div>                                      
-
                         </div>
 
-
-                        
                         <div style="display:none" id="output3">
                                 <div id="gridTasks" style="margin:auto;"></div>
                                 
@@ -125,10 +124,49 @@
                                 <div id="gridAudio" style="margin:auto;"></div>
                         </div>
 
+                        <!-- Gold Annotations -->
                         <div style="display:none" id="output8">
+                                <div id="gridGoldAnn" style="margin:auto;"></div>
+
+                                <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
+                                
+                                <div id="popup-dialog-crud-goldann" style="display:none;">
+                                <form id="crud-form-goldann" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="goldann">
+                                    <input type="hidden" name="desc" value="">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
                         </div>
+                        
+                        <!-- Gold Standoff -->
+                        <div style="display:none" id="output9">
+                                <div id="gridGoldStandoff" style="margin:auto;"></div>
+
+                                <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
+                                
+                                <div id="popup-dialog-crud-goldstandoff" style="display:none;">
+                                <form id="crud-form-goldstandoff" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="goldstandoff">
+                                    <input type="hidden" name="desc" value="">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
 
                         </div>
+                        
+
+                        </div> <!-- End Output Area -->
                         
                         <div id="popupIFrameDiv" style="display:none; background-color:white;">
                             <div style="background-color:white;"><button type="button"  class="btn cur-p btn-secondary" onclick="hidePopupIFrame();">Back</button></div>
@@ -138,21 +176,21 @@
                     </div>                    
 <!-- AICI SE TERMINA ZONA DE BUTOANE -->
 
+                    <!-- TEXT FILE VIEW -->
                     <div style="display:none" id="fileViewerText">
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerText();">Back</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextDownload" onclick="">Download</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextBrat" onclick="" style="{{hidebratbutton}}">BRAT</button>
                       
                       <div class="mT-30">
-                      
                         <div id="inputFileViewerText">                  
-    
                             <textarea id="textFileViewerText" cols="140" style="font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
-                        
                         </div>
                       </div>
                     
                     </div>
 
+                    <!-- CSV VIEW -->
                     <div style="display:none" id="fileViewerCSV">
                     
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerCSV();">Back</button>
@@ -170,7 +208,19 @@
                       </div>                    
                     
                     </div>
+
+                    <!-- BRAT VIEWER -->                    
+                    <div style="display:none" id="fileViewerBrat">
+                         <iframe style="width:100%; height:100%; border:0" id="bratIframe" name="bratIframe"></iframe>
+                         <div style="display:none">
+                            <form method="post" target="bratIframe" action="index.php" id="bratForm">
+                                <input type="hidden" name="path" value="corpus/brat"/>
+                            </form>
+                         </div>
+                    </div>
+
                     
+                    <!-- AUDIO RECORDER -->
                     <div style="display:none" id="recorderView">
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeRecorder();">Back</button>
                       Recording as: [<div id="divRecorderName" style="display:inline">{{RECORDER_NAME}}</div>]

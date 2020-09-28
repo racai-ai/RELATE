@@ -1,0 +1,17 @@
+{
+
+"order":41,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"NER Baseline",
+				"type":"ner_baseline",
+				"description":"Run NER baseline system, using gazetter resources",
+				"scheduler":"scheduler.php:Modules\\ner_baseline\\schedule",
+				"runner":"runner.php:Modules\\ner_baseline\\runner"
+		}
+]
+
+}

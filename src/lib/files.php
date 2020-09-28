@@ -69,5 +69,10 @@ function clearFolder($folder){
     return true;
 }
 
+function changeFileExtension($fname,$newExt){
+    $pos=strrpos($fname,".");
+    if($pos===false)return "${fname}.${newExt}";
+    return substr($fname,0,$pos).".".$newExt;
+}
 
 ?>

@@ -4,7 +4,7 @@ function getPageContent(){
 		global $modules;
 		
     $html=file_get_contents(realpath(dirname(__FILE__))."/list.html");
-    $loading=file_get_contents(realpath(dirname(__FILE__))."/../teprolin/teprolin_common_loading.html");
+    $loading=file_get_contents(realpath(dirname(__FILE__))."/teprolin_common_loading.html");
 
 		$langs="";
 		foreach($modules->getLanguages() as $lang=>$t){
