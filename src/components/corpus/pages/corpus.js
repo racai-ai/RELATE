@@ -210,6 +210,40 @@ function gridAddZIPTXT(){
             $("#popup-dialog-crud-ziptext").dialog("open");
 } 
 
+function gridAddZIPAnnotated(){
+
+            var $frm = $("form#crud-form-zipannotated");
+            //$frm.find("input").val("");
+
+            $("#popup-dialog-crud-zipannotated").dialog({ title: "Add File ZIP with Annotated documents", buttons: {
+                Add: function () {
+                    $frm.submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+            });
+            $("#popup-dialog-crud-zipannotated").dialog("open");
+} 
+
+function gridAddAnnotated(){
+
+            var $frm = $("form#crud-form-addannotated");
+            //$frm.find("input").val("");
+
+            $("#popup-dialog-crud-addannotated").dialog({ title: "Add Annotated File", buttons: {
+                Add: function () {
+                    $frm.submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+            });
+            $("#popup-dialog-crud-addannotated").dialog("open");
+} 
+
 function gridEdit(){
 }
 
@@ -992,7 +1026,10 @@ function initGridTasks(){
 }
 
 function initGridBasicTagging(){
-        var toolbar = { };
+        var toolbar = { items:[
+                { type: 'button', label: 'Add ZIP Annotated', listeners: [{ click: gridAddZIPAnnotated}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Add Annotated File', listeners: [{ click: gridAddAnnotated}], icon: 'ui-icon-plus' },
+         ]};
 
         var obj = {
             width: "99%"
@@ -1038,6 +1075,16 @@ function initGridBasicTagging(){
         };
         
         $gridBasicTagging = $("#gridBasicTagging").pqGrid(obj);
+        
+          $("#popup-dialog-crud-zipannotated").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#grid" }); },
+            autoOpen: false
+        });
+          $("#popup-dialog-crud-addannotated").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#grid" }); },
+            autoOpen: false
+        });
+        
 }
 
 function downloadStats(){

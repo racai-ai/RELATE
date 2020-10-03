@@ -24,6 +24,8 @@
                         <button type="button" id="bOutput9"  class="btn cur-p btn-secondary" onclick="showOutput(9,9,'goldann');" style="{{hidegoldbutton}}">Gold Annotated</button>
                         </div>
                         <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
+                        
+                        <!-- Files -->
                         <div id="output1">
                                 <div id="grid" style="margin:auto;"></div>
                                 
@@ -77,6 +79,7 @@
 
                         </div>
 
+                        <!-- Standoff -->
                         <div style="display:none" id="output2">
                                 <div id="gridStandoff" style="margin:auto;"></div>
 
@@ -96,6 +99,7 @@
                                 </div>                                      
                         </div>
 
+                        <!-- Tasks -->
                         <div style="display:none" id="output3">
                                 <div id="gridTasks" style="margin:auto;"></div>
                                 
@@ -103,10 +107,38 @@
                                 
                         </div>
                         
+                        <!-- Annotated -->
                         <div style="display:none" id="output4">
                                 <div id="gridBasicTagging" style="margin:auto;"></div>
                                 <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
                                 
+                                <div id="popup-dialog-crud-zipannotated" style="display:none;">
+                                <p>Upload a zip file with annotated data (CONLLUP format).</p>
+                                <form id="crud-form-zipannotated" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="zip_annotated">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                                
+                                <div id="popup-dialog-crud-addannotated" style="display:none;">
+                                <p>Upload an annotated file (CONLLUP format).</p>
+                                <form id="crud-form-addannotated" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="annotated">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
                         </div>
                         
                         <div style="display:none" id="output5">

@@ -86,5 +86,8 @@ function runnerUnzipText($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$f
        runUnzip($data['fpath'],$corpus->getFolderPath()."/files",$settings,$corpus,$taskDesc);
 }
 
+function runnerUnzipAnnotated($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+       runUnzip($data['fpath'],$corpus->getFolderPath()."/".$settings->get("dir.annotated"),$settings,$corpus,$taskDesc);
+}
 
 ?>

@@ -13,7 +13,7 @@
 				],
 				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipText",
 				"runner":"runner.php:Modules\\zip\\runnerZipText"
-		},
+	},
 
     {
 				"name":"ZIP Annotated",
@@ -23,7 +23,7 @@
 				],
 				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipAnnotated",
 				"runner":"runner.php:Modules\\zip\\runnerZipAnnotated"
-		},
+	},
 		
     {
 				"name":"UNZIP Text",
@@ -34,8 +34,18 @@
 				"hidden":true,
 				"scheduler":"scheduler.php:Modules\\zip\\scheduleUnzipText",
 				"runner":"runner.php:Modules\\zip\\runnerUnzipText"
-		}
+	},
 		
+    {
+				"name":"UNZIP Annotated",
+				"type":"unzip_annotated",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"raw.zip"}
+				],
+				"hidden":true,
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleUnzipAnnotated",
+				"runner":"runner.php:Modules\\zip\\runnerUnzipAnnotated"
+		}
 		
 ]
 
