@@ -4,7 +4,7 @@ namespace Modules\teprolin;
 
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $path=$corpus->getFolderPath()."/".$settings->get("dir.annotated")."/";
-    $finalFile=$path.$fnameOut;
+    $finalFile=\changeFileExtension($path.$fnameOut,"conllup");
     if(is_file($finalFile)){
         if(filesize($finalFile)>0 && isset($taskDesc['overwrite']) && $taskDesc['overwrite']===false){
             echo "SKIP $fnameOut\n";
