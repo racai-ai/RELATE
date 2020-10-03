@@ -78,7 +78,7 @@ closedir($dh);
 function runTask($runner,$data){
     global $current,$tdata,$taskDesc,$corpus,$DirectoryAnnotated,$modules,$settings,$trun;
 
-    $fnameOut=substr($data['fpath'],strrpos($data['fpath'],"/")+1);
+    $fnameOut=changeFileExtension(substr($data['fpath'],strrpos($data['fpath'],"/")+1),"conllup");
     
     echo "Run Task: [".$taskDesc['type']."] [".$data['fpath']."] [".$data['ftype']."] => [".$fnameOut."]\n";
     
