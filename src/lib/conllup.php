@@ -68,7 +68,7 @@ class CONLLUP {
     }
     
     public function getTokenIterator(){
-        return new CONLLUPTokenIterator($this,0,count($this->data));
+        return new CONLLUPTokenIterator($this,0,count($this->data)-1);
     }
 
     public function getTokenData($i,$col){

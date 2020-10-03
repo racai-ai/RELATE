@@ -41,7 +41,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         sscanf(file_get_contents("${fname}.wc"),"%d%d%d",$lines,$words,$chars);
         @unlink("${fname}.wc");
         
-        saveStat("stat",["lines"=>intval($lines),"words"=>intval($words),"chars"=>intval($chars)],$corpus,$trun);
+        saveStat("stat",["lines"=>intval($lines),"words"=>intval($words),"chars"=>intval($chars),"bytes"=>filesize($fname)],$corpus,$trun);
     }else if($ftype=='conllu'){
         $stat=["tok"=>0,"sent"=>0,"documents"=>1];
         $wordForm=[];
@@ -78,6 +78,12 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                 if(!isset($stat["NER.${ner}"]))$stat["NER.${ner}"]=0;
                 $stat["NER.${ner}"]++;    
                 
+                if(!isset($stat["DEPREL.${deprel}"]))$stat["DEPREL.${deprel}"]=0;
+                $stat["DEPREL.${deprel}"]++;    
+
+                if(!isset($stat["XPOS.${xpos}"]))$stat["XPOS.${xpos}"]=0;
+                $stat["XPOS.${xpos}"]++;    
+
                 if(!isset($wordForm[$form]))$wordForm[$form]=1;
                 else $wordForm[$form]++;
                 

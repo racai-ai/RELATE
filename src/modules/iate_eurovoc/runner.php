@@ -33,6 +33,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $c2=$c1+1;
         foreach($conllup->getTokenIterator() as $tok){
             $toke=$eurovocIt->current();
+            $toke->next();
             $tok->set("RELATE:IATE",$toke->get("C${c1}"));
             $tok->set("RELATE:EUROVOC",$toke->get("C${c2}"));
         }
