@@ -41,7 +41,9 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         sscanf(file_get_contents("${fname}.wc"),"%d%d%d",$lines,$words,$chars);
         @unlink("${fname}.wc");
         
-        saveStat("stat",["lines"=>intval($lines),"words"=>intval($words),"chars"=>intval($chars),"bytes"=>filesize($fname)],$corpus,$trun);
+        $fsize=0;
+        if($contentIn===false)$fsize=filesize($fnameIn);else $fsize=strlen($contentIn);
+        saveStat("stat",["lines"=>intval($lines),"words"=>intval($words),"chars"=>intval($chars),"bytes"=>$fsize],$corpus,$trun);
     }else if($ftype=='conllu'){
         $stat=["tok"=>0,"sent"=>0,"documents"=>1];
         $wordForm=[];
