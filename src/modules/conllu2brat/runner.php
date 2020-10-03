@@ -66,7 +66,8 @@ function convert2Brat($fcontent,$text,$fpathOut){
     }
     
     file_put_contents($fpathOut,implode("\n",$brat));
-    
+    @chown($fpathOut,$settings->get("owner_user"));
+    @chgrp($fpathOut,$settings->get("owner_group"));
 
 }
 

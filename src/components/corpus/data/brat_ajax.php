@@ -153,16 +153,34 @@ if($a=="deleteSpan"){
 //id
 //type
 //offsets
+$timings=[];
+$time_start = microtime(true); 
     $cdata=loadData();
+$time_end = microtime(true);
+$timings["loadData"]=$time_end-$time_start;
+
+$time_start = microtime(true); 
     $cdata['ann']->deleteById($_REQUEST['id']);
+$time_end = microtime(true);
+$timings["deleteById"]=$time_end-$time_start;
+
+$time_start = microtime(true); 
     $cdata['ann']->save();
+$time_end = microtime(true);
+$timings["save"]=$time_end-$time_start;
     
+$time_start = microtime(true); 
+    $ann=getAnnotation($cdata);
+$time_end = microtime(true);
+$timings["getAnnotation"]=$time_end-$time_start;
+
     echo json_encode([
         "action" => "deleteSpan", 
         "edited" => [], 
         "messages" => [], 
         "protocol" => 1, 
-        "annotations" => getAnnotation($cdata)
+        "annotations" => $ann,
+        "timings" => $timings
     ]);
 die();
 }
@@ -175,17 +193,40 @@ if($a=="createSpan"){
 //comment
 //attributes
 //normalizations
+$timings=[];
+$time_start = microtime(true); 
     $cdata=loadData();
+$time_end = microtime(true);
+$timings["loadData"]=$time_end-$time_start;
+
+$time_start = microtime(true); 
     if(isset($_REQUEST['id']))$cdata['ann']->deleteById($_REQUEST['id']);
+$time_end = microtime(true);
+$timings["deleteById"]=$time_end-$time_start;
+
+$time_start = microtime(true); 
     $newid=$cdata['ann']->addAnnotation($_REQUEST['type'],json_decode($_REQUEST['offsets']),$cdata['text']); 
+$time_end = microtime(true);
+$timings["addAnnotation"]=$time_end-$time_start;
+
+$time_start = microtime(true); 
     $cdata['ann']->save();
+$time_end = microtime(true);
+$timings["save"]=$time_end-$time_start;
+
+$time_start = microtime(true); 
+    $ann=getAnnotation($cdata);
+$time_end = microtime(true);
+$timings["getAnnotation"]=$time_end-$time_start;
+
     echo json_encode([
         "edited"=> [[$newid]], 
         "protocol" => 1, 
         "messages" => [], 
         "undo"=> "{\"action\": \"add_tb\", \"attributes\": \"{}\", \"normalizations\": \"[]\", \"id\": \"$newid\"}", 
         "action"=> "createSpan", 
-        "annotations"=>getAnnotation($cdata)
+        "annotations"=>$ann,
+        "timings"=>$timings
     ]);
 die();
 
