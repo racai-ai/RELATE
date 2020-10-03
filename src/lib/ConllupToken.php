@@ -11,6 +11,7 @@ class CONLLUPToken {
     
     public function get($column){return $this->conllup->getTokenData($this->pos,$column);}
     public function set($column,$value){$this->conllup->setTokenData($this->pos,$column,$value);}
+    public function getNumColumns(){return count($this->conllup->getLine($this->pos)['content']);}
     
     public function getWordSeq($n){
         $seq="";

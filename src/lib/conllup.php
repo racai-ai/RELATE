@@ -16,6 +16,14 @@ class CONLLUP {
                       }
 */
 
+    public function getColumns(){ return $this->columns;}
+    public function setColumns($columns){$this->columns=$columns; $this->columnId=array_flip($this->columns);}
+    public function getFirstToken(){
+        foreach($this->getTokenIterator() as $tok)return $tok;
+        return false;
+    }
+    public function getNumColumns(){return count($this->columns);}
+
     public function readFromString($datas){
         $this->data=[];
         $this->columns=[];
@@ -42,6 +50,11 @@ class CONLLUP {
             $this->columns=explode(" ",trim($cdata[1]));
             $this->columnId=array_flip($this->columns);
         }
+        
+        for($i=count($this->columns);$i<$this->getFirstToken()->getNumColumns();$i++){
+            $this->columns[]="C${i}";
+        }
+        $this->columnId=array_flip($this->columns);
     }
     
     public function getNumLines(){return count($this->data);}

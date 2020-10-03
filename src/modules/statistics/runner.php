@@ -51,31 +51,43 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $charsArr=[];
         for($i=0;$i<mb_strlen($chars);$i++)$charsArr[mb_substr($chars,$i,1)]=0;
         
-        foreach(explode("\n",$contentIn) as $line){
-            $line=trim($line);
-            if(startsWith($line,"# sent_id")){ $stat['sent']++; continue; }
-            
-            if(startsWith($line,"#") || strlen($line)==0)continue;
-            
-            $stat['tok']++;  
-            
-            list($id,$form,$lem,$upos,$xpos,$feats,$head,$deprel,$deps,$misc,$ner,$rest)=explode("\t",$line,12);
-            
-            if(!isset($stat["UPOS.${upos}"]))$stat["UPOS.${upos}"]=0;
-            $stat["UPOS.${upos}"]++;    
-
-            if(!isset($stat["NER.${ner}"]))$stat["NER.${ner}"]=0;
-            $stat["NER.${ner}"]++;    
-            
-            if(!isset($wordForm[$form]))$wordForm[$form]=1;
-            else $wordForm[$form]++;
-            
-            if(!isset($lemma[$lem]))$lemma[$lem]=1;
-            else $lemma[$lem]++;
-            
-            for($i=0;$i<mb_strlen($form);$i++){
-                $c=mb_strtolower(mb_substr($form,$i,1));
-                if(isset($charsArr[$c]))$charsArr[$c]++;
+        $conllup=new \CONLLUP();
+        $conllup->readFromString($contentIn);
+        foreach($conllup->getSentenceIterator() as $k_sent=>$sentence){
+            $stat['sent']++;
+            foreach($sentence->getTokenIterator() as $k_tok=>$token){
+                $stat['tok']++;  
+                
+                $id=$token->get("ID");
+                $form=$token->get("FORM");
+                $lem=$token->get("LEMMA");
+                $upos=$token->get("UPOS");
+                $xpos=$token->get("XPOS");
+                $feats=$token->get("FEATS");
+                $head=$token->get("HEAD");
+                $deprel=$token->get("DEPREL");
+                $deps=$token->get("DEPS");
+                $misc=$token->get("MISC");
+                $ner=$token->get("RELATE:NE");
+                
+                //list($id,$form,$lem,$upos,$xpos,$feats,$head,$deprel,$deps,$misc,$ner,$rest)=explode("\t",$line,12);
+                
+                if(!isset($stat["UPOS.${upos}"]))$stat["UPOS.${upos}"]=0;
+                $stat["UPOS.${upos}"]++;    
+    
+                if(!isset($stat["NER.${ner}"]))$stat["NER.${ner}"]=0;
+                $stat["NER.${ner}"]++;    
+                
+                if(!isset($wordForm[$form]))$wordForm[$form]=1;
+                else $wordForm[$form]++;
+                
+                if(!isset($lemma[$lem]))$lemma[$lem]=1;
+                else $lemma[$lem]++;
+                
+                for($i=0;$i<mb_strlen($form);$i++){
+                    $c=mb_strtolower(mb_substr($form,$i,1));
+                    if(isset($charsArr[$c]))$charsArr[$c]++;
+                }
             }
             
         }
