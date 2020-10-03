@@ -36,8 +36,8 @@ function init($corpus){
     $path=$corpus->getFolderPath()."/standoff/";
     for($i=0;$i<20;$i++){
         $fname="$path/ne.$i.gazetteer";
-        if(!is_file($fname))break;
-        loadResource($fname);
+        if(is_file($fname))
+            loadResource($fname);
     }                       
     
     $path=$corpus->getFolderPath()."/gold_standoff/ne.gazetteer";
