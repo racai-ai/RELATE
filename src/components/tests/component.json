@@ -14,7 +14,7 @@
 ],
 
 "handlers":[
-		{"path":"my/authors","script":"pages/my/authors.php","rights":["pvf"]}
+		{"path":"my/authors","script":"pages/authors.php","rights":["pvf"]}
 
 ]
 

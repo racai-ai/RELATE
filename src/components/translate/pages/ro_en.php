@@ -16,7 +16,7 @@ function getPageContent(){
     }
 
     $html=file_get_contents(realpath(dirname(__FILE__))."/translate_common.html");
-    $loading=file_get_contents(realpath(dirname(__FILE__))."/../teprolin/teprolin_common_loading.html");
+    $loading=file_get_contents(realpath(dirname(__FILE__))."/teprolin/teprolin_common_loading.html");
     
     $html=str_replace("{{loading}}",$loading,$html);
     $html=str_replace("{{label}}","Introduceți un text în limba ROMÂNĂ",$html);

@@ -33,6 +33,12 @@ class CONLLUP {
                 $this->data[]=["type"=>"data","content"=>explode("\t",$line)];
             }            
         }
+        
+        if(empty($this->columns)){ // assume conllu format
+            $conlluColumns="ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC";
+            $this->columns=explode(" ",trim($conlluColumns));
+            $this->columnId=array_flip($this->columns);
+        }
     }
     
     public function getNumLines(){return count($this->data);}
