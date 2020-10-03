@@ -16,7 +16,7 @@ $corpora=new Corpora();
 
 $allMaxRunners=0;
 
-echo date("Y-m-d H:i:s.u")." ".microtime(true)." START\n";
+echo date("Y-m-d H:i:s.u")." ".microtime(true)." SCHEDULER START\n";
 
 $task=new Task();
 foreach($corpora->getList() as $c){
@@ -75,7 +75,7 @@ foreach($corpora->getList() as $c){
     }
 }
 
-echo date("Y-m-d H:i:s.u")." ".microtime(true)." END\n";
+echo date("Y-m-d H:i:s.u")." ".microtime(true)." SCHEDULER END\n";
 
 
 // UNLOCK_FILE(); // => chemata in fn de shutdown
