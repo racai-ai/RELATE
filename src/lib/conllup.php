@@ -57,6 +57,10 @@ class CONLLUP {
         $this->columnId=array_flip($this->columns);
     }
     
+    public function readFromFile($fpath){
+        $this->readFromString(file_get_contents($fpath));
+    }
+    
     public function getNumLines(){return count($this->data);}
     public function getLine($i){
 				if($i>=count($this->data))return false;

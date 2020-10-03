@@ -616,6 +616,7 @@ function viewFileCSV(file,type){
     currentFileView=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
+
     setAttribute("fileViewerCSVDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
 
     var h=window.location.hash;
@@ -625,7 +626,6 @@ function viewFileCSV(file,type){
     if($fileViewerCSVgrid!==false)$fileViewerCSVgrid.pqGrid('destroy');
 
     var toolbar = { items: [ ] };
-
     var obj = {
         width: "100%"
         , height: 400
@@ -644,8 +644,23 @@ function viewFileCSV(file,type){
         ,  wrap: true, hwrap: false
     };
     obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+    obj.dataModel = {
+        location: "remote",
+        //sorting: "local",
+        //sortIndx: "name",
+        //sortDir: "down",
+        dataType:"json",
+        method:"GET",
+        url:"index.php?path=corpus/csv_get&corpus={{CORPUS_NAME}}&file="+file,
+        getData: function (dataJSON) {
+            setAttribute("loading","style","display:none;");
+            setAttribute("fileViewerCSV","style","display:block;");
+            document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";            
+            return { data: dataJSON };
+        }
+    };
 
-    if(type==="conllu"){
+    /*if(type==="conllu"){
         obj.colModel = [
                 { title: "ID", dataType: "string", dataIndx: "0" },
                 { title: "Form", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
@@ -674,24 +689,34 @@ function viewFileCSV(file,type){
             { title: "C1", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
             { title: "C2", dataType: "string", dataIndx: "2", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  }
         ];
-    }
-        obj.dataModel = {
-            location: "remote",
-            //sorting: "local",
-            //sortIndx: "name",
-            //sortDir: "down",
-            dataType:"json",
-            method:"GET",
-            url:"index.php?path=corpus/csv_get&corpus={{CORPUS_NAME}}&file="+file,
-            getData: function (dataJSON) {
-                setAttribute("loading","style","display:none;");
-                setAttribute("fileViewerCSV","style","display:block;");
-                document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";            
-                return { data: dataJSON };
-            }
-        };
+    }*/
         
+    loadData("path=corpus/file_getcolumns&corpus={{CORPUS_NAME}}&file="+file,function(dataColumns){
+        try{
+            dataColumns=JSON.parse(dataColumns);
+        }catch(ex){
+            console.log(dataColumns);
+            alert("Error getting column names");
+            setAttribute("loading","style","display:none;");
+            setAttribute("output","style","display:block;");
+            return;
+        }
+        obj.colModel=[];
+        for(var i=0;i<dataColumns['columns'].length;i++){
+            var col=dataColumns['columns'][i];
+            obj.colModel[obj.colModel.length]={
+                title:col.name,
+                dataType:col.type,
+                dataIndx:i,
+                filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }
+            };
+        }
         $fileViewerCSVgrid = $("#fileViewerCSVgrid").pqGrid(obj);
+    },function(){
+        alert("Error getting column names");
+        setAttribute("loading","style","display:none;");
+        setAttribute("output","style","display:block;");
+	});
 }
 
 

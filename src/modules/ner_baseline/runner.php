@@ -107,7 +107,6 @@ function runBaseline($fcontent,$fpathOut,$corpus){
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $path=$corpus->getFolderPath()."/".$settings->get("dir.annotated")."/";
     $finalFile=$path.$fnameOut;
-    echo "Destination for cleanup $finalFile\n";
 /*    if(is_file($finalFile)){
     
         $fmtime=filemtime($finalFile);

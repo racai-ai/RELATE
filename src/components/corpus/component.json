@@ -35,6 +35,7 @@
 		{"path":"corpus/archives_get","script":"pages/archives_get.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/audio_get","script":"pages/audio_get.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/data/add","script":"data/add_file.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_getcolumns","script":"data/file_getcolumns.php","data":true,"rights":["corpus"]},
 
 		{"path":"corpus/brat_ajax","script":"data/brat_ajax.php", "data":true, "rights":["corpus"]},
 		{"path":"corpus/savegold","script":"data/savegold.php", "data":true, "rights":["corpus"]},
