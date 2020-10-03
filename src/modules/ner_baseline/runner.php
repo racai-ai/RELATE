@@ -20,6 +20,7 @@ function loadResource($fname){
 
 function init($corpus){
     global $NER_DATA;
+    $NER_DATA=[];
     
     $path=dirname(__FILE__);
     /*foreach(glob("$path/*.gazetteer") as $fname){
@@ -32,8 +33,9 @@ function init($corpus){
          }
     }*/
     
+    $path=$corpus->getFolderPath()."/standoff/";
     for($i=0;$i<20;$i++){
-        $fname="$path/ner_gazette.$i.txt";
+        $fname="$path/ne.$i.gazetteer";
         if(!is_file($fname))break;
         loadResource($fname);
     }                       
