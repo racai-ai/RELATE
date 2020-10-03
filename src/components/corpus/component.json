@@ -6,6 +6,7 @@
         "label":"Corpora",
         "icon":"c-deep-purple-500 ti-comment-alt",
         "rights":["corpus"],
+        "path":"corpus/list",
         "menu":[
             {"label":"List", "path":"corpus/list","rights":["corpus"]}
         ]

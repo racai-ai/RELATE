@@ -6,6 +6,7 @@
         "label":"Downloads",
         "icon":"c-deep-purple-500 ti-comment-alt",
         "rights":["user"],
+        "path":"downloads/private",
         "menu":[
             {"label":"Internal", "path":"downloads/private","rights":["user"]}
         ]

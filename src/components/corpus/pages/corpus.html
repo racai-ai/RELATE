@@ -141,14 +141,17 @@
                                 </div>                                      
                         </div>
                         
+                        <!-- Statistics -->
                         <div style="display:none" id="output5">
                                 <div id="gridStatistics" style="margin:auto;"></div>
                         </div>
                         
+                        <!-- Archives -->
                         <div style="display:none" id="output6">
                                 <div id="gridArchives" style="margin:auto;"></div>
                         </div>
 
+                        <!-- Audio -->
                         <div style="display:none" id="output7">
                         				<div style="margin:0 0 20px 30px">
                         				<button type="button" id="bRecorder" class="btn cur-p btn-danger" onclick="recorderClick();">Recorder</button>
@@ -246,6 +249,7 @@
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratDownload" onclick="">Download</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratDownloadAnn" onclick="">Download ANN</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratSaveGold" onclick="">Save To GOLD</button>
+                      <p>To see annotations from CONLLUP files make sure to run the CONLLUP2BRAT task.</p>
                          <iframe style="width:100%; height:100%; border:0" id="bratIframe" name="bratIframe"></iframe>
                          <div style="display:none">
                             <form method="post" target="bratIframe" action="index.php" id="bratForm">

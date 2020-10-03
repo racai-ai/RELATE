@@ -6,9 +6,9 @@
 
 "tasks":[
 		{
-				"name":"CoNLLU2BRAT",
-				"type":"conllu2brat",
-				"description":"Transform CONLLU annotations to BRAT format",
+				"name":"CoNLLUP2BRAT",
+				"type":"conllup2brat",
+				"description":"Transform CONLLUPlus annotations to BRAT format",
 				"scheduler":"scheduler.php:Modules\\conllu2brat\\schedule",
 				"runner":"runner.php:Modules\\conllu2brat\\runner"
 		}

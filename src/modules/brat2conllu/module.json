@@ -6,8 +6,8 @@
 
 "tasks":[
 		{
-				"name":"BRAT2CoNLLU",
-				"type":"brat2conllu",
+				"name":"BRAT2CoNLLUP",
+				"type":"brat2conllup",
 				"description":"Transform BRAT annotations into CoNLLUPlus column",
 				"scheduler":"scheduler.php:Modules\\brat2conllu\\schedule",
 				"runner":"runner.php:Modules\\brat2conllu\\runner"
