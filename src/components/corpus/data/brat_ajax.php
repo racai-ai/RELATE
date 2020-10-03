@@ -72,6 +72,17 @@ function loadData(){
         return ["text"=>$text,"corpus"=>$corpus,"ann"=>$ann];        
 }
 
+function getPosChars($text,$chars,$offset){
+    $ret=[];
+    foreach($chars as $c){
+        $p=mb_strpos($text,$c,$offset);
+        if($p!==false)$ret[]=$p;
+    }
+    
+    if(count($ret)==0)return false;
+    return min($ret);
+}
+
 function getAnnotation($cdata){
         $corpus=$cdata['corpus'];
         $text=$cdata['text'];
@@ -82,12 +93,7 @@ function getAnnotation($cdata){
         
         $s_offsets=[];
         $last=0;
-        /*foreach($sentences as $sent){
-            $len=mb_strlen($sent);
-            $s_offsets[]=[$last,$last+$len-1];
-            $last=$last+$len;
-        } */
-        $isTok=true;
+/*        $isTok=true;
         for($i=0;$i<mb_strlen($text);$i++){
             $c=mb_substr($text,$i,1);
             if($c=="\n"){
@@ -98,9 +104,24 @@ function getAnnotation($cdata){
             }
         }
         $s_offsets[]=[$last,$i-1];
+*/
+        $sz=mb_strlen($text);
+        for($i=0;$i<$sz;){
+            $p=mb_strpos($text,"\n",$i);
+            if($p===false){
+                if($i<$sz-1)
+                    $s_offsets[]=[$i,$sz-1];
+                break;
+            }
+            if($p>$i){
+                $s_offsets[]=[$i,$p-1];
+            }
+            $i=$p+1;
+        }
+
         
         $t_offsets=[];
-        $last_t=0;
+        /*$last_t=0;
         $isTok=true;
         for($i=0;$i<mb_strlen($text);$i++){
             $c=mb_substr($text,$i,1);
@@ -111,7 +132,22 @@ function getAnnotation($cdata){
                 if(!$isTok){$last_t=$i;$isTok=true;}
             }
         }
-        $t_offsets[]=[$last_t,$i-1];
+        $t_offsets[]=[$last_t,$i-1];*/
+        $sz=mb_strlen($text);
+        for($i=0;$i<$sz;){
+            $p=getPosChars($text,[' ',"\n","\t","\r"],$i);
+            if($p===false){
+                if($i<$sz-1)
+                    $t_offsets[]=[$i,$sz];
+                break;
+            }
+            if($p>$i){
+                $t_offsets[]=[$i,$p];
+            }
+            $i=$p+1;
+        }
+        
+        
                 
         return [
             "modifications"=> [], 
