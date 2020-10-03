@@ -27,7 +27,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     
     if($r!==false && $r!==null){
 				$r=json_decode($r,true);
-				if(isset($r['result']))file_put_contents($finalFile,$r['result']);
+				if(isset($r['result']))file_put_contents(\CONLLUP::$defaultGlobalColumns."\n".$finalFile,$r['result']);
 		}
     
     file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            

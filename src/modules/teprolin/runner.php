@@ -74,7 +74,7 @@ function runBasicTaggingText_ro($text,$fout,$trun){
 			        	list($conllu,$sentId)=TEPROLIN_json2conllu("ro_legal",$json,$sentId,false);
 			            
 			        	if($parId==1){
-			            	    file_put_contents($fout,implode("\n",$conllu));
+			            	    file_put_contents($fout,\CONLLUP::$defaultGlobalColumns."\n".implode("\n",$conllu));
 			        	}else{
 			            	    file_put_contents($fout,"\n".implode("\n",$conllu),FILE_APPEND);
 			        	}

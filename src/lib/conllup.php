@@ -5,6 +5,9 @@ class CONLLUP {
     private $data;
     private $columns;
     private $columnId;
+    
+    public static $defaultGlobalColumns="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC";
+    
 
 /*                      if($numColumns>12){
             		          $lines="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC RELATE:NE RELATE:NP RELATE:IATE RELATE:EUROVOC\n".$meta.$lines;
@@ -35,8 +38,8 @@ class CONLLUP {
         }
         
         if(empty($this->columns)){ // assume conllu format
-            $conlluColumns="ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC";
-            $this->columns=explode(" ",trim($conlluColumns));
+            $cdata=explode("=",self::$defaultGlobalColumns,2);
+            $this->columns=explode(" ",trim($cdata[1]));
             $this->columnId=array_flip($this->columns);
         }
     }
