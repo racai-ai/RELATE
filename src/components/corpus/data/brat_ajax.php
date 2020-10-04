@@ -87,52 +87,45 @@ function getAnnotation($cdata){
         $corpus=$cdata['corpus'];
         $text=$cdata['text'];
         $ann=$cdata['ann'];
-        //$sentences = preg_split('/(?<=[.?!])\s+(?=[a-z])/i', $text);
-        //$text=str_replace("\r","",$text);
-        //$text=trim($text);
         
         $s_offsets=[];
-        $last=0;
-/*        $isTok=true;
-        for($i=0;$i<mb_strlen($text);$i++){
-            $c=mb_substr($text,$i,1);
-            if($c=="\n"){
-                if($isTok && $i>0)$s_offsets[]=[$last,$i];
-                $isTok=false;
-            }else{
-                if(!$isTok){$last=$i;$isTok=true;}
-            }
-        }
-        $s_offsets[]=[$last,$i-1];
-*/
+        $t_offsets=[];
         $sz=mb_strlen($text);
+        $pos=[
+            " " => mb_strpos($text," "),
+            "\n" => mb_strpos($text,"\n"),
+            "\r" => mb_strpos($text,"\r"),
+            "\t" => mb_strpos($text,"\t"),
+        ];
+        $lastnl=0;
         for($i=0;$i<$sz;){
-            $p=mb_strpos($text,"\n",$i);
-            if($p===false){
-                if($i<$sz-1)
+            $mchar=false; $mpos=false;
+            foreach($pos as $c=>$p){
+                if($p!==false && ($mpos===false || $mpos>$p)){$mchar=$c;$mpos=$p;}
+            }
+            
+            if($mpos===false){
+                if($i<$sz-1){
                     $s_offsets[]=[$i,$sz-1];
+                    $t_offsets[]=[$i,$sz];
+                }
                 break;
             }
-            if($p>$i){
-                $s_offsets[]=[$i,$p-1];
+            
+            if($mchar=="\n" && $mpos>$lastnl){
+                $s_offsets[]=[$lastnl,$mpos-1];
+                $lastnl=$mpos+1;
             }
-            $i=$p+1;
+            
+            if($mpos>$i){
+                $t_offsets[]=[$i,$mpos];
+            }
+            
+            $i=$mpos+1;
+            $pos[$mchar]=mb_strpos($text,$mchar,$i);
         }
-
+/*
         
-        $t_offsets=[];
-        /*$last_t=0;
-        $isTok=true;
-        for($i=0;$i<mb_strlen($text);$i++){
-            $c=mb_substr($text,$i,1);
-            if($c==' ' || $c=="\n" || $c=="\t" || $c=="\r"){
-                if($isTok && $i>0)$t_offsets[]=[$last_t,$i];
-                $isTok=false;
-            }else{
-                if(!$isTok){$last_t=$i;$isTok=true;}
-            }
-        }
-        $t_offsets[]=[$last_t,$i-1];*/
         $sz=mb_strlen($text);
         for($i=0;$i<$sz;){
             $p=getPosChars($text,[' ',"\n","\t","\r"],$i);
@@ -146,7 +139,7 @@ function getAnnotation($cdata){
             }
             $i=$p+1;
         }
-        
+  */      
         
                 
         return [
