@@ -18,7 +18,7 @@ function getTokPos($text,$tpos,$word,$pword){
 				return false;
 }
 
-function convert2Brat($fcontent,$text,$fpathOut){
+function convert2Brat($fcontent,$text,$fpathOut,$settings){
 		$brat=[];
 		$pword="";
 		$currentT=1;
@@ -66,8 +66,8 @@ function convert2Brat($fcontent,$text,$fpathOut){
     }
     
     file_put_contents($fpathOut,implode("\n",$brat));
-    @chown($fpathOut,\$settings->get("owner_user"));
-    @chgrp($fpathOut,\$settings->get("owner_group"));
+    @chown($fpathOut,$settings->get("owner_user"));
+    @chgrp($fpathOut,$settings->get("owner_group"));
 
 }
 
@@ -94,7 +94,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 */    
     @mkdir($path);    
     
-    convert2Brat($contentIn,file_get_contents($textFile),$finalFile);
+    convert2Brat($contentIn,file_get_contents($textFile),$finalFile,$settings);
     
     file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            
 }
