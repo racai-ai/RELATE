@@ -2,8 +2,26 @@
 
 namespace Modules\goldnelist;
 
+$firstRun=true;
+
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+    global $firstRun;
+    
     $finalFile=$corpus->getFolderPath()."/gold_standoff/ne.gazetteer";
+    
+    if($firstRun===false){
+    }else{
+        file_put_contents($finalFile,"");
+        $firstRun=false;
+    }
+
+    $NE=[];
+    foreach(explode("\n",file_get_contents($finalFile)) as $line){
+        $ldata=explode(" ",$line,2);
+        if(count($ldata)!=2)continue;
+        $NE[$ldata[1]]=$ldata[0];
+    }    
+    
     
     echo "Destination for goldnelist $finalFile\n";
 /*    if(is_file($finalFile)){
@@ -17,7 +35,6 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     }
 */    
     
-    $NE=[];
     
     foreach(explode("\n",$contentIn) as $line){
 				$data=explode("\t",$line);
