@@ -1,0 +1,18 @@
+{
+
+"order":47,
+
+"languages":["*"],
+
+"tasks":[
+		{
+				"name":"Gold NE list",
+				"type":"goldnelist",
+				"description":"Make a gazetteer resource out of Gold NE annotations. Please specify a single runner process (for example: 0).",
+				"scheduler":"scheduler.php:Modules\\goldnelist\\schedule",
+				"runner":"runner.php:Modules\\goldnelist\\runner",
+				"defaultRunners":"0"
+		}
+]
+
+}

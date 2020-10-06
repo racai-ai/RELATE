@@ -1,0 +1,25 @@
+{
+"order":40,
+
+"menu":[
+      {
+        "label":"Machine Translation",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "menu":[
+            {"label":"RO - EN", "path":"translate/ro_en"},
+            {"label":"EN - RO", "path":"translate/en_ro"},
+            {"label":"Developer Documentation", "path":"translate/dev_doc"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"translate/ro_en","script":"pages/ro_en.php"},
+		{"path":"translate/en_ro","script":"pages/en_ro.php"},
+		{"path":"translate/dev_doc","script":"pages/dev_doc.php"},
+		{"path":"translatews","script":"data/call.php","data":true}
+
+]
+
+}

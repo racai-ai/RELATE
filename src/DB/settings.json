@@ -3,6 +3,8 @@
 "RegistrationEnabled":false,
 "TaskRunners":13,
 
+"dir.annotated":"basic_tagging",
+
 "tools.StanfordCoreNLP.path":"/data/vasile/stanford-corenlp-full-2018-10-05",
 "tools.wc.path":"/usr/bin/wc",
 

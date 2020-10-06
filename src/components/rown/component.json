@@ -1,0 +1,23 @@
+{
+"order":30,
+
+"menu":[
+      {
+        "label":"RoWordNet",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "menu":[
+            {"label":"Query", "path":"rown/query"},
+            {"label":"Aligned Query", "path":"rown/queryp"}
+        ]
+      }      
+
+],
+
+"handlers":[
+		{"path":"rownws","script":"data/rown.php","data":true},
+		{"path":"rown/rown","script":"pages/rown.php","data":true},
+		{"path":"rown/query","script":"pages/query.php"},
+		{"path":"rown/queryp","script":"pages/queryp.php"}
+]
+
+}

@@ -1,15 +1,23 @@
 <?php
 
 require "lib/lib.php";
-
 require_once "securimage/securimage.php";
-
-require_once "handlers.php";
-
-require_once "menu.php";
 
 $settings=new Settings();
 $settings->load();
+
+$modules=new Modules();
+$modules->load();
+
+$components=new Components();
+$components->load();
+$components->registerHandlers();
+
+$PLATFORM=[
+  "path"=>"teprolin/complete",   // this is the main page
+  "menu"=>$components->getMenu()
+];
+
 
 session_start();
 

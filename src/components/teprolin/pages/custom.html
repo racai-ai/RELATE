@@ -1,0 +1,26 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Custom run</h6>
+                  <div class="mT-30">
+                    
+                    <div style="display:block" id="input">
+                    <form onsubmit="return false;">
+                      <div class="form-group">
+                        <label for="text">Please enter a Romanian text</label>
+                        <textarea class="form-control" id="text" style="height:250px;"></textarea>
+                      </div>
+
+                      <p>Add operations to the processing flow</p>
+                      <div>{{operations}}</div>
+
+                      <button type="submit" class="btn btn-primary" onclick="sendText();">Submit</button>
+                    </form>
+                    </div>
+                    
+                    {{loading}}
+                    
+                    {{output}}
+
+                  </div>
+                </div>
+              </div>

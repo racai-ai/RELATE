@@ -1,0 +1,17 @@
+{
+
+"order":30,
+
+"languages":["ro"],
+
+"tasks":[
+    {
+				"name":"IATE/EuroVoc",
+				"type":"iate_eurovoc",
+				"description":"Annotate text using EuroVoc and IATE terminologies",
+				"scheduler":"scheduler.php:Modules\\iate_eurovoc\\schedule",
+				"runner":"runner.php:Modules\\iate_eurovoc\\runner"
+		}
+]
+
+}

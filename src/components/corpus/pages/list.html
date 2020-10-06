@@ -1,0 +1,63 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Corpora</h6>
+                  <div class="mT-30">
+                  
+                    <div id="input">                  
+
+<div id="grid" style="margin:auto;"></div>
+
+<div id="popup-dialog-crud" style="display:none;">
+<form id="crud-form">
+    <table align="center">
+    <tbody><tr>
+    <td><label for="name">Name:</label></td>
+    <td><input type="text" name="name" id="name" size="50"/></td>
+    </tr>
+    <tr>
+    <td><label for="lang">Language:</label></td>
+    <td>
+        <select name="lang" id="lang">
+        	{{languages}}
+        </select>
+    </td>
+    </tr>
+    <tr>
+    <td><label for="desc">Description:</label></td>
+    <td><textarea name="desc" id="desc" rows="4" cols="50"></textarea></td>
+    </tr>
+    <!-- these must be processed in js to be transmitted -->
+    <tr>
+    <td><label for="hasaudio">Audio:</label></td>
+    <td><input type="checkbox" name="hasaudio" id="hasaudio" value="yes"/></td>
+    </tr>
+    <tr>
+    <td><label for="hasgold">Gold Annotations:</label></td>
+    <td><input type="checkbox" name="hasgold" id="hasgold" value="yes"/></td>
+    </tr>
+    <tr>
+    <td><label for="hasbrat">BRAT Profiles:</label></td>
+    <td><input type="checkbox" name="hasbrat" id="hasbrat" value="yes"/></td>
+    </tr>
+    </tbody></table>
+</form>
+</div>                                      
+                    
+                    </div>
+  
+                    {{loading}}
+
+                    <div style="display:none" id="output">
+                        <div id="output1">
+                        </div>
+                        
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+
+
+ 

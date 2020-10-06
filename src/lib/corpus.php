@@ -11,6 +11,8 @@ class Corpus {
         $this->corpora = $corpora;
     }
     
+    public function getName(){return $this->name;}
+    
     public function clear(){ $this->data=[]; }
 
     public function isValidName($name=false){
@@ -30,6 +32,26 @@ class Corpus {
         $this->data['name']=$this->name;
         return true;
     }
+    
+    public function getLang(){
+    		if(isset($this->data['lang']))return $this->data['lang'];
+    		return false;
+	}
+		
+	public function hasAudio(){
+			if(!isset($this->data['audio']))return false;
+			return $this->data['audio'];
+	}
+
+	public function hasBratProfiles(){
+			if(!isset($this->data['brat_profiles']))return false;
+			return $this->data['brat_profiles'];
+	}
+
+	public function hasGoldAnnotations(){
+			if(!isset($this->data['gold']))return false;
+			return $this->data['gold'];
+	}
     
     public function getFolderPath($create=false){
         if(!$this->isValidName($this->name))return false;
@@ -82,6 +104,8 @@ class Corpus {
         $dir_meta=$dir; 
         if($data['type']=="zip_text")$dir.="/zip_text";
         else if($data['type']=="standoff")$dir.="/standoff";
+        else if($data['type']=="goldann")$dir.="/gold_ann";
+        else if($data['type']=="goldstandoff")$dir.="/gold_standoff";
         else if($data['type']=="annotated")$dir.="/".$DirectoryAnnotated;
         else if($data['type']=="zip_annotated")$dir.="/zip_".$DirectoryAnnotated;
         else $dir.="/files";
@@ -105,6 +129,12 @@ class Corpus {
             file_put_contents($base_dir."/changed_files.json",json_encode(["changed"=>time()]));
         }else if($data['type']=="annotated"){
             file_put_contents($base_dir."/changed_annotated.json",json_encode(["changed"=>time()]));
+        }else if($data['type']=="standoff"){
+            file_put_contents($base_dir."/changed_standoff.json",json_encode(["changed"=>time()]));
+        }else if($data['type']=="goldann"){
+            file_put_contents($base_dir."/changed_gold_ann.json",json_encode(["changed"=>time()]));
+        }else if($data['type']=="goldstandoff"){
+            file_put_contents($base_dir."/changed_gold_standoff.json",json_encode(["changed"=>time()]));
         }
 
         if($data['type']=="zip_text"){
@@ -285,6 +315,111 @@ class Corpus {
         return $corpora;    
     
     }
+
+    public function getFilesGoldStandoff(){
+        if($this->data===null || empty($this->data))return [];
+
+        $corpora=[];
+    
+        $dir=$this->getFolderPath();
+        if($dir===false)return [];
+        $base_dir=$dir;
+        
+        if(is_file($dir."/list_gold_standoff.json") && is_file($dir."/changed_gold_standoff.json") && filemtime($dir."/list_gold_standoff.json")>=filemtime($dir."/changed_gold_standoff.json")){
+            $corpora=json_decode(file_get_contents($dir."/list_gold_standoff.json"),true);
+            return $corpora;
+        }
+        
+        $dir_meta=$dir;
+        $dir.="/gold_standoff";
+        
+        if(!is_dir($dir))return [];
+        
+        $dh = opendir($dir);
+        if($dh===false)return [];
+        
+        while (($file = readdir($dh)) !== false) {
+            $dpath="$dir/$file";
+            if(!is_file($dpath))continue;
+            
+            $meta=[];
+            if(!isset($meta['name']))$meta['name']=$file;
+            
+            $meta['type']='text';
+            
+            $size=filesize($dpath);
+            $unit="b";
+            if($size>1024){$size/=1024.0;$unit="Kb";}
+            if($size>1024){$size/=1024.0;$unit="Mb";}
+            if($size>1024){$size/=1024.0;$unit="Gb";}
+            if($size>1024){$size/=1024.0;$unit="Tb";}
+            if($size==0 && $unit=="b")$unit="";
+            $size=round($size,2)." ".$unit;
+
+            $meta['size']=$size;
+            $corpora[]=$meta;
+        }
+        closedir($dh);
+
+        file_put_contents($base_dir."/list_gold_standoff.json",json_encode($corpora));
+
+        
+        return $corpora;    
+    
+    }
+    
+    public function getFilesGoldAnn(){
+        if($this->data===null || empty($this->data))return [];
+
+        $corpora=[];
+    
+        $dir=$this->getFolderPath();
+        if($dir===false)return [];
+        $base_dir=$dir;
+        
+        if(is_file($dir."/list_gold_ann.json") && is_file($dir."/changed_gold_ann.json") && filemtime($dir."/list_gold_ann.json")>=filemtime($dir."/changed_gold_ann.json")){
+            $corpora=json_decode(file_get_contents($dir."/list_gold_ann.json"),true);
+            return $corpora;
+        }
+        
+        $dir_meta=$dir;
+        $dir.="/gold_ann";
+        
+        if(!is_dir($dir))return [];
+        
+        $dh = opendir($dir);
+        if($dh===false)return [];
+        
+        while (($file = readdir($dh)) !== false) {
+            $dpath="$dir/$file";
+            if(!is_file($dpath))continue;
+            
+            $meta=[];
+            if(!isset($meta['name']))$meta['name']=$file;
+            
+            $meta['type']='text';
+            
+            $size=filesize($dpath);
+            $unit="b";
+            if($size>1024){$size/=1024.0;$unit="Kb";}
+            if($size>1024){$size/=1024.0;$unit="Mb";}
+            if($size>1024){$size/=1024.0;$unit="Gb";}
+            if($size>1024){$size/=1024.0;$unit="Tb";}
+            if($size==0 && $unit=="b")$unit="";
+            $size=round($size,2)." ".$unit;
+
+            $meta['size']=$size;
+            $corpora[]=$meta;
+        }
+        closedir($dh);
+
+        file_put_contents($base_dir."/list_gold_ann.json",json_encode($corpora));
+
+        
+        return $corpora;    
+    
+    }
+    
 
     public function getArchives(){
         global $DirectoryAnnotated;

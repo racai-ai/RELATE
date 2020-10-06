@@ -1,0 +1,17 @@
+{
+
+"order":40,
+
+"languages":["*"],
+
+"tasks":[
+		{
+				"name":"Cleanup",
+				"type":"cleanup",
+				"description":"Cleanup bad sentences",
+				"scheduler":"scheduler.php:Modules\\cleanup\\schedule",
+				"runner":"runner.php:Modules\\cleanup\\runner"
+		}
+]
+
+}

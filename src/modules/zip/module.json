@@ -1,0 +1,52 @@
+{
+
+"order":60,
+
+"languages":["*"],
+
+"tasks":[
+    {
+				"name":"ZIP Text",
+				"type":"zip_text",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"raw.zip"}
+				],
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipText",
+				"runner":"runner.php:Modules\\zip\\runnerZipText"
+	},
+
+    {
+				"name":"ZIP Annotated",
+				"type":"zip_basic_tagging",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"annotated.zip"}
+				],
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipAnnotated",
+				"runner":"runner.php:Modules\\zip\\runnerZipAnnotated"
+	},
+		
+    {
+				"name":"UNZIP Text",
+				"type":"unzip_text",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"raw.zip"}
+				],
+				"hidden":true,
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleUnzipText",
+				"runner":"runner.php:Modules\\zip\\runnerUnzipText"
+	},
+		
+    {
+				"name":"UNZIP Annotated",
+				"type":"unzip_annotated",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"raw.zip"}
+				],
+				"hidden":true,
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleUnzipAnnotated",
+				"runner":"runner.php:Modules\\zip\\runnerUnzipAnnotated"
+		}
+		
+]
+
+}

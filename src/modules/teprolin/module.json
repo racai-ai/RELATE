@@ -1,0 +1,17 @@
+{
+
+"order":10,
+
+"languages":["ro"],
+
+"tasks":[
+    {
+				"name":"TEPROLIN",
+				"type":"teprolin",
+				"description":"Perform annotation using the TEPROLIN web service",
+				"scheduler":"scheduler.php:Modules\\teprolin\\schedule",
+				"runner":"runner.php:Modules\\teprolin\\runner"
+		}
+]
+
+}

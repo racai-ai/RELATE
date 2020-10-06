@@ -1,0 +1,17 @@
+{
+
+"order":80,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"Export Marcell",
+				"type":"marcell",
+				"description":"Export corpus into Marcell format (raw, conllu, xml archives)",
+				"scheduler":"scheduler.php:Modules\\export_marcell\\schedule",
+				"runner":"runner.php:Modules\\export_marcell\\runner"
+		}
+]
+
+}

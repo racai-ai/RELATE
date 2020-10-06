@@ -1,0 +1,31 @@
+{
+"order":50,
+
+"menu":[
+      {
+        "label":"ROBIN ASR",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "menu":[
+            {"label":"ASR", "path":"robin/asr"}
+        ]
+      },
+
+      {
+        "label":"ROBIN TTS",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "menu":[
+            {"label":"TTS", "path":"robin/tts"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"robin/asr","script":"pages/asr.php"},
+		{"path":"robinasrws","script":"data/asr.php","data":true},
+		{"path":"robin/tts","script":"pages/tts.php"},
+		{"path":"robinttsws","script":"data/tts.php","data":true}
+
+]
+
+}

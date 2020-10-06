@@ -6,13 +6,17 @@ LOCK_ON_FILE("${LIB_PATH}/../scripts/scheduler.lock");
 
 $settings=new Settings();
 $settings->load();
+
+$modules=new Modules();
+$modules->load();
+
 $fileRunner=0;
 
 $corpora=new Corpora();
 
 $allMaxRunners=0;
 
-echo date("Y-m-d H:i:s.u")." ".microtime(true)." START\n";
+echo date("Y-m-d H:i:s.u")." ".microtime(true)." SCHEDULER START\n";
 
 $task=new Task();
 foreach($corpora->getList() as $c){
@@ -53,34 +57,10 @@ foreach($corpora->getList() as $c){
 
         $task_name=substr($ftask,strrpos($ftask,'/')+1);
         
-        if($tdata['type']=='basic_tagging'){
-            scheduleFilesFolder($corpus,$task_name,$c['name']);
-        }else if($tdata['type']=='udpipe'){
-            scheduleFilesFolder($corpus,$task_name,$c['name']);
-        }else if($tdata['type']=='chunking'){
-            scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
-        }else if($tdata['type']=='cleanup'){
-            scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
-        }else if($tdata['type']=='iate_eurovoc'){
-            scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
-        }else if($tdata['type']=='marcell'){
-            scheduleFile($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
-        }else if($tdata['type']=='statistics'){
-            createFolder($corpus->getFolderPath()."/statistics/");
-            clearFolder($corpus->getFolderPath()."/statistics/");
-            
-            storeFile($corpus->getFolderPath()."/changed_statistics.json",json_encode(["changed"=>time()]));            
+        echo "[corpus=".$corpus->getName()."] [type=${tdata['type']}] [task=${task_name}]\n";
         
-            scheduleFilesFolder($corpus,$task_name,$c['name']);
-            scheduleFolder($corpus->getFolderPath()."/$DirectoryAnnotated/",$task_name,$c['name'],"conllu");
-        }else if($tdata['type']=='unzip_text'){
-            scheduleFile($corpus->getFolderPath()."/zip_text/".$tdata['fname'],$task_name,$c['name'],'zip');
-        }else if($tdata['type']=='zip_text'){
-            scheduleFile($corpus->getFolderPath()."/zip_text/".$tdata['fname'],$task_name,$c['name'],'zip');
-        }else if($tdata['type']=='zip_basic_tagging'){
-            scheduleFile($corpus->getFolderPath()."/zip_$DirectoryAnnotated/".$tdata['fname'],$task_name,$c['name'],'zip');
-        }
-                
+        $modules->schedule($settings,$corpus,$task_name,$tdata);
+        
         finishRunners($task_name);
         
         $old_path=str_replace("/tasks/new/","/tasks/old/",$ftask);
@@ -95,25 +75,25 @@ foreach($corpora->getList() as $c){
     }
 }
 
-echo date("Y-m-d H:i:s.u")." ".microtime(true)." END\n";
+echo date("Y-m-d H:i:s.u")." ".microtime(true)." SCHEDULER END\n";
 
 
 // UNLOCK_FILE(); // => chemata in fn de shutdown
 
-function scheduleFilesFolder($corpus,$task_name,$c_name){
+function scheduleFilesFolder($corpus,$task_name){
             foreach($corpus->getFiles() as $fdata){
                 if($fdata['type']=='csv'){
                     scheduleCSVFile(
                         $corpus->getFolderPath()."/files/".$fdata['name'],
                         $fdata,
                         $task_name,
-                        $c_name
+                        $corpus->getName()
                     );
                 }else if($fdata['type']=='text'){
                     scheduleFile(
-                        $corpus->getFolderPath()."/files/".$fdata['name'],
+                    		$corpus,
+                        "files/".$fdata['name'],
                         $task_name,
-                        $c_name,
                         "text"
                     );
                 }
@@ -121,15 +101,19 @@ function scheduleFilesFolder($corpus,$task_name,$c_name){
 }
 
 
-function scheduleFolder($folder,$task,$corpus,$ftype){
-    $dh = opendir($folder);
+function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false){
+
+		$folder_path=$corpus->getFolderPath()."/".$folder;
+    $dh = opendir($folder_path);
     if($dh===false)return false;
     
     while (($file = readdir($dh)) !== false) {
-        $fpath="$folder/$file";
+        $fpath="$folder_path/$file";
         if(!is_file($fpath))continue;
         
-        scheduleFile($fpath,$task,$corpus,$ftype);
+        if($ext!==false && !endsWith($fpath,$ext))continue;
+        
+        scheduleFile($corpus,"$folder/$file",$task_name,$ftype);
     }
     closedir($dh);    
 
@@ -207,13 +191,13 @@ function scheduleCSVFile($fpath,$fdata,$task,$corpus){
     
 }
 
-function scheduleFile($fpath,$task,$corpus,$ftype){
+function scheduleFile($corpus,$fpath,$task,$ftype){
     global $settings,$fileRunner,$minRunner,$maxRunner;
     
     addToRunner($fileRunner,$task,[
-            "fpath"=>$fpath,
+            "fpath"=>$corpus->getFolderPath()."/".$fpath,
             "ftype"=>$ftype,
-    ],$corpus);
+    ],$corpus->getName());
         
     $fileRunner++;
     if($fileRunner>=$maxRunner)$fileRunner=$minRunner;

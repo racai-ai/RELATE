@@ -1,0 +1,106 @@
+<?php
+
+$chunkingRules=[];
+loadRules($chunkingRules,"chunking_rules.json");
+
+
+function runChunking($fnameIn,$fnameOut){
+    global $runnerFolder,$corpus,$settings;
+    
+    $path=$corpus->getFolderPath()."/chunking/";
+    @mkdir($path);    
+    
+    $fout=fopen("$path/$fnameOut","w");
+    $sent=[];
+    $first=true;
+    foreach(explode("\n",file_get_contents($fnameIn)) as $line){
+        if(strlen($line)===0 || $line[0]=='#'){
+            if(count($sent)>0){
+                $result=chunkSent($sent);
+                if(!$first)fwrite($fout,"\n");
+                fwrite($fout,$result);
+            }
+            $sent=[];
+            continue;
+            $first=false;
+        }
+        
+        $data=explode("\t",$line);
+        $sent[]=[
+          "wid" => $data[0],
+          "word" => $data[1],
+          "lemma" => $data[2],
+          "upos" => $data[3],
+          "pos" => $data[4],
+          "feats" => $data[5],
+          "head" => $data[6],
+          "deprel" => $data[7],
+          "deps" => $data[8],
+          "misc" => $data[9],
+          "chunk" => "O"
+        ];
+    }
+    
+    if(count($sent)>0){
+        $result=chunkSent($sent);
+        if(!$first)fwrite($fout,"\n");
+        fwrite($fout,$result);
+    }
+    
+    fclose($fout);
+    
+    return true;    
+}
+
+function chunkSent($sent){
+    global $chunkingRules,$ruleFields,$resultField;
+    
+    $result="";
+    
+            $last=[];
+            foreach($ruleFields as $k=>$v)
+                $last[$k]="</s>";
+            $last[$resultField]="O";
+            $sent[]=$last;
+
+    prepareRules($chunkingRules);
+    $ret=applyRules($sent,$chunkingRules);
+
+    unset($ret[count($sent)-1]);
+
+    $c_tag="";
+    $c_start=0;
+    $words=[];    
+    for($i=0;$i<count($ret);$i++){
+        $tok=$ret[$i];
+        $chunk=$tok['chunk'];
+        if($chunk=='O'){
+            if(strlen($c_tag)>0){
+                $result.="${c_tag}\t$start\t".($i-1)."\t".implode(" ",$words)."\n";
+            }
+            $result.="O\t$i\t$i\t".$tok['word']."\n";
+            $c_tag="";
+            $words=[];
+            $start=$i;
+        }else{
+            list($begin,$tag)=explode("-",$chunk);
+            if($begin=='B' || $tag!=$c_tag){
+                if(strlen($c_tag)>0){
+                    $result.="${c_tag}\t$start\t".($i-1)."\t".implode(" ",$words)."\n";
+                }
+                $c_tag=$tag;
+                $words=[];
+                $words[]=$tok["word"];
+                $start=$i;
+            }else{
+                $words[]=$tok["word"];
+            }
+        }
+    }
+
+    if(strlen($c_tag)>0){
+        $result.="${c_tag}\t$start\t".($i-1)."\t".implode(" ",$words)."\n";
+    }
+
+    return $result;   
+}

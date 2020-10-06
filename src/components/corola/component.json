@@ -1,0 +1,30 @@
+{
+"order":20,
+
+"menu":[
+      {
+        "label":"CoRoLa",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "menu":[
+            {"label":"About", "path":"corola/about", "forceHTTP":true},
+            {"label":"Korap Search", "path":"corola/korap", "forceHTTP":true},
+            {"label":"NL Search", "path":"corola/nlpcqp", "forceHTTP":true},
+            {"label":"Audio Search", "path":"corola/ocqp", "forceHTTP":true},
+            {"label":"Word Embeddings", "path":"corola/we", "forceHTTP":true},
+            {"label":"Statistics", "path":"corola/stats", "forceHTTP":true}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"corola/about","script":"pages/about.php"},
+		{"path":"corola/korap","script":"pages/korap.php"},
+		{"path":"corola/nlpcqp","script":"pages/nlpcqp.php"},
+		{"path":"corola/ocqp","script":"pages/ocqp.php"},
+		{"path":"corola/stats","script":"pages/stats.php"},
+		{"path":"corola/we","script":"pages/we.php"}
+
+]
+
+}

@@ -77,6 +77,11 @@ function TEPROLIN_getStat($stat,$period,$num){
 
 function TEPROLIN_json2conllu($fname,$json,$sid,$useSentId=true){
     $conllu=[];
+    if(!is_array($json) || !isset($json['teprolin-result']) || !isset($json['teprolin-result']['sentences'])){
+        echo "Invalid TEPROLIN result\n";
+        var_dump($json);
+        return [$conllu,$sid];
+    }
     foreach($json['teprolin-result']['sentences'] as $k=>$sentence){
         $sid++;
         if($sid>1)$conllu[]="";
