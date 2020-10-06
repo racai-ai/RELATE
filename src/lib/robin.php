@@ -1,8 +1,9 @@
 <?php
 
-$ROBIN_ASR_URL="https://89.38.230.18/upload";
+//$ROBIN_ASR_URL="https://89.38.230.18/upload";
+$ROBIN_ASR_URL="http://127.0.0.1:7001/transcribe";
 $ROBIN_TTS_URL="http://89.38.230.18:8080/synthesis";
-$ROBIN_DEBUG=false;
+$ROBIN_DEBUG=true;
 
 function ROBIN_runASR($wave){
     global $ROBIN_ASR_URL,$ROBIN_DEBUG;
