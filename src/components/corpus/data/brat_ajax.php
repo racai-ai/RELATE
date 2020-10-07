@@ -2,6 +2,9 @@
 
 $a=$_REQUEST['action'];
 
+$cacheName=false;
+$cacheData=false;
+
 header('Content-Type: application/json');
 
 if($a=="getCollectionInformation"){
@@ -49,6 +52,8 @@ if($a=="loadConf"){
 }
 
 function loadData(){
+		global $cacheName,$cacheData;
+		
         $cname=trim($_REQUEST['collection'],'/');
         $fname=$_REQUEST['document'];
         $corpora=new Corpora();
@@ -69,7 +74,22 @@ function loadData(){
         $ann=new BratAnn(changeFileExtension($dir,"ann"));
         $ann->load();
         
+        $dir=$corpus->getFolderPath()."/tmp/";
+        @mkdir($dir);
+        $cacheName=$dir.$fname.".bratcache";
+				if(filemtime($cacheName)>=filemtime($fpath)){
+						$cacheData=json_decode(file_get_contents($cacheName),true);
+				}
+
         return ["text"=>$text,"corpus"=>$corpus,"ann"=>$ann];        
+}
+
+function saveCache(){
+		global $cacheName,$cacheData;
+
+    if($cacheName===false || $cacheData===false)return ;
+    
+    file_put_contents($cacheName,json_encode($cacheData));
 }
 
 function getPosChars($text,$chars,$offset){
@@ -84,9 +104,14 @@ function getPosChars($text,$chars,$offset){
 }
 
 function getAnnotation($cdata){
+		global $cacheData;
+
         $corpus=$cdata['corpus'];
         $text=$cdata['text'];
         $ann=$cdata['ann'];
+
+
+		if($cacheData===false){
         
         $s_offsets=[];
         $t_offsets=[];
@@ -124,23 +149,17 @@ function getAnnotation($cdata){
             $i=$mpos+1;
             $pos[$mchar]=mb_strpos($text,$mchar,$i);
         }
-/*
         
-        $sz=mb_strlen($text);
-        for($i=0;$i<$sz;){
-            $p=getPosChars($text,[' ',"\n","\t","\r"],$i);
-            if($p===false){
-                if($i<$sz-1)
-                    $t_offsets[]=[$i,$sz];
-                break;
-            }
-            if($p>$i){
-                $t_offsets[]=[$i,$p];
-            }
-            $i=$p+1;
-        }
-  */      
-        
+        $cacheData=[
+        		"s_offsets"=>$s_offsets,
+        		"t_offsets"=>$t_offsets
+				];
+				
+				saveCache();
+    }else{
+				$s_offsets=$cacheData['s_offsets'];
+				$t_offsets=$cacheData['t_offsets'];
+		}
                 
         return [
             "modifications"=> [], 
