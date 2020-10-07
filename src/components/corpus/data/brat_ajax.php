@@ -77,7 +77,7 @@ function loadData(){
         $dir=$corpus->getFolderPath()."/tmp/";
         @mkdir($dir);
         $cacheName=$dir.$fname.".bratcache";
-				if(filemtime($cacheName)>=filemtime($fpath)){
+				if(is_file($cacheName) && filemtime($cacheName)>=filemtime($fpath)){
 						$cacheData=json_decode(file_get_contents($cacheName),true);
 				}
 
