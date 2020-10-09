@@ -115,7 +115,7 @@ class Corpus {
         
         $dpath=$dir."/".$data['name'];
         if(is_file($dpath)){
-            if($data['type']=="zip_text" || $data['type']=="zip_annotated")
+            if($data['type']=="zip_text" || $data['type']=="zip_annotated" || $data['type']=="standoff")
                 @unlink($dpath);
             else
                 return false;
