@@ -204,7 +204,7 @@ function startRecorder(){
 			 recorderStream = stream;
 			 
 			 var AudioContext = window.AudioContext || window.webkitAudioContext;			 
-			 var audioContext = new AudioContext();
+			 var audioContext = new AudioContext({sampleRate:16000});
 			 /* use the stream */
 			 var input = audioContext.createMediaStreamSource(stream);
 			 //stop the input from playing back through the speakers 
@@ -212,6 +212,7 @@ function startRecorder(){
 			 var recorder = new WebAudioRecorder(input, {
 			     workerDir: "extern/web_audio_recorder/",
 			     encoding: "wav",
+			     numChannels:1,
 			     onEncoderLoading: function(recorder, encoding) {
 			         // show "loading encoder..." display 
 			         console.log("Loading " + encoding + " encoder...");
