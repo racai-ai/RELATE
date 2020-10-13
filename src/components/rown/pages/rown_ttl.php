@@ -10,6 +10,8 @@
      //echo "<!-- \n";var_dump($data);echo "\n -->\n";
      $data=json_decode($data,true);
      //echo "<!-- \n";var_dump($data);echo "\n -->\n";
+     
+     header('Content-Type: text/turtle');
 ?>
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix ili: <http://ili.globalwordnet.org/ili/> .

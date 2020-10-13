@@ -6,4 +6,7 @@
     $sid=$_REQUEST['sid'];
     
     $data=ROWN_call($word,$sid);
+
+		header('Content-Type: text/json');
+
     echo $data;
