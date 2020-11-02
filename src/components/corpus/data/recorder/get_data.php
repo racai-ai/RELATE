@@ -7,12 +7,12 @@ $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
 
 $rname=$user->getProfile("recorder_name","UNKNOWN");
+$data=$corpus->getAudioDataNext($rname);
 
-$current=$corpus->getAudioCurrent($rname);
-$data=$corpus->getAudioData($current);
+$current=$data['current'];
 $total=$data['total'];
 $sentence=$data['sent'];
 
-echo json_encode(["status"=>"OK","current"=>$current+1,"total"=>$total,"sentence"=>$sentence]);
+echo json_encode(["status"=>"OK","current"=>($current<0)?($current):($current+1),"total"=>$total,"sentence"=>$sentence]);
 
 ?>

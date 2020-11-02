@@ -30,6 +30,7 @@
 		{"path":"corpus/file_view","script":"pages/file_view.php","rights":["corpus"]},
 		{"path":"corpus/csv_get","script":"pages/csv_get.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getdownload","script":"pages/file_getdownload.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_delete","script":"pages/file_delete.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/task_getallbycorpus","script":"pages/task_getallbycorpus.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/task_add","script":"pages/task_add.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/archives_get","script":"pages/archives_get.php","data":true,"rights":["corpus"]},

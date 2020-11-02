@@ -350,7 +350,7 @@ function recorderShow(){
 							    document.getElementById("recorderCurrent").innerText=data["current"];
 							    document.getElementById("recorderTotal").innerText=data["total"];
 							    
-									    if(data['current']>data['total']){
+									    if(data['current']>data['total'] || data['current']<0){
 									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
 									    		setAttribute("divRecorderControls","style","display:none;");
 											}else{
@@ -436,7 +436,7 @@ function startRecorder(){
 									    document.getElementById("recorderCurrent").innerText=data["current"];
 									    document.getElementById("recorderTotal").innerText=data["total"];
 									    
-									    if(data['current']>data['total']){
+									    if(data['current']>data['total'] || data['current']<0){
 									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
 									    		setAttribute("divRecorderControls","style","display:none;");
 											}
@@ -555,6 +555,47 @@ function viewFileText(file,showBrat=false){
     });
     
 }
+
+function closeFileViewerAudio(){
+    setAttribute("fileViewerAudio","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
+function viewFileAudio(file){
+    currentFileView=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:none;");
+    setAttribute("fileViewerAudio","style","display:block;");
+    setAttribute("fileViewerAudioDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+    setAttribute("inputFileViewerAudioSource","src","index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file);
+
+    document.getElementById('fileViewerAudioFilename').innerText=file;
+    
+
+		var audio=document.getElementById("inputFileViewerAudio");
+		audio.load();
+
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#filevieweraudio:"+file+":"+previousHash;
+
+}
+
+function fileViewerAudioDelete(){
+		if(!confirm("Delete file ["+currentFileView+"] ?"))return ;
+		
+    loadData("path=corpus/file_delete&corpus={{CORPUS_NAME}}&file="+currentFileView,function(data){
+    		$gridAudio.pqGrid('refreshDataAndView');
+				closeFileViewerAudio();
+    },function(){
+        alert("Error deleting file");
+    });
+		
+		
+}
+
 
 function changeFileExtension(file,ext){
 		var p=file.lastIndexOf(".");
@@ -1286,7 +1327,8 @@ function initGridAudio(){
             ,  wrap: false, hwrap: false
             
             , rowDblClick: function( event, ui ) {
-                window.location.href="index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+ui.rowData.fname;
+                //window.location.href="index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+ui.rowData.fname;
+                viewFileAudio(ui.rowData.fname);
             }           
         };
         function formatCurrency(ui) {
@@ -1330,6 +1372,13 @@ function showBasedOnHash(hash){
         showBasedOnHash(from);
         var vbrat=false; if(from=="files")vbrat=true;
         viewFileText(file,vbrat);
+    }else if(hash.startsWith("filevieweraudio")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        viewFileAudio(file);
     }else if(hash.startsWith("fileviewercsv")){
         var data=hash.split(":",3);
         var file=data[1];

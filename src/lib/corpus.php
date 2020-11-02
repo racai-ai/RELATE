@@ -540,12 +540,14 @@ class Corpus {
 				return ($current+1);
 		}
 		
-		public function getAudioData_CSVFile($fpath,$fdata,$sentNum,$totalInit){
-				$total=$totalInit;
-				$sent="";
+		public function getAudioData_CSVFile($fpath,$fdata,$totalInit,$uname,$current){
+			$total=$totalInit;
+			$sent="";
+            $dir=$this->getFolderPath();
+			$base= "$dir/audio/${uname}_";
     
 		    $fp=fopen($fpath,"r");
-		    if($fp===false)return ["total"=>$totalInit, "sent"=>""];
+		    if($fp===false)return ["total"=>$totalInit, "sent"=>"", "current"=>$current];
 		    
 		    $lnum=-1;
 		    while(!feof($fp)){
@@ -559,48 +561,59 @@ class Corpus {
 		        
 		        if(strlen($fdata['comment'])>0 && startsWith($line[0],$fdata['comment']))continue;
 		
-						// add individual columns
-            foreach(explode(",",$fdata['columns']) as $col){
-                  $text=$line[intval($col)];
-                  if(strlen($text)>0){
-											$total++;
-											if($sentNum==$total-1)$sent=$text;
-									}
-						}
+				// add individual columns
+                foreach(explode(",",$fdata['columns']) as $col){
+                    $text=$line[intval($col)];
+                    if(strlen($text)>0){
+                        if(!is_file("${base}${total}.wav") && $current<0){$current=$total;$sent=$text;}
+						$total++;
+					}
+				}
 		        
 		    }
 		    
 		    fclose($fp);
 		    
-		    return ["total"=>$total,"sent"=>$sent]; 
+		    return ["total"=>$total,"sent"=>$sent,"current"=>$current]; 
 		}
 		
-		public function getAudioData($sentNum){
+		public function getAudioDataNext($uname){
 		
-				$total=0;
-				$sent="";
-				
-        foreach($this->getFiles() as $fdata){
-            if($fdata['type']=='csv'){
-            		$rdata=$this->getAudioData_CSVFile(
-                    $this->getFolderPath()."/files/".$fdata['name'],
-                    $fdata,
-                    $sentNum,
-                    $total
-                );
-                
-                $total=$rdata['total'];
-								if(strlen($rdata['sent'])>0)$sent=$rdata['sent'];
-            }else if($fdata['type']=='text'){
-            		$total++;
-            		if($sentNum===$total-1){
-										$sent=file_get_contents($corpus->getFolderPath()."/files/".$fdata['name']);
-								}
+			$total=0;
+			$sent="";
+            $current=-1;
+
+            $dir=$this->getFolderPath();
+			$base= "$dir/audio/${uname}_";
+			
+            foreach($this->getFiles() as $fdata){
+                if($fdata['type']=='csv'){
+                		$rdata=$this->getAudioData_CSVFile(
+                            $this->getFolderPath()."/files/".$fdata['name'],
+                            $fdata,
+                            $total,
+                            $uname,
+                            $current
+                        );
+                    
+                        $total=$rdata['total'];
+        				if(strlen($rdata['sent'])>0){
+                            $current=$rdata['current'];
+                            $sent=$rdata['sent'];
+                        }
+                }else if($fdata['type']=='text'){
+                        if(!is_file("${base}${total}.wav") && $current<0){
+                            $current=$total;
+							$sent=file_get_contents($this->getFolderPath()."/files/".$fdata['name']);
+                        }
+
+                		$total++;
+                }
             }
-        }
         
-        return ["total"=>$total, "sent"=>$sent] ;
+            return ["total"=>$total, "sent"=>$sent, "current"=>$current] ;
 		}
+
 
     private function mergeStatistics($fname,&$stat){
         $newStat=json_decode(file_get_contents($fname),true);

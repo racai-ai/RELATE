@@ -8,7 +8,9 @@ if(!$corpus->loadData())die("Invalid corpus");
 
 $rname=$user->getProfile("recorder_name","UNKNOWN");
 
-$current=$corpus->getAudioCurrent($rname);
+$data=$corpus->getAudioDataNext($rname);
+$current=$data['current'];
+if($current<0)die("Invalid current file");
 
 $fname=$rname."_".$current.".wav";
 $path=$corpus->getFolderPath()."/audio/";
@@ -18,11 +20,12 @@ $path.=$fname;
 if(is_file($path))@unlink($path);
 
 move_uploaded_file($_FILES['blob']['tmp_name'],$path);
-$current++;
-$data=$corpus->getAudioData($current);
+
+$data=$corpus->getAudioDataNext($rname);
 $total=$data['total'];
 $sentence=$data['sent'];
+$current=$data['current'];
 
-echo json_encode(["status"=>"OK","current"=>$current+1,"total"=>$total,"sentence"=>$sentence]);
+echo json_encode(["status"=>"OK","current"=>($current<0)?($current):($current+1),"total"=>$total,"sentence"=>$sentence]);
 
 ?>

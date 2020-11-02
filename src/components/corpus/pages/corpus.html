@@ -210,6 +210,24 @@
                     </div>                    
 <!-- AICI SE TERMINA ZONA DE BUTOANE -->
 
+                    <!-- AUDIO FILE VIEW -->
+                    <div style="display:none" id="fileViewerAudio">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerAudio();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioDownload" onclick="">Download</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioDelete" onclick="fileViewerAudioDelete();">Delete</button>
+                      
+                      <div class="mT-30">
+                      
+                      	<p id="fileViewerAudioFilename">&nbsp;</p>
+                      	
+												<audio controls="controls" id="inputFileViewerAudio">
+														<source id="inputFileViewerAudioSource" src="" type="audio/wav">
+	    									</audio>                      
+                      </div>
+                    
+                    </div>
+
+
                     <!-- TEXT FILE VIEW -->
                     <div style="display:none" id="fileViewerText">
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerText();">Back</button>
