@@ -350,7 +350,7 @@ function recorderShow(){
 							    document.getElementById("recorderCurrent").innerText=data["current"];
 							    document.getElementById("recorderTotal").innerText=data["total"];
 							    
-									    if(data['current']>data['total']){
+									    if(data['current']>data['total'] || data['current']<0){
 									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
 									    		setAttribute("divRecorderControls","style","display:none;");
 											}else{
@@ -436,7 +436,7 @@ function startRecorder(){
 									    document.getElementById("recorderCurrent").innerText=data["current"];
 									    document.getElementById("recorderTotal").innerText=data["total"];
 									    
-									    if(data['current']>data['total']){
+									    if(data['current']>data['total'] || data['current']<0){
 									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
 									    		setAttribute("divRecorderControls","style","display:none;");
 											}
