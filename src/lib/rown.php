@@ -1,6 +1,9 @@
 <?php
 
 function ROWN_call($word,$sid,$port=8012){
+		if($port==8012)
+				return file_get_contents("http://corolaws.racai.ro:${port}/rown?text=".urlencode($word)."&sid=$sid");
+
     $ch = curl_init();
     
     $data="------WebKitFormBoundary6XfRB2HxKQdC87hB\r\nContent-Disposition: form-data; name=\"text\"\r\n\r\n{{data_text}}\r\n------WebKitFormBoundary6XfRB2HxKQdC87hB\r\nContent-Disposition: form-data; name=\"sid\"\r\n\r\n{{data_sid}}\r\n------WebKitFormBoundary6XfRB2HxKQdC87hB--\r\n";    

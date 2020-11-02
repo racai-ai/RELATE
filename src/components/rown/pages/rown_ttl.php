@@ -69,6 +69,7 @@
 				}
 		}
 		
+		echo "\n";
 		foreach($ttl_pos as $ttlp=>$d){
 				echo "<#${ttlp}>\n";
   			echo "   ontolex:canonicalForm [\n";
@@ -85,7 +86,7 @@
 		foreach($ttl_senses as $sid=>$pwnid){
 				echo "<#${sid}>\n";
    			echo "   ontolex:isLexicalizedSenseOf pwnid:${pwnid} ;\n";
-   			echo "   a ontolex:LexicalSense .\n";		
+   			echo "   a ontolex:LexicalSense .\n\n";		
 		}
 		
 		foreach($ttl_id as $pwnid=>$d){
@@ -95,7 +96,7 @@
   			foreach($d['rel'] as $rid=>$type){
   			echo "   wn:${rid} pwnid:${type} ;\n";
 				} 
-   			echo "   a ontolex:LexicalConcept .\n"; 		
+   			echo "   a ontolex:LexicalConcept .\n\n"; 		
 		}
 		
 }
