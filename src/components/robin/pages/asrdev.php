@@ -18,4 +18,11 @@ function getPageJS(){
     return $js;
 }
 
+function getPageAdditionalJS(){
+    return [
+				"extern/web_audio_recorder/WebAudioRecorder.min.js"
+		];
+}
+
+
 ?>
