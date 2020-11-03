@@ -2,16 +2,18 @@
 
 //$ROBIN_ASR_URL="https://89.38.230.18/upload";
 $ROBIN_ASR_URL="http://127.0.0.1:7001/transcribe";
+$ROBIN_ASRDEV_URL="http://127.0.0.1:7002/transcribe";
 $ROBIN_TTS_URL="http://89.38.230.18:8080/synthesis";
 $ROBIN_DEBUG=false;
 
-function ROBIN_runASR($wave){
-    global $ROBIN_ASR_URL,$ROBIN_DEBUG;
+function ROBIN_runASR($wave,$isDev=false){
+    global $ROBIN_ASR_URL,$ROBIN_DEBUG,$ROBIN_ASRDEV_URL;
     
     set_time_limit(80);
 
     $ch = curl_init();
-    $url=$ROBIN_ASR_URL;
+    if($isDev)$url=$ROBIN_ASRDEV_URL;
+    else $url=$ROBIN_ASR_URL;
     
     $boundary = uniqid();
     $delimiter = '-------------' . $boundary;
