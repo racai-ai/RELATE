@@ -1,3 +1,4 @@
+document.getElementById("bStopRecorder").disabled = true;
 
 function myescape(s){
     s=s.replace("<","&lt;");
@@ -5,12 +6,15 @@ function myescape(s){
     return s;
 }
 
+function loadData(data,func,error){
+    loadDataComplete("index.php","POST",data,null,func,error);
+}
 
 function loadDataForm(formId,func){
     loadDataComplete("index.php","POST",null,formId,func);
 }
 
-function loadDataComplete(url,method,data,formId,func){
+function loadDataComplete(url,method,data,formId,func,error){
     var xhttp = false;
     
     if (window.XMLHttpRequest) {
@@ -22,9 +26,14 @@ function loadDataComplete(url,method,data,formId,func){
     }
     
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        var response=this.responseText;
-        func(response);
+      if (this.readyState == 4){
+        if(this.status == 200) {
+          var response=this.responseText;
+          func(response);
+        }else{
+          if(error!==undefined && error!==null)
+            error();
+        }
       }
     };    
     xhttp.open(method, url, true);
@@ -33,11 +42,52 @@ function loadDataComplete(url,method,data,formId,func){
         var fd=new FormData(form);
         xhttp.send(fd);
     }else if(data!==undefined && data!==null){
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		if(!(data instanceof FormData)){
+        		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        }
         xhttp.send(data);
     }else{
         xhttp.send();
     }
+}
+
+function setAttribute(obj,attr,value){
+    var ob=document.getElementById(obj);
+    if(ob!=null)
+        ob.setAttribute(attr,value);
+}
+
+function showOutput(n,num, hash){
+    for(var i=1;i<=num;i++){
+        if(i==n){
+          setAttribute("output"+i,"style","display:block; height:100%; overflow:auto;");
+          setAttribute("bOutput"+i,"class","btn cur-p btn-success");
+        }else{
+          setAttribute("output"+i,"style","display:none");
+          setAttribute("bOutput"+i,"class","btn cur-p btn-secondary");
+        }
+    }
+    
+    if(hash!==undefined && hash!==null){
+        window.location.hash="#"+hash;    
+    }
+    
+}
+
+function ASRResultCallback(response){
+          var obj=JSON.parse(response) ;
+        
+          if(obj.error){
+              alert("The file cannot be processed");
+              document.getElementById("loading").setAttribute("style","display:none");
+              document.getElementById("output").setAttribute("style","display:block; height:100%");
+              return ;
+          }
+        
+          document.getElementById("outputASR").value=obj['asr'];
+          document.getElementById("loading").setAttribute("style","display:none");
+          document.getElementById("output").setAttribute("style","display:block");
+          showOutput(3,3,'results');
 }
 
 function runASR(){
@@ -45,32 +95,20 @@ function runASR(){
     var text=document.getElementById("asrfile").value;
     if(text.length<1){alert("Please select a WAV file"); return ;}
 
-    document.getElementById("input").setAttribute("style","display:none");
+    document.getElementById("output").setAttribute("style","display:none");
     document.getElementById("loading").setAttribute("style","display:block");
 
     loadDataForm( 
         "asr-form",
-        function(response){
-          var obj=JSON.parse(response) ;
-        
-          if(obj.error){
-              alert("The file cannot be processed");
-              document.getElementById("loading").setAttribute("style","display:none");
-              document.getElementById("input").setAttribute("style","display:block; height:100%");
-              return ;
-          }
-        
-          document.getElementById("outputASR").value=obj['asr'];
-          document.getElementById("loading").setAttribute("style","display:none");
-          document.getElementById("output").setAttribute("style","display:block; height:100%");
-        }
+        ASRResultCallback
     )
 }
 
 function runAnother(){
     document.getElementById("asrfile").value="";
-    document.getElementById("input").setAttribute("style","display:block");
-    document.getElementById("output").setAttribute("style","display:none");
+    showOutput(1,3,'file');
+    //document.getElementById("input").setAttribute("style","display:block");
+    //document.getElementById("output").setAttribute("style","display:none");
 }
 
 
@@ -148,4 +186,108 @@ function runAnalysis(){
   text=text.toLowerCase();
   text = text.charAt(0).toUpperCase() + text.slice(1).trim() + ".";
   post("index.php?path=teprolin/complete",{"text":text},'POST');
+}
+
+
+var recorderStream=false;
+var recorderWebAudioRecorder=false;
+
+function startRecorder(){
+
+		navigator.mediaDevices.getUserMedia({audio:true,video:false}).then(function(stream) {
+				console.log("getUserMedia() success, stream created, initializing WebAudioRecorder...");
+
+				document.getElementById("bStartRecorder").disabled = true;
+				
+
+			 //assign to gumStream for later use 
+			 recorderStream = stream;
+			 
+			 var AudioContext = window.AudioContext || window.webkitAudioContext;			 
+			 var audioContext = new AudioContext({sampleRate:16000});
+			 /* use the stream */
+			 var input = audioContext.createMediaStreamSource(stream);
+			 //stop the input from playing back through the speakers 
+			 input.connect(audioContext.destination) //get the encoding 
+			 var recorder = new WebAudioRecorder(input, {
+			     workerDir: "extern/web_audio_recorder/",
+			     encoding: "wav",
+			     numChannels:1,
+			     onEncoderLoading: function(recorder, encoding) {
+			         // show "loading encoder..." display 
+			         console.log("Loading " + encoding + " encoder...");
+			     },
+			     onEncoderLoaded: function(recorder, encoding) {
+			         // hide "loading encoder..." display
+			         console.log(encoding + " encoder loaded");
+			     }
+			 });
+			 
+				recorder.onComplete = function(recorder, blob) {
+				    console.log("Encoding complete");
+				    
+				    document.getElementById("output").setAttribute("style","display:none");
+				    document.getElementById("loading").setAttribute("style","display:block");
+
+						document.getElementById("bStartRecorder").disabled = false;
+				    setAttribute("bStartRecorder","style","display:inline; width:100px; text-align:center");
+						document.getElementById("bStopRecorder").disabled = true;
+				    
+						var data = new FormData();
+						data.append('path', 'robinasrwsdev');
+						data.append('asrfile', blob);				    
+				    loadData(data,
+							ASRResultCallback
+							,function(){
+								console.log("Error uploading");
+
+
+						});
+						
+						
+				}	
+				
+				recorder.onError = function(recorder, err) {
+						console.log("Recorder error ");
+						console.log(err);
+				}
+				
+				
+				recorder.setOptions({
+						timeLimit: 60 * 60, // 1h
+						encodeAfterRecord: false,
+						wav: {
+						},
+						mp3: {
+							bitRate: 160
+						}
+				});
+				
+				recorderWebAudioRecorder=recorder;
+				
+				recorder.startRecording();	
+
+				document.getElementById("bStartRecorder").disabled = false;
+		    setAttribute("bStartRecorder","style","display:none");
+				document.getElementById("bStopRecorder").disabled = false;
+					 
+
+		}).catch(function(err) {
+		
+				console.log(err); 
+				alert("Can not capture audio!");
+
+				document.getElementById("bStartRecorder").disabled = false;
+		    setAttribute("bStartRecorder","style","display:inline; width:100px; text-align:center");
+				document.getElementById("bStopRecorder").disabled = true;
+
+		});
+
+}
+
+function stopRecorder(){
+		document.getElementById("bStopRecorder").disabled = true;
+		console.log("Stopping recorder ...");
+		recorderStream.getAudioTracks()[0].stop();
+		recorderWebAudioRecorder.finishRecording();
 }
