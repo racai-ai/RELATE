@@ -16,6 +16,8 @@
 "handlers":[
 		{"path":"rownws","script":"data/rown.php","data":true},
 		{"path":"rown/rown","script":"pages/rown.php","data":true},
+		{"path":"rown/rownttl","script":"pages/rown_ttl.php","data":true},
+		{"path":"rown/rownjson","script":"pages/rown_json.php","data":true},
 		{"path":"rown/query","script":"pages/query.php"},
 		{"path":"rown/queryp","script":"pages/queryp.php"}
 ]

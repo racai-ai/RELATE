@@ -39,6 +39,11 @@
     Word not found !
     <?php }else{ ?>
 
+		<p>
+				<a href="index.php?path=rown/rownttl&word=<?php echo $word;?>&sid=<?php echo $sid;?>">View as RDF</a>
+				<a href="index.php?path=rown/rownjson&word=<?php echo $word;?>&sid=<?php echo $sid;?>">View as JSON</a>
+		</p>
+
     <?php foreach($data['senses'] as $s){?>
     <div class="synset">
         <div class="s_id">Synset: <?php echo $s['id'];?> <?php echo $s['literal'];?></div>
@@ -55,6 +60,7 @@
     </div>
     <?php } ?>
     <?php } ?>
+    <br/><br/>
 </body>
 
 
