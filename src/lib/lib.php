@@ -33,6 +33,9 @@ require_once "${LIB_PATH}/ConllupSentenceIterator.php";
 require_once "${LIB_PATH}/ConllupToken.php";
 require_once "${LIB_PATH}/ConllupTokenIterator.php";
 
+require_once "${LIB_PATH}/ServerFastText.php";
+require_once "${LIB_PATH}/eurovoc.php";
+
 require_once "${LIB_PATH}/config.php";
 
 require_once "${LIB_PATH}/settings.php";

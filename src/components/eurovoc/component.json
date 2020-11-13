@@ -1,0 +1,22 @@
+{
+"order":60,
+
+"menu":[
+      {
+        "label":"EUROVOC Classification",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"eurovoc/classify",
+        "menu":[
+            {"label":"Classifier", "path":"eurovoc/classify"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"eurovoc/classify","script":"pages/classify.php"},
+		{"path":"eurovoc/get_classes","script":"data/get_classes.php","data":true}
+
+]
+
+}

@@ -1,0 +1,23 @@
+{
+"order":60,
+
+"menu":[
+      {
+        "label":"CURLICAT Anonymization",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"roanon/anonymize",
+        "rights":["corpus"],
+        "menu":[
+            {"label":"Anonymization", "path":"roanon/anonymize","rights":["corpus"]}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"roanon/anonymize","script":"pages/anonymize.php","rights":["corpus"]},
+		{"path":"roanon/do_anonymize","script":"data/do_anonymize.php","data":true,"rights":["corpus"]}
+
+]
+
+}
