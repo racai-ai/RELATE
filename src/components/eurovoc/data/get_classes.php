@@ -1,15 +1,13 @@
 <?php
 
 if(!isset($_REQUEST['text']))die("Invalid call");
-if(!isset($_REQUEST['num']))die("Invalid call");
-if(!isset($_REQUEST['threshold']))die("Invalid call");
 
 $text=cleanupTextForServerFastText($_REQUEST['text']);
 
 $ret=callFastTextClassifier(
     $text,
     "http://127.0.0.1:8201/classifier_predict",
-    intval($_REQUEST['num']),floatval($_REQUEST['threshold']),true
+    6,0,true
 );
 
 //$ret=["428","7927"];
