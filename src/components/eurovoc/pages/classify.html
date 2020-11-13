@@ -11,6 +11,7 @@
                             <input type="hidden" name="path" value="eurovoc/get_classes"/>
 
                             <br/>
+                            Num <input type="text" name="num" value="6"/> Threshold <input type="text" name="threshold" value="0.0"/>
                             <button type="button"  class="btn cur-p btn-secondary" onclick="classify();">Classify</button>
                         </form>
                     
@@ -26,7 +27,15 @@
                         <button type="button"  class="btn cur-p btn-secondary" onclick="again();">Classify another document</button>
                     </div>
 
+<div id="text">
+<p>The EUROVOC classification model for Romanian language was trained using <a href="https://fasttext.cc/" target="_blank">FastText</a> 
+using <a href="http://corolaws.racai.ro/word_embeddings/" target="_blank">CoRoLa based word embeddings</a>. It is served using a 
+changed version of FastText supporting serving trained models. It can be downloaded from our github: 
+<a href="https://github.com/racai-ai/ServerFastText" target="_blank">https://github.com/racai-ai/ServerFastText</a>.</p>
+<p>The model achieves P=50.93, R=56.40, F1=53.53 on EUROVOC IDs, while conversion to MT labels translates into P=56.05, R=68.95, F1=61.83 and for top-level domains P=64.9, R=77.89, F1=70.80.</p>
+<p>The model can be downloaded here: <a href="https://relate.racai.ro/resources/EUROVOC/eurovoc.ro.bin">BIN</a> or <a href="https://relate.racai.ro/resources/EUROVOC/eurovoc.ro.vec">VEC</a>.</p>
 
+</div>
 
                   </div>
                 </div>
