@@ -57,6 +57,26 @@ class CONLLUP {
         $this->columnId=array_flip($this->columns);
     }
     
+    public function addFileMetadataField($field,$value){
+				for($i=0;$i<count($this->data);$i++){
+						$line=$this->data[$i];
+						if($line['type']=="new_sent")break;
+						if($line['type']=='comment'){
+								 $cdata=explode("=",$line['content'],2);
+								 if(count($cdata)==2){
+								 		$name=trim($cdata[0],"# \t");
+								 		if(strcasecmp($name,$field)===0){
+												$this->data[$i]['content']="# $field = $value";
+												return true;
+										}
+								 }
+						}
+				}
+				
+				array_splice($this->data,$i,1, [$this->data[$i],"# $field = $value"]);
+				return true;
+		}
+    
     public function readFromFile($fpath){
         $this->readFromString(file_get_contents($fpath));
     }
