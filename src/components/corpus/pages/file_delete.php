@@ -134,7 +134,7 @@ $trash=$corpus->getFolderPath()."/trash";
 $trash.="/$srcDir";
 @mkdir($trash);
 
-$fpath_trash=$trash."/$fname" ;
+$fpath_trash=$trash."/$fname".".".date("YmdHis") ;
 rename($fpath,$fpath_trash);
 
 echo json_encode(["status"=>"OK"]);
