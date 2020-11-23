@@ -39,7 +39,7 @@ $EUROVOC_Classifier_Server_URL="http://127.0.0.1:8201";
 
 $EUROVOC_Classifier_Server_URLS=[
   "http://127.0.0.1:8201",  // called with PROCESS+1
-}
+];
 
 $SSPLIT_baseurl="http://127.0.0.1:9021";
 

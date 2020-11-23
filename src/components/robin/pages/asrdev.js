@@ -78,7 +78,7 @@ function ASRResultCallback(response){
           var obj=JSON.parse(response) ;
         
           if(obj.error){
-              alert("The file cannot be processed");
+              alert("The file cannot be processed: "+obj.message);
               document.getElementById("loading").setAttribute("style","display:none");
               document.getElementById("output").setAttribute("style","display:block; height:100%");
               return ;
