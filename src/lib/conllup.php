@@ -73,7 +73,7 @@ class CONLLUP {
 						}
 				}
 				
-				array_splice($this->data,$i,1, [$this->data[$i],"# $field = $value"]);
+				array_splice($this->data,$i,1, [$this->data[$i],["type"=>"comment","content"=>"# $field = $value"]]);
 				return true;
 		}
 		
