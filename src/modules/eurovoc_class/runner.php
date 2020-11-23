@@ -21,7 +21,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     
     @mkdir($path);    
     
-    $data=EUROVOC_Classify($contentIn,$runner->getRunnerId()+1);
+    $data=EUROVOC_Classify($contentIn,6,0.0,$runner->getRunnerId()+1);
     if($data!==false){
         $conllup=new \CONLLUP();
         $conllup->readFromString($contentIn);
