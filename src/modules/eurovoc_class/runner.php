@@ -23,9 +23,12 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     
     $conllup=new \CONLLUP();
     $conllup->readFromString($contentIn);
-    $data=EUROVOC_Classify($conllup->getText(),6,0.0,$runner->getRunnerId()+1);
+    $data=EUROVOC_Classify($conllup->getText(),6,0.0,$runner->getRunnerId()+1);    
     if($data!==false){
-        $conllup->addFileMetadataField("eurovoc_domains",$data);
+				$mtids=EUROVOC_getMT($data);
+				$domains=EUROVOC_getDomains($mtids);
+				sort($domains);
+        $conllup->addFileMetadataField("eurovoc_domains",implode("\t",$domains));
         $conllup->writeToFile($finalFile);
     }else{
         echo "ERROR $fnameOut\n";
