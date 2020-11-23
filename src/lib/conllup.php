@@ -76,6 +76,17 @@ class CONLLUP {
 				array_splice($this->data,$i,1, [$this->data[$i],"# $field = $value"]);
 				return true;
 		}
+		
+		public function getText(){
+				$text="";
+				$first=true;
+				foreach($this->getTokenIterator() as $tok){
+						if($first)$first=false; else $text.=" ";
+						$text.=$tok->get("FORM");
+				}
+				
+				return $text;
+		}
     
     public function readFromFile($fpath){
         $this->readFromString(file_get_contents($fpath));

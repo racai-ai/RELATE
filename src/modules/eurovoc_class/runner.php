@@ -21,10 +21,10 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     
     @mkdir($path);    
     
-    $data=EUROVOC_Classify($contentIn,6,0.0,$runner->getRunnerId()+1);
+    $conllup=new \CONLLUP();
+    $conllup->readFromString($contentIn);
+    $data=EUROVOC_Classify($conllup->getText(),6,0.0,$runner->getRunnerId()+1);
     if($data!==false){
-        $conllup=new \CONLLUP();
-        $conllup->readFromString($contentIn);
         $conllup->addFileMetadataField("eurovoc_domains",$data);
         $conllup->writeToFile($finalFile);
     }else{
