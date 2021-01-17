@@ -51,8 +51,10 @@ class CONLLUP {
             $this->columnId=array_flip($this->columns);
         }
         
-        for($i=count($this->columns);$i<$this->getFirstToken()->getNumColumns();$i++){
-            $this->columns[]="C${i}";
+        if($this->getFirstToken()!==false){
+    	    for($i=count($this->columns);$i<$this->getFirstToken()->getNumColumns();$i++){
+        	$this->columns[]="C${i}";
+    	    }
         }
         $this->columnId=array_flip($this->columns);
     }
@@ -72,6 +74,8 @@ class CONLLUP {
 								 }
 						}
 				}
+				
+				if($line['type']=="new_sent"){$i=0;}
 				
 				array_splice($this->data,$i,1, [$this->data[$i],["type"=>"comment","content"=>"# $field = $value"]]);
 				return true;
