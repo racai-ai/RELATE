@@ -1,0 +1,17 @@
+{
+
+"order":30,
+
+"languages":["ro"],
+
+"tasks":[
+    {
+				"name":"Classify EuroVoc",
+				"type":"eurovoc_class",
+				"description":"Classify text using EuroVoc classification",
+				"scheduler":"scheduler.php:Modules\\eurovoc_class\\schedule",
+				"runner":"runner.php:Modules\\eurovoc_class\\runner"
+		}
+]
+
+}

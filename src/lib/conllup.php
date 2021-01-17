@@ -51,11 +51,46 @@ class CONLLUP {
             $this->columnId=array_flip($this->columns);
         }
         
-        for($i=count($this->columns);$i<$this->getFirstToken()->getNumColumns();$i++){
-            $this->columns[]="C${i}";
+        if($this->getFirstToken()!==false){
+    	    for($i=count($this->columns);$i<$this->getFirstToken()->getNumColumns();$i++){
+        	$this->columns[]="C${i}";
+    	    }
         }
         $this->columnId=array_flip($this->columns);
     }
+    
+    public function addFileMetadataField($field,$value){
+				for($i=0;$i<count($this->data);$i++){
+						$line=$this->data[$i];
+						if($line['type']=="new_sent")break;
+						if($line['type']=='comment'){
+								 $cdata=explode("=",$line['content'],2);
+								 if(count($cdata)==2){
+								 		$name=trim($cdata[0],"# \t");
+								 		if(strcasecmp($name,$field)===0){
+												$this->data[$i]['content']="# $field = $value";
+												return true;
+										}
+								 }
+						}
+				}
+				
+				if($line['type']=="new_sent"){$i=0;}
+				
+				array_splice($this->data,$i,1, [$this->data[$i],["type"=>"comment","content"=>"# $field = $value"]]);
+				return true;
+		}
+		
+		public function getText(){
+				$text="";
+				$first=true;
+				foreach($this->getTokenIterator() as $tok){
+						if($first)$first=false; else $text.=" ";
+						$text.=$tok->get("FORM");
+				}
+				
+				return $text;
+		}
     
     public function readFromFile($fpath){
         $this->readFromString(file_get_contents($fpath));
