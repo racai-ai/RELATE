@@ -1,0 +1,20 @@
+{
+"order":90,
+
+"menu":[
+      {
+        "label":"Pretrained LM",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"pretrainedlm/list",
+        "menu":[
+            {"label":"Language Models", "path":"pretrainedlm/list"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"pretrainedlm/list","script":"pages/lmlist.php"}
+]
+
+}
