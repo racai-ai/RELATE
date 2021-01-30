@@ -60,7 +60,7 @@ class CONLLUP {
     public function addFileMetadataField($field,$value){
 				for($i=0;$i<count($this->data);$i++){
 						$line=$this->data[$i];
-						if($line['type']=="new_sent")break;
+						if($line['type']=="new_sent" || $line['type']=="data"){$i--;break;}
 						if($line['type']=='comment'){
 								 $cdata=explode("=",$line['content'],2);
 								 if(count($cdata)==2){
@@ -72,6 +72,9 @@ class CONLLUP {
 								 }
 						}
 				}
+				
+				if($i>count($this->data))$i=count($this->data)-1;
+				if($i<0)$i=0;
 				
 				array_splice($this->data,$i,1, [$this->data[$i],["type"=>"comment","content"=>"# $field = $value"]]);
 				return true;
