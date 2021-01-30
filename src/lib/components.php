@@ -54,10 +54,17 @@ class Components {
 				
 				foreach($this->components as $comp){
 						if(!isset($comp['menu']))continue;
-						$menu=array_merge($menu,$comp['menu']);
+						foreach($comp['menu'] as $m){
+								if(!isset($m['label']) || isset($m['enabled']) && $m['enabled']===false)continue;
+								$l=$m['label'];
+								if(!isset($menu[$l]))$menu[$l]=$m;
+								else if(isset($m['menu']))
+										$menu[$l]['menu']=array_merge($menu[$l]['menu'],$m['menu']);
+						}
+						//$menu=array_merge($menu,$comp['menu']);
 				}
 				
-				return $menu;
+				return array_values($menu);
 		
 		}
 		
