@@ -8,8 +8,8 @@
         "menu":[
             {"label":"Text RO - EN", "path":"translate/ro_en"},
             {"label":"Text EN - RO", "path":"translate/en_ro"},
-            {"label":"Speech RO - EN", "path":"translate/speech_ro_en"},
-            {"label":"Speech EN - RO", "path":"translate/speech_en_ro"},
+            {"label":"Speech RO - EN", "path":"translate/speech_ro_en","rights":["corpus"]},
+            {"label":"Speech EN - RO", "path":"translate/speech_en_ro","rights":["corpus"]},
             {"label":"Text Dev Documentation", "path":"translate/dev_doc"}
         ]
       },
@@ -18,8 +18,8 @@
         "label":"Speech",
         "icon":"c-deep-purple-500 ti-comment-alt",
         "menu":[
-            {"label":"Translate RO - EN", "path":"translate/speech_ro_en"},
-            {"label":"Translate EN - RO", "path":"translate/speech_en_ro"}
+            {"label":"Translate RO - EN", "path":"translate/speech_ro_en","rights":["corpus"]},
+            {"label":"Translate EN - RO", "path":"translate/speech_en_ro","rights":["corpus"]}
         ]
       }
       
