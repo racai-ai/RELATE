@@ -30,7 +30,7 @@ if($data['lang']=="en"){
 		// Romanian
 		
 		$data=ROMANIANTTS_runTTS($data['text']);
-		$data=file_get_contents($data);
+		$data=file_get_contents(trim($data));
 		
         header('Content-Description: File Transfer');
         header('Cache-Control: public, must-revalidate, max-age=0');
