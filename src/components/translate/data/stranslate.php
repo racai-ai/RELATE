@@ -35,6 +35,7 @@ if($input=="ro"){
 		$status=$result['status'];
 		
 		$translated=TILDE_Translate($_REQUEST['sysid'],$text);
+		$translated=trim($translated,"\"");
 }else{
 		// FOR ENGLISH
 }
