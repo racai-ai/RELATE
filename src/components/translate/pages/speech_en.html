@@ -1,0 +1,78 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Speech-to-Speech Translation</h6>
+                  <div class="mT-30">
+
+                    {{loading}}
+                  
+                    <div id="output">                  
+                        <div style="height: 40px;">
+                        <button type="button" id="bOutput1"  class="btn cur-p btn-success"   onclick="showOutput(1,3,'file');">File</button>
+                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,3,'recording');">Recording</button>
+                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,3,'results');">Results</button>
+                        </div>
+                        <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
+
+												<div id="output1"> <!-- File -->
+		                        <form id="asr-form" enctype="multipart/form-data">
+		                            <p>Selectați un fișier WAV asociat unui text în limba ENGLEZĂ. Este indicat să fie înregistrat cât mai clar.</p>
+																                    
+		                            <input type="file" id="asrfile" name="asrfile" accept="audio/wav, audio/x-wav" class="form-control-file"/>
+		                            <input type="hidden" name="path" value="stranslatews"/>
+		                            <br/>
+                                <input type="hidden" name="sysid" id="sysid" value="{{sysid}}"/>
+                                <input type="hidden" name="input" id="input" value="{{input}}"/>
+
+		                            <button type="button"  class="btn cur-p btn-secondary" onclick="runASR();">Translate</button>
+		                        </form>
+		                    </div>
+		                    
+		                    <div id="output2" style="display:none"> <!-- RECORDING -->
+															<div id="divRecorderControls" style="text-align:center">
+																	<button type="button" id="bStartRecorder" class="btn cur-p btn-danger" style="width:100px; text-align:center" onclick="startRecorder();">START</button>
+																	<div id="divRecording" style="display:none; font-color:red; width:100px;">Recording ...</div>
+																	<button type="button" id="bStopRecorder" class="btn cur-p btn-danger" onclick="stopRecorder();">STOP</button>
+															</div>
+															
+															<div>
+															<br/><br/><br/><br/>
+															<ul>
+															<li>This app was tested on the Chrome Browser.</li>
+															<li>For better results use headphones with mic for recording and speak naturally.</li>
+															<li>If you hear your own sound during recording, <b>TURN OFF YOUR COMPUTER SOUND</b>.</li>
+															</ul>
+															</div>
+		                    </div>
+                    
+		                    <div style="display:none" id="output3"> <!-- RESULTS -->
+                            <textarea id="outputASR" style="width:100%; height:50px">{ output asr }</textarea>
+                            <br/>
+                            <textarea id="outputTranslated" style="width:100%; height:50px">{ output translated }</textarea>
+                            <br/>
+														<audio id="ttssrcid" controls="controls">
+																<source src="index.php?path=sttsws&text=" type="audio/wav">
+														</audio>  
+														<br/>                          
+                            <!-- <button type="button"  class="btn cur-p btn-secondary" onclick="saveTextAsFile('outputASR','output_asr.txt','text/text');">Download ASR Text</button> -->
+                            <!-- <button type="button"  class="btn cur-p btn-secondary" onclick="runAnother();">New file</button> -->
+                            <!-- <button type="button"  class="btn cur-p btn-secondary" onclick="runAnalysis();">Analysis</button> --> 
+		                    </div>
+
+												</div> <!-- Output area -->
+												
+												<p><br/>For this implementation we used the following:
+												<ul>
+												<li>Romanian ASR from the ROBIN Project: Andrei-Marius AVRAM, Vasile PĂIȘ, Dan Tufiș. 2020. Towards a Romanian end-to-end automatic speech recognition based on DeepSpeech2. Proc. Ro. Acad., Series A, Volume 21, No. 4, pp. 395-402.<br/><br/></li>
+												<li>Romanian TTS from http://romaniantts.com : Adriana Stan, Junichi Yamagishi, Simon King, Matthew Aylett, "The Romanian speech synthesis (RSS) corpus: Building a high quality HMM-based speech synthesis system using a high sampling rate", In Speech Communication, vol. 53, no. 3, pp. 442-450, 2011.<br/><br/></li> 
+												<li>Translation using the EU Council Presidency Translator developed by Tilde with support from RACAI during the Romanian presidency.</br><br/></li>
+												<li>English TTS using Mozilla TTS: https://github.com/mozilla/TTS<br/><br/></li>
+												</ul>
+												</p>
+                    </div>
+  
+
+
+
+                  </div>
+                </div>
+              </div>

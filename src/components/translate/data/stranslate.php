@@ -37,7 +37,11 @@ if($input=="ro"){
 		$translated=TILDE_Translate($_REQUEST['sysid'],$text);
 		$translated=trim($translated,"\"");
 }else{
-		// FOR ENGLISH
+		$result=ROBIN_runASR($fileContent,false,true); // FOR ENGLISH
+		$text=$result['transcription'];
+		$status="success";
+	  $translated=TILDE_Translate($_REQUEST['sysid'],$text);
+		$translated=trim($translated,"\"");
 }
 //echo json_encode(["asr"=>$result['data'],"error"=>false,"success"=>$result['success']]);
 

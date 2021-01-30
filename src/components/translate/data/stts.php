@@ -28,5 +28,20 @@ if($data['lang']=="en"){
 		die();
 }else{
 		// Romanian
+		
+		$data=ROMANIANTTS_runTTS($data['text']);
+		
+        header('Content-Description: File Transfer');
+        header('Cache-Control: public, must-revalidate, max-age=0');
+        header('Pragma: public');
+        header('Expires: Fri, 06 Nov 1987 12:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Content-Type: audio/x-wav', false);
+        header('Content-Disposition: attachment; filename="synthesis_' . gmdate('YMdHis') . '.wav";');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . strlen($data));
+        echo $data;
+						
+		die();
 }
 ?>
