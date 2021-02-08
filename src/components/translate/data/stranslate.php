@@ -4,16 +4,16 @@ function runASR($fileContent,$type){
 
 		if($type=="robin_asr_ro"){
 				$r=ROBIN_runASR($fileContent);
-				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>"","translated"=>"","tts"=>""];
+				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}else if($type=="robin_asrdev_ro"){
 				$r=ROBIN_runASR($fileContent,true);
-				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>"","translated"=>"","tts"=>""];
+				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}else if($type=="en_deepspeech2"){
 				$r=ROBIN_runASR($fileContent,false,true);
-				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>"","translated"=>"","tts"=>""];
+				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}
 
-		return ["text"=>"","status"=>"ERROR: Unknown ASR module","comments"=>"Unknown ASR module type[$type]","translated"=>"","tts"=>""];
+		return ["text"=>"","status"=>"ERROR: Unknown ASR module","comments"=>["Unknown ASR module type[$type]"],"translated"=>"","tts"=>""];
 
 }
 
@@ -25,7 +25,7 @@ function runCorrection($data,$type){
 						$json=file_get_contents("http://127.0.0.1/ws/cratima/asr_cratima.php?text=".urlencode($text));
 						$json=json_decode($json,true);
 						$data['text']=$json['text'];
-						if(isset($json['comments']))$data['comments'].=$json['comments'];
+						if(isset($json['comments']))$data['comments']=array_merge($data['comments'],$json['comments']);
 				}
 
 		}
@@ -79,6 +79,6 @@ $data=runMT($data,$_REQUEST['system_mt']);
 $data=runTTS($data,$_REQUEST['system_tts']);
 
 
-echo json_encode(["asr"=>$text,"translated"=>$translated,"error"=>false,"success"=>$status,"comments"=>$comments,"tts"=>$data['tts']]);
+echo json_encode(["asr"=>$data['text'],"translated"=>$data['translated'],"error"=>false,"success"=>$data['status'],"comments"=>$data['comments'],"tts"=>$data['tts']]);
 
 ?>
