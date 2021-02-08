@@ -15,11 +15,33 @@
 
 												<div id="output1"> <!-- File -->
 		                        <form id="asr-form" enctype="multipart/form-data">
-		                            <p>Selectați un fișier WAV asociat unui text în limba ENGLEZĂ. Este indicat să fie înregistrat cât mai clar.</p>
+		                            <p>Select a WAV file corresponding to an ENGLISH text. Please ensure it was recoreded as clearly as possible.</p>
 																                    
 		                            <input type="file" id="asrfile" name="asrfile" accept="audio/wav, audio/x-wav" class="form-control-file"/>
 		                            <input type="hidden" name="path" value="stranslatews"/>
 		                            <br/>
+		                            
+		                            Processing chain:
+		                            
+		                            <select name="system_asr">
+		                            {{system_asr}}
+		                            </select>
+		                            
+		                            <select name="system_correction">
+		                            {{system_correction}}
+		                            </select>
+		                            
+		                            <select name="system_mt">
+		                            {{system_mt}}
+		                            </select>
+		                            
+		                            <select name="system_tts">
+		                            {{system_tts}}
+		                            </select>
+
+																<br/><br/>
+		                            
+		                            
                                 <input type="hidden" name="sysid" id="sysid" value="{{sysid}}"/>
                                 <input type="hidden" name="input" id="input" value="{{input}}"/>
 
@@ -28,6 +50,29 @@
 		                    </div>
 		                    
 		                    <div id="output2" style="display:none"> <!-- RECORDING -->
+		                    
+ 																Processing chain:
+		                            
+		                            <select name="system_asr">
+		                            {{system_asr}}
+		                            </select>
+		                            
+		                            <select name="system_correction">
+		                            {{system_correction}}
+		                            </select>
+		                            
+		                            <select name="system_mt">
+		                            {{system_mt}}
+		                            </select>
+		                            
+		                            <select name="system_tts">
+		                            {{system_tts}}
+		                            </select>
+
+																<br/><br/>		                    
+		                    
+		                    
+		                    
 															<div id="divRecorderControls" style="text-align:center">
 																	<button type="button" id="bStartRecorder" class="btn cur-p btn-danger" style="width:100px; text-align:center" onclick="startRecorder();">START</button>
 																	<div id="divRecording" style="display:none; font-color:red; width:100px;">Recording ...</div>
@@ -65,6 +110,7 @@
 												<li>Romanian ASR from the ROBIN Project: Andrei-Marius AVRAM, Vasile PĂIȘ, Dan Tufiș. 2020. Towards a Romanian end-to-end automatic speech recognition based on DeepSpeech2. Proc. Ro. Acad., Series A, Volume 21, No. 4, pp. 395-402.<br/><br/></li>
 												<li>Romanian TTS from http://romaniantts.com : Adriana Stan, Junichi Yamagishi, Simon King, Matthew Aylett, "The Romanian speech synthesis (RSS) corpus: Building a high quality HMM-based speech synthesis system using a high sampling rate", In Speech Communication, vol. 53, no. 3, pp. 442-450, 2011.<br/><br/></li> 
 												<li>Translation using the EU Council Presidency Translator developed by Tilde with support from RACAI during the Romanian presidency.</br><br/></li>
+												<li>English ASR from: Amodei et al. 2016. Deep Speech 2 : End-to-End Speech Recognition in English and Mandarin. In Proceedings of The 33rd International Conference on Machine Learning (PMLR), 48:173-182.<br/><br/></li>
 												<li>English TTS using Mozilla TTS: https://github.com/mozilla/TTS<br/><br/></li>
 												</ul>
 												</p>

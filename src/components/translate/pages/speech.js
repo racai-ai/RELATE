@@ -88,9 +88,9 @@ function ASRResultCallback(response){
         
           document.getElementById("outputASR").value=obj['asr'];
           document.getElementById("outputTranslated").value=obj['translated'];
-          var pathtts="";
-          if(input=="ro")pathtts="index.php?path=sttsws&lang=en&text="+encodeURIComponent(obj['translated']);
-          else pathtts="index.php?path=sttsws&lang=ro&text="+encodeURIComponent(obj['translated']);
+          var pathtts=obj['tts'];
+          //if(input=="ro")pathtts="index.php?path=sttsws&lang=en&text="+encodeURIComponent(obj['translated']);
+          //else pathtts="index.php?path=sttsws&lang=ro&text="+encodeURIComponent(obj['translated']);
           document.getElementById("ttssrcid").src=pathtts;
           document.getElementById("ttssrcid").play();
           document.getElementById("loading").setAttribute("style","display:none");
