@@ -37,7 +37,7 @@ function runCorrection($data,$type){
 function runMT($data,$type){
 
 		if($type=="ro_presidency"){
-				if(strlen($data['text']>0){
+				if(strlen($data['text'])>0){
 						$translated=TILDE_Translate($_REQUEST['sysid'],$data['text']);
 						$data['translated']=trim($translated,"\"");
 				}		
