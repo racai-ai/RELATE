@@ -76,7 +76,8 @@ class Components {
 								$path=$handler['path'];
 								$script="components/${n}/${handler['script']}";
 								$data=false; if(isset($handler['data']))$data=$handler['data'];
-								registerHandler($path,$script,$data);
+								$rights=[]; if(isset($handler['rights']))$rights=$handler['rights'];
+								registerHandler($path,$script,$data,$rights);
 						}
 				}
 		}
