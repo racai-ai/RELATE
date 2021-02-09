@@ -12,7 +12,7 @@ function runASR($fileContent,$type){
 				$r=ROBIN_runASR($fileContent,false,true);
 				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}else if($type=="en_deepspeech_mozilla"){
-				$r=ASR_MOZILLA_DEEPSPEECH_runASR;
+				$r=ASR_MOZILLA_DEEPSPEECH_runASR($fileContent);
 				return ["text"=>$r,"status"=>"OK","comments"=>[],"translated"=>"","tts"=>""];
 		}
 

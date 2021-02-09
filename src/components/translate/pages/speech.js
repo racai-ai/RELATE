@@ -246,7 +246,11 @@ function startRecorder(){
 						data.append('path', 'stranslatews');
 						data.append('input','{{input}}');
 						data.append('sysid','{{sysid}}');
-						data.append('asrfile', blob);				    
+						data.append('asrfile', blob);	
+						data.append('system_asr',document.getElementById('rec_system_asr').value);			    
+						data.append('system_correction',document.getElementById('rec_system_correction').value);			    
+						data.append('system_mt',document.getElementById('rec_system_mt').value);			    
+						data.append('system_tts',document.getElementById('rec_system_tts').value);			    
 				    loadData(data,
 							ASRResultCallback
 							,function(){
