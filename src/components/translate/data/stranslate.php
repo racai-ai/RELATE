@@ -11,6 +11,9 @@ function runASR($fileContent,$type){
 		}else if($type=="en_deepspeech2"){
 				$r=ROBIN_runASR($fileContent,false,true);
 				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
+		}else if($type=="en_deepspeech_mozilla"){
+				$r=ASR_MOZILLA_DEEPSPEECH_runASR;
+				return ["text"=>$r,"status"=>"OK","comments"=>[],"translated"=>"","tts"=>""];
 		}
 
 		return ["text"=>"","status"=>"ERROR: Unknown ASR module","comments"=>["Unknown ASR module type[$type]"],"translated"=>"","tts"=>""];
@@ -50,6 +53,8 @@ function runTTS($data,$type){
 
 		if($type=="romanian_tts"){
 				$data['tts']="index.php?path=sttsws&lang=ro&text=".urlencode($data['translated']);
+	  }else if($type=="racai_ssla_tts"){
+				$data['tts']="index.php?path=sttsws&lang=ro&endpoint=racai_ssla_tts&text=".urlencode($data['translated']);
 	  }else if($type=="en_tts"){
 				$data['tts']="index.php?path=sttsws&lang=en&text=".urlencode($data['translated']);
 		}

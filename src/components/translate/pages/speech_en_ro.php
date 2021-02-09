@@ -5,7 +5,8 @@ $TILDE_found_sysid=false;
 function getPageContent(){
 
 		$systems_asr=[
-				["name"=>"EN DeepSpeech2","value"=>"en_deepspeech2","default"=>true]
+				["name"=>"EN DeepSpeech2","value"=>"en_deepspeech2","default"=>true],
+				["name"=>"Mozilla DeepSpeech","value"=>"en_deepspeech_mozilla"]
 		];
 		$systems_correction=[
 				["name"=>"No Correction","value"=>"none","default"=>true],
@@ -14,7 +15,8 @@ function getPageContent(){
 				["name"=>"RO Presidency","value"=>"ro_presidency","default"=>true]
 		];
 		$systems_tts=[
-				["name"=>"RomanianTTS","value"=>"romanian_tts","default"=>true]
+				["name"=>"RomanianTTS","value"=>"romanian_tts","default"=>true],
+				["name"=>"RACAI SSLA","value"=>"racai_ssla_tts"]
 		];
 		
 		$str_systems_asr="";
