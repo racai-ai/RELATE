@@ -12,15 +12,7 @@ function ASR_MOZILLA_DEEPSPEECH_runASR($wave){
 
 		$url=$ASR_MOZILLA_DEEPSPEECH_URL;
     
-    $boundary = uniqid();
-    $delimiter = '-------------' . $boundary;
-    $eol = "\r\n";
-    $data="";
-    $data .= "--" . $delimiter . $eol
-                . 'Content-Disposition: form-data; name="file"; filename="asr.wav"'.$eol
-                . 'Content-type: audio/wav'.$eol.$eol
-                . $wave . $eol;
-    $data .= "--" . $delimiter . "--".$eol;
+    $data=$wave;
 
     curl_setopt_array($ch, array(
         CURLOPT_URL => $url,
@@ -33,7 +25,7 @@ function ASR_MOZILLA_DEEPSPEECH_runASR($wave){
         CURLOPT_POSTFIELDS => $data,
         CURLOPT_HTTPHEADER => array(
           //"Authorization: Bearer $TOKEN",
-          "Content-Type: multipart/form-data; boundary=" . $delimiter,
+          "Content-Type: application/x-www-form-urlencoded",
           "Content-Length: " . strlen($data)
       
         ),
