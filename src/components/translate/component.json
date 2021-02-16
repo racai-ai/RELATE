@@ -8,8 +8,8 @@
         "menu":[
             {"label":"Text RO - EN", "path":"translate/ro_en"},
             {"label":"Text EN - RO", "path":"translate/en_ro"},
-            {"label":"Speech RO - EN", "path":"translate/speech_ro_en","rights":["corpus"]},
-            {"label":"Speech EN - RO", "path":"translate/speech_en_ro","rights":["corpus"]},
+            {"label":"Speech RO - EN", "path":"translate/speech_ro_en"},
+            {"label":"Speech EN - RO", "path":"translate/speech_en_ro"},
             {"label":"Text Dev Documentation", "path":"translate/dev_doc"}
         ]
       },
@@ -18,8 +18,8 @@
         "label":"Speech",
         "icon":"c-deep-purple-500 ti-comment-alt",
         "menu":[
-            {"label":"Translate RO - EN", "path":"translate/speech_ro_en","rights":["corpus"]},
-            {"label":"Translate EN - RO", "path":"translate/speech_en_ro","rights":["corpus"]}
+            {"label":"Translate RO - EN", "path":"translate/speech_ro_en"},
+            {"label":"Translate EN - RO", "path":"translate/speech_en_ro"}
         ]
       }
       
@@ -31,10 +31,10 @@
 		{"path":"translate/en_ro","script":"pages/en_ro.php"},
 		{"path":"translate/dev_doc","script":"pages/dev_doc.php"},
 		{"path":"translatews","script":"data/call.php","data":true},
-		{"path":"translate/speech_ro_en","script":"pages/speech_ro_en.php","rights":["corpus"]},
-		{"path":"translate/speech_en_ro","script":"pages/speech_en_ro.php","rights":["corpus"]},
-		{"path":"stranslatews","script":"data/stranslate.php","data":true,"rights":["corpus"]},
-		{"path":"sttsws","script":"data/stts.php","data":true,"rights":["corpus"]}
+		{"path":"translate/speech_ro_en","script":"pages/speech_ro_en.php"},
+		{"path":"translate/speech_en_ro","script":"pages/speech_en_ro.php"},
+		{"path":"stranslatews","script":"data/stranslate.php","data":true},
+		{"path":"sttsws","script":"data/stts.php","data":true}
 
 ]
 
