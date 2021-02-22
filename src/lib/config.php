@@ -16,7 +16,8 @@ $TEPROLIN_baseurls=[
 
 $UDPIPE_baseurls=[
 	"en" => [ "http://127.0.0.1:8101" ],
-	"ro" => [ "http://127.0.0.1:8102" ]
+	"ro" => [ "http://127.0.0.1:8102" ],
+	"es" => [ "http://127.0.0.1:8103" ],
 ];
 
 $IATE_EUROVOC_Server_URL="http://127.0.0.1:9001";
