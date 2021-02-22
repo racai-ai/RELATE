@@ -30,7 +30,6 @@ if(!$user->isLoggedIn() && isset($_REQUEST['path']) &&
     $user->initFromHeaders();
 }
 
-
 if(isset($_REQUEST['path']) && isset($HANDLERS[$_REQUEST['path']]) && $user->hasAccess($HANDLERS[$_REQUEST['path']]['rights']))
     $PLATFORM['path']=$_REQUEST['path'];
 

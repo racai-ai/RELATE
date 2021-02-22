@@ -30,6 +30,10 @@ class BratAnn{
             fwrite($fout,"${ldata[0]}\t".$ldata[1][0]." ".$ldata[1][1]." ".$ldata[1][2]."\t${ldata[2]}\n");
         }
         fclose($fout);
+        
+        file_put_contents($this->path.".log",date("Ymd His")."\n",FILE_APPEND);
+
+        file_put_contents(dirname($this->path)."/../changed_standoff.json","{\"changed\":".time()."}");        
     }
     
     public function getForBrat(){

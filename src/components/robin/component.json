@@ -3,26 +3,12 @@
 
 "menu":[
       {
-        "label":"ROBIN ASR",
+        "label":"Speech",
         "icon":"c-deep-purple-500 ti-comment-alt",
         "menu":[
-            {"label":"ASR", "path":"robin/asr"}
-        ]
-      },
-
-      {
-        "label":"ROBIN ASR Dev",
-        "icon":"c-deep-purple-500 ti-comment-alt",
-        "menu":[
-            {"label":"ASR Development", "path":"robin/asrdev"}
-        ]
-      },
-
-      {
-        "label":"ROBIN TTS",
-        "icon":"c-deep-purple-500 ti-comment-alt",
-        "menu":[
-            {"label":"TTS", "path":"robin/tts"}
+            {"label":"ROBIN ASR", "path":"robin/asr"},
+            {"label":"ROBIN ASR Development", "path":"robin/asrdev"},
+            {"label":"ROBIN TTS", "path":"robin/tts"}
         ]
       }
 
