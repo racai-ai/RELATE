@@ -7,6 +7,7 @@ class CONLLUP {
     private $columnId;
     
     public static $defaultGlobalColumns="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC";
+    public static $defaultTeprolinGlobalColumns="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC RELATE:NE RELATE:NP";
     
 
 /*                      if($numColumns>12){
