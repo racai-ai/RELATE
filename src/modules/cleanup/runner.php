@@ -19,7 +19,7 @@ function cleanFileContent($fcontent,$fpathOut,$meta){
             	if($firstWrite){
             	    if(!startsWith($lines,"# global.columns")){
                       if($numColumns>12){
-            		          $lines="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC RELATE:NE RELATE:NP RELATE:IATE RELATE:EUROVOC\n".$meta.$lines;
+            		          $lines="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC RELATE:NE RELATE:NP RELATE:IATE RELATE:EUROVOCID RELATE:EUROVOCMT\n".$meta.$lines;
                       }else{
             		          $lines="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC RELATE:NE RELATE:NP\n".$meta.$lines;
                       }
