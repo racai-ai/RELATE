@@ -41,9 +41,9 @@ function cleanFileContent($fcontent,$fpathOut,$meta){
                 if(count($ldata)>6 && strcasecmp($ldata[6],"0")!=0){
             	    $linesOK=true;$numLines++;
             	}
-            	if(count($ldata)>3 && $ldata[3]!='SYM')$nonSym++;
+            	if(count($ldata)>3 && $ldata[3]!='SYM' && $ldata[3]!='PUNCT')$nonSym++;
                 if(count($ldata)>10 && !isset($allowedNER[$ldata[10]]))$annOK=false;
-                if(count($ldata)<13)$annOK=false;
+                if(count($ldata)<12)$annOK=false;
             }
         }
     }
