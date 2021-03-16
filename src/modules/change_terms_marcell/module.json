@@ -1,0 +1,17 @@
+{
+
+"order":80,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"Change Terms Marcell",
+				"type":"change_terms_marcell",
+				"description":"For Marcell: remove smaller embedded terms, renumber terms starting at sentence level (IATE and EUROVOCMT)",
+				"scheduler":"scheduler.php:Modules\\change_terms_marcell\\schedule",
+				"runner":"runner.php:Modules\\change_terms_marcell\\runner"
+		}
+]
+
+}
