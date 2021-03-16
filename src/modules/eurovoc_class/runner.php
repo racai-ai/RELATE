@@ -28,7 +28,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 				$mtids=EUROVOC_getMT($data);
 				$domains=EUROVOC_getDomains($mtids);
 				sort($domains);
-        $conllup->addFileMetadataField("eurovoc_domains",implode("\t",$domains));
+        $conllup->addFileMetadataField("eurovoc",implode("\t",$domains));
         $conllup->writeToFile($finalFile);
     }else{
         echo "ERROR $fnameOut\n";

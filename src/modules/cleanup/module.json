@@ -8,7 +8,7 @@
 		{
 				"name":"Cleanup",
 				"type":"cleanup",
-				"description":"Cleanup bad sentences",
+				"description":"Cleanup bad sentences. The following checks are performed: at least 1 HEAD!=0; at least 1 POS!=SYM; RELATE:NE must be O,B-/I-(ORG,PER,LOC,TIME); at least 1 token must exist in a sentence; at least 13 columns must be present.",
 				"scheduler":"scheduler.php:Modules\\cleanup\\schedule",
 				"runner":"runner.php:Modules\\cleanup\\runner"
 		}

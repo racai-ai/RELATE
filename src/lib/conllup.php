@@ -7,6 +7,7 @@ class CONLLUP {
     private $columnId;
     
     public static $defaultGlobalColumns="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC";
+    public static $defaultTeprolinGlobalColumns="# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC RELATE:NE RELATE:NP";
     
 
 /*                      if($numColumns>12){
@@ -60,6 +61,7 @@ class CONLLUP {
     }
     
     public function addFileMetadataField($field,$value){
+                $newdoc=0;
 				for($i=0;$i<count($this->data);$i++){
 						$line=$this->data[$i];
 						if($line['type']=="new_sent")break;
@@ -70,12 +72,14 @@ class CONLLUP {
 								 		if(strcasecmp($name,$field)===0){
 												$this->data[$i]['content']="# $field = $value";
 												return true;
-										}
+										}else if(strncasecmp($name,"newdoc",6)==0){
+                                                $newdoc=$i;
+                                        }
 								 }
 						}
 				}
 				
-				if($line['type']=="new_sent"){$i=0;}
+				if($line['type']=="new_sent"){$i=$newdoc;}
 				
 				array_splice($this->data,$i,1, [$this->data[$i],["type"=>"comment","content"=>"# $field = $value"]]);
 				return true;

@@ -35,7 +35,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
             $toke=$eurovocIt->current();
             $eurovocIt->next();
             $tok->set("RELATE:IATE",$toke->get("C${c1}"));
-            $tok->set("RELATE:EUROVOC",$toke->get("C${c2}"));
+            $tok->set("RELATE:EUROVOCID","_");
+            $tok->set("RELATE:EUROVOCMT",$toke->get("C${c2}"));
         }
         $conllup->writeToFile($finalFile);
     }else{
