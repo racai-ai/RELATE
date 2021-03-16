@@ -11,7 +11,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $pathIn="tmp".$runner->getRunnerId().".conllup";
     file_put_contents($pathIn,$contentIn);
     
-    $cmd="./marcell_change_terms.sh ".$settings->get("tools.python.venv")." ".escapeshellarg($pathIn)." ".escapeshellarg($fnameOut);
+    $cmd="./marcell_change_terms.sh ".$settings->get("tools.python.venv")." ".escapeshellarg($pathIn)." ".
+        escapeshellarg($corpus->getFolderPath()."/".$settings->get("dir.annotated")."/".$fnameOut);
     echo "RUNNING [$cmd]\n";
     passthru($cmd);
 
