@@ -48,6 +48,23 @@ if(startsWith($fname,"zip_text/")){
     $fname=substr($fname,strlen("zip_text/"));
 }
 
+$zip_standoff=false;
+if(startsWith($fname,"zip_standoff/")){
+    $zip_standoff=true;
+    $fname=substr($fname,strlen("zip_standoff/"));
+}
+$zip_gold_ann=false;
+if(startsWith($fname,"zip_gold_ann/")){
+    $zip_gold_ann=true;
+    $fname=substr($fname,strlen("zip_gold_ann/"));
+}
+$zip_gold_standoff=false;
+if(startsWith($fname,"zip_gold_standoff/")){
+    $zip_gold_standoff=true;
+    $fname=substr($fname,strlen("zip_gold_standoff/"));
+}
+
+
 $marcell_out=false;
 if(startsWith($fname,"marcell-out/")){
     $marcell_out=true;
@@ -66,7 +83,7 @@ if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $fname=substr($fname,strlen("zip_$DirectoryAnnotated/"));
 }
 
-if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$audio && !$goldann && !$goldstandoff){
+if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff){
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -88,6 +105,21 @@ if($basicTagging){
 }else if($zip_text){
         $dir=$corpus->getFolderPath();
         $dir.="/zip_text";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+}else if($zip_standoff){
+        $dir=$corpus->getFolderPath();
+        $dir.="/zip_standoff";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+}else if($zip_gold_ann){
+        $dir=$corpus->getFolderPath();
+        $dir.="/zip_gold_ann";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+}else if($zip_gold_standoff){
+        $dir=$corpus->getFolderPath();
+        $dir.="/zip_gold_standoff";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
 
