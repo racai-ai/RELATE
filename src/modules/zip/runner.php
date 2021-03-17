@@ -90,4 +90,17 @@ function runnerUnzipAnnotated($runner,$settings,$corpus,$taskDesc,$data,$content
        runUnzip($data['fpath'],$corpus->getFolderPath()."/".$settings->get("dir.annotated"),$settings,$corpus,$taskDesc);
 }
 
+function runnerZipStandoff($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+   runZip($corpus->getFolderPath()."/standoff",$corpus->getFolderPath()."/zip_standoff",$taskDesc['fname']);
+}
+
+function runnerZipGoldStandoff($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+   runZip($corpus->getFolderPath()."/gold_standoff",$corpus->getFolderPath()."/zip_gold_standoff",$taskDesc['fname']);
+}
+
+function runnerZipGoldAnn($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+   runZip($corpus->getFolderPath()."/gold_ann",$corpus->getFolderPath()."/zip_gold_ann",$taskDesc['fname']);
+}
+
+
 ?>

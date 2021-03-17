@@ -434,6 +434,9 @@ class Corpus {
         $dirs=[
             "${base_dir}/zip_text",
             "${base_dir}/zip_$DirectoryAnnotated",
+            "${base_dir}/zip_standoff",
+            "${base_dir}/zip_gold_standoff",
+            "${base_dir}/zip_gold_ann",
             "${base_dir}/marcell-out",
         ];
         
