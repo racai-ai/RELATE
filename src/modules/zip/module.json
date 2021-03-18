@@ -26,6 +26,36 @@
 	},
 		
     {
+				"name":"ZIP Standoff",
+				"type":"zip_standoff",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"standoff.zip"}
+				],
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipStandoff",
+				"runner":"runner.php:Modules\\zip\\runnerZipStandoff"
+	},
+
+    {
+				"name":"ZIP Gold Standoff",
+				"type":"zip_gold_standoff",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"gold_standoff.zip"}
+				],
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipGoldStandoff",
+				"runner":"runner.php:Modules\\zip\\runnerZipGoldStandoff"
+	},
+
+    {
+				"name":"ZIP Gold Annotated",
+				"type":"zip_gold_annotated",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"gold_annotated.zip"}
+				],
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipGoldAnnotated",
+				"runner":"runner.php:Modules\\zip\\runnerZipGoldAnnotated"
+	},
+
+    {
 				"name":"UNZIP Text",
 				"type":"unzip_text",
 				"additionalData":[
