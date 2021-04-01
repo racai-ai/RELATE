@@ -1,0 +1,197 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Resurse</h6>
+                  <div class="mT-30">
+                  
+                    <div id="input">                  
+
+<div id="grid" style="margin:auto;"></div>
+
+<div id="popup-dialog-crud" style="display:none;">
+<form id="crud-form" style="overflow-y:auto; height:400px; ">
+    <table align="center">
+    <tbody>
+    <tr>
+        <td><label for="type">Resource Type:</label></td>
+        <td>
+        <select name="type" id="type">
+            <option value="Corpus">Corpus</option>
+            <option value="Lexical/Conceptual">Lexical/Conceptual</option>
+            <option value="Tool/Service">Tool/Service</option>
+        </select>
+        <label for="shortname">Short Name:</label>
+        <input type="text" name="shortname" id="shortname" size="30"/> 
+        <label for="pubyear">Publication year :</label>
+        <input type="text" name="pubyear" id="pubyear" size="10"/>               
+        </td>
+    </tr>
+    <tr>
+        <td><label for="resourcename">Resource Name:</label></td>
+        <td><input type="text" name="resourcename" id="resourcename" size="90"/></td>
+    </tr>
+    <tr>
+        <td><label for="landingpage">Landing Page:</label></td>
+        <td><input type="text" name="landingpage" id="landingpage" size="90"/></td>
+    </tr>
+    <tr>
+        <td><label for="description">Description:</label></td>
+        <td><textarea name="description" id="description" cols="90" rows="4"></textarea></td>
+    </tr>
+    <tr>
+        <td><label for="project">(Funding) Project:</label></td>
+        <td><input type="text" name="project" id="project" size="40"/>
+        <label for="fundingtype">Funding Type:</label>
+        <input type="text" name="fundingtype" id="fundingtype" size="30"/>        
+        </td>
+    </tr>
+    <tr>
+        <td><label for="keyword1">Keywords:</label></td>
+        <td>
+            <input type="text" name="keyword1" id="keyword1" size="15"/>
+            <input type="text" name="keyword2" id="keyword2" size="15"/>
+            <input type="text" name="keyword3" id="keyword3" size="15"/>
+            <input type="text" name="keyword4" id="keyword4" size="15"/>
+            <input type="text" name="keyword5" id="keyword5" size="15"/>
+        </td>
+    </tr>
+
+    <tr>
+        <td><label for="language">Language(s):</label></td>
+        <td><input type="text" name="language" id="language" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="domain">Domain(s) :</label></td>
+        <td><input type="text" name="domain" id="domain" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="corpussubclass">Corpus Subclass :</label></td>
+        <td>
+        <select name="corpussubclass" id="corpussubclass">
+            <option value="raw corpus">raw corpus</option>
+            <option value="annotated corpus">annotated corpus</option>
+            <option value="wordlist">wordlist</option>
+            <option value="terminological resource">terminological resource</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="mediatypes">Media Types :</label></td>
+        <td><input type="mediatypes" name="mediatypes" id="mediatypes" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="multilinguality">Multilinguality Type :</label></td>
+        <td>
+        <select name="multilinguality" id="multilinguality">
+            <option value="N/A">N/A</option>
+            <option value="parallel">parallel</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="corpussize">Corpus Size :</label></td>
+        <td><input type="text" name="corpussize" id="corpussize" size="10"/>
+        Unit: <input type="text" name="corpussizeunit" id="corpussizeunit" size="50"/>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="annotationtype">Annotation Type :</label></td>
+        <td><input type="text" name="annotationtype" id="annotationtype" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="Encoding Level">Encoding Level :</label></td>
+        <td><input type="text" name="encodinglevel" id="encodinglevel" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="numberofentries">Number of Entries (size) :</label></td>
+        <td><input type="text" name="numberofentries" id="numberofentries" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="functions">Function(s)/Task(s) :</label></td>
+        <td><input type="text" name="functions" id="functions" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="languagedependent">Language Dependent :</label></td>
+        <td>
+        <select name="languagedependent" id="languagedependent">
+            <option value="N/A">N/A</option>
+            <option value="Y">Yes</option>
+            <option value="N">No</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="mediatypesin">Media Types Input :</label></td>
+        <td><input type="text" name="mediatypesin" id="mediatypesin" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="mediatypesout">Media Types Output :</label></td>
+        <td><input type="text" name="mediatypesout" id="mediatypesout" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="languagesout">Languages Output :</label></td>
+        <td><input type="text" name="languagesout" id="languagesout" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="trl">TRL :</label></td>
+        <td><input type="text" name="trl" id="trl" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="subclassmodel">Subclass of model :</label></td>
+        <td><input type="text" name="subclassmodel" id="subclassmodel" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="license">License :</label></td>
+        <td><input type="text" name="license" id="license" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="typeaccess">Type of Access :</label></td>
+        <td><input type="text" name="typeaccess" id="typeaccess" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="source">Source :</label></td>
+        <td><input type="text" name="source" id="source" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="homepagesource">Homepage of Source :</label></td>
+        <td><input type="text" name="homepagesource" id="homepagesource" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="provider">Provider :</label></td>
+        <td><input type="text" name="provider" id="provider" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="email">Contact Email :</label></td>
+        <td><input type="text" name="email" id="email" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="personfamilyname">Family Name (if person) :</label></td>
+        <td><input type="text" name="personfamilyname" id="personfamilyname" size="50"/></td>
+    </tr>
+    <tr>
+        <td><label for="personname">Name (if person) :</label></td>
+        <td><input type="text" name="personname" id="personname" size="50"/></td>
+    </tr>
+    
+    
+    </tbody></table>
+</form>
+</div>                                      
+                    
+                    </div>
+  
+                    {{loading}}
+
+                    <div style="display:none" id="output">
+                        <div id="output1">
+                        </div>
+                        
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+
+
+ 

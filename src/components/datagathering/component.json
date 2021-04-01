@@ -1,0 +1,14 @@
+{
+"order":70,
+
+"menu":[
+],
+
+"handlers":[
+		{"path":"datag/main","script":"pages/main.php","rights":[]},
+		{"path":"datag/list_get","script":"data/list_get.php","data":true,"rights":[]},
+		{"path":"datag/list_add","script":"data/list_add.php","data":true,"rights":[]},
+		{"path":"datag/list_delete","script":"data/list_add.php","data":true,"rights":[]}
+]
+
+}
