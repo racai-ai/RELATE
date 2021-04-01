@@ -1,0 +1,17 @@
+{
+
+"order":100,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"Anonymization",
+				"type":"anonymization",
+				"description":"Anonymize raw text.",
+				"scheduler":"scheduler.php:Modules\\anonymization\\schedule",
+				"runner":"runner.php:Modules\\anonymization\\runner"
+		}
+]
+
+}
