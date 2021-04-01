@@ -8,6 +8,7 @@ function anonymizeFileContent($fcontent,$fpathOut){
 
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $path=$corpus->getFolderPath()."/files/";
+    $fnameOut=changeFileExtension($fnameOut,"txt")
     $finalFile=$path.$fnameOut;
     echo "Destination for anonymization $finalFile\n";
     @mkdir($path);        
