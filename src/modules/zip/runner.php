@@ -102,5 +102,8 @@ function runnerZipGoldAnn($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$
    runZip($corpus->getFolderPath()."/gold_ann",$corpus->getFolderPath()."/zip_gold_ann",$taskDesc['fname']);
 }
 
+function runnerZipAudio($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+   runZip($corpus->getFolderPath()."/audio",$corpus->getFolderPath()."/zip_audio",$taskDesc['fname']);
+}
 
 ?>

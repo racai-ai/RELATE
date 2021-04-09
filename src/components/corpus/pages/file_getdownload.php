@@ -63,6 +63,11 @@ if(startsWith($fname,"zip_gold_standoff/")){
     $zip_gold_standoff=true;
     $fname=substr($fname,strlen("zip_gold_standoff/"));
 }
+$zip_audio=false;
+if(startsWith($fname,"zip_audio/")){
+    $zip_audio=true;
+    $fname=substr($fname,strlen("zip_audio/"));
+}
 
 
 $marcell_out=false;
@@ -83,7 +88,7 @@ if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $fname=substr($fname,strlen("zip_$DirectoryAnnotated/"));
 }
 
-if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff){
+if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff && !$zip_audio){
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -120,6 +125,11 @@ if($basicTagging){
 }else if($zip_gold_standoff){
         $dir=$corpus->getFolderPath();
         $dir.="/zip_gold_standoff";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+}else if($zip_audio){
+        $dir=$corpus->getFolderPath();
+        $dir.="/zip_audio";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
 
