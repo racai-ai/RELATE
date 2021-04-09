@@ -56,6 +56,16 @@
 	},
 
     {
+				"name":"ZIP Audio",
+				"type":"zip_audio",
+				"additionalData":[
+						{"name":"fname","description":"Filename","default":"audio.zip"}
+				],
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipAudio",
+				"runner":"runner.php:Modules\\zip\\runnerZipAudio"
+	},
+
+    {
 				"name":"UNZIP Text",
 				"type":"unzip_text",
 				"additionalData":[

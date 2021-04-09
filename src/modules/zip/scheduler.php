@@ -30,4 +30,8 @@ function scheduleZipGoldAnn($settings,$corpus,$task_name,$tdata){
     scheduleFile($corpus,"zip_gold_ann/".$tdata['fname'],$task_name,'zip');
 }
 
+function scheduleZipAudio($settings,$corpus,$task_name,$tdata){
+    scheduleFile($corpus,"zip_audio/".$tdata['fname'],$task_name,'zip');
+}
+
 ?>
