@@ -23,8 +23,11 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     
     $allowedNER=[];
     if(isset($taskDesc['allowed_ner'])){
-        $allowedNER=explode(",",$taskDesc['allowed_ner']);
-        if(count($allowedNER)>0)$allowedNER=array_flip($allowedNER);
+        $an=trim($taskDesc['allowed_ner']);
+        if(strlen($an)>0){
+            $allowedNER=explode(",",$taskDesc['allowed_ner']);
+            if(count($allowedNER)>0)$allowedNER=array_flip($allowedNER);
+        }
     }
     
     $useBIONER=false;
