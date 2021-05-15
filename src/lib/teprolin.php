@@ -98,6 +98,7 @@ function TEPROLIN_json2conllu($fname,$json,$sid,$useSentId=true,$stripBI=false){
             
             $fner=$ner;
             if(strcasecmp($ner,'O')!=0){
+                if(startsWith($ner,"B-") || startsWith($ner,"I-"))$ner=substr($ner,2);
                 if(!$stripBI){
                   if(strcasecmp($prev_ner,"O")==0)$fner="B-".$ner;
                   else if(strcasecmp($prev_ner,$ner)==0)$fner="I-".$ner;
