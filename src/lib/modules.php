@@ -186,6 +186,23 @@ class Modules {
         }                                  
     }
 		
+    public function setTaskDataFromRequest($taskType,&$data){
+   		$found=false;
+        foreach($this->modules as $id=>$module){
+            foreach($module['tasks'] as $k=>$task){
+            		if($task['type']==$taskType){
+           				$found=true;
+		                if(isset($task['additionalData'])){
+							foreach($task['additionalData'] as $add){
+                               if(isset($_REQUEST[$add['name']]))$data[$add['name']]=$_REQUEST[$add['name']];
+                            }
+						}
+						break;
+					}      
+            }
+            if($found)break;
+        }                                  
+    }
 
 }
 

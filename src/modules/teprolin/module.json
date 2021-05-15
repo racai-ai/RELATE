@@ -18,7 +18,7 @@
                     {
                         "name":"use_bioner",
                         "description":"Use BIONER",
-                        "default":"YES"
+                        "default":"NO"
                     },
                     {
                         "name":"use_ner",
@@ -28,7 +28,7 @@
                     {
                         "name":"strip_bi",
                         "description":"Strip B-/I-",
-                        "default":"YES"
+                        "default":"NO"
                     }
                 ],
 				"scheduler":"scheduler.php:Modules\\teprolin\\schedule",
