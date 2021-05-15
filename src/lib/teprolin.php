@@ -75,7 +75,7 @@ function TEPROLIN_getStat($stat,$period,$num){
     return $data;
 }
 
-function TEPROLIN_json2conllu($fname,$json,$sid,$useSentId=true){
+function TEPROLIN_json2conllu($fname,$json,$sid,$useSentId=true,$stripBI=false){
     $conllu=[];
     if(!is_array($json) || !isset($json['teprolin-result']) || !isset($json['teprolin-result']['sentences'])){
         echo "Invalid TEPROLIN result\n";
@@ -98,9 +98,12 @@ function TEPROLIN_json2conllu($fname,$json,$sid,$useSentId=true){
             
             $fner=$ner;
             if(strcasecmp($ner,'O')!=0){
-                if(strcasecmp($prev_ner,"O")==0)$fner="B-".$ner;
-                else if(strcasecmp($prev_ner,$ner)==0)$fner="I-".$ner;
-                else $fner="B-".$ner;
+                if(startsWith($ner,"B-") || startsWith($ner,"I-"))$ner=substr($ner,2);
+                if(!$stripBI){
+                  if(strcasecmp($prev_ner,"O")==0)$fner="B-".$ner;
+                  else if(strcasecmp($prev_ner,$ner)==0)$fner="I-".$ner;
+                  else $fner="B-".$ner;
+                }else $fner=$ner;
             }
             $prev_ner=$ner;
             $ner=$fner;

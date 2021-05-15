@@ -19,6 +19,7 @@ if(isset($_REQUEST['fname']))$data['fname']=trim($_REQUEST['fname']);
 if(isset($_REQUEST['overwrite']))$data['overwrite']=(strcasecmp(trim($_REQUEST['overwrite']),"1")===0);
 else $data['overwrite']=false;
 
+$modules->setTaskDataFromRequest($data['type'],$data);
 $modules->setTaskDefaults($data['type'],$data);
 
 $corpora=new Corpora();

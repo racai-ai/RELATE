@@ -9,6 +9,28 @@
 				"name":"TEPROLIN",
 				"type":"teprolin",
 				"description":"Perform annotation using the TEPROLIN web service",
+                "additionalData":[
+                    {
+                        "name":"allowed_ner",
+                        "description":"Allowed NER tags",
+                        "default":""
+                    },
+                    {
+                        "name":"use_bioner",
+                        "description":"Use BIONER",
+                        "default":"NO"
+                    },
+                    {
+                        "name":"use_ner",
+                        "description":"Use regular NER",
+                        "default":"YES"
+                    },
+                    {
+                        "name":"strip_bi",
+                        "description":"Strip B-/I-",
+                        "default":"NO"
+                    }
+                ],
 				"scheduler":"scheduler.php:Modules\\teprolin\\schedule",
 				"runner":"runner.php:Modules\\teprolin\\runner"
 		}
