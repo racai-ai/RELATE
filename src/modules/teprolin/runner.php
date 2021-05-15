@@ -82,8 +82,9 @@ function runBasicTaggingText_ro($text,$fout,$trun,$allowedNER,$useNER,$useBIONER
 								                                /*if(startsWith($tok['ner'],"I-") || startsWith($tok['ner'],"B-"))
 								                                    $tok['ner']=substr($tok['ner'],2);*/
 								                        	}
-								                            if($stripBI && startsWith($tok['ner'],"I-") || startsWith($tok['ner'],"B-"))
+								                            if($stripBI && (startsWith($tok['ner'],"I-") || startsWith($tok['ner'],"B-")))
 								                                    $tok['ner']=substr($tok['ner'],2);
+                                                                    
                                                             if(count($allowedNER)>0 && !isset($allowedNER[$tok['ner']]))
                                                                     $tok['ner']='O';
 						                    	    }
