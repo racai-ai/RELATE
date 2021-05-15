@@ -72,27 +72,22 @@ function runBasicTaggingText_ro($text,$fout,$trun,$allowedNER,$useNER,$useBIONER
 						                    	    if(!isset($tok['upos']) && isset($tok['_msd']))
 						                        	$tok['upos']=MSD2UPOS($tok['_msd']);
 						                            
-						                    	    if(!isset($tok['ner'])){
 								                        	$tok['ner']="O";
 								                        	if(isset($tok['_ner']) && strlen($tok['_ner'])>0 && $useNER)
 								                            	    $tok['ner']=$tok['_ner'];
 								                        	if(isset($tok['_bner']) && strlen($tok['_bner'])>0 && $useBIONER){
 								                            	    $tok['ner']=$tok['_bner']; // "O"
-								                                // skip for now BIONER
-								                                /*if(startsWith($tok['ner'],"I-") || startsWith($tok['ner'],"B-"))
-								                                    $tok['ner']=substr($tok['ner'],2);*/
 								                        	}
 								                            if($stripBI && (startsWith($tok['ner'],"I-") || startsWith($tok['ner'],"B-")))
 								                                    $tok['ner']=substr($tok['ner'],2);
                                                                     
                                                             if(count($allowedNER)>0 && !isset($allowedNER[$tok['ner']]))
                                                                     $tok['ner']='O';
-						                    	    }
 						                	}
 			            	    }
 			        	}
             
-			        	list($conllu,$sentId)=TEPROLIN_json2conllu("ro_legal",$json,$sentId,false);
+			        	list($conllu,$sentId)=TEPROLIN_json2conllu("ro_legal",$json,$sentId,false,$stripBI);
 			            
 			        	if($parId==1){
 			            	    file_put_contents($fout,\CONLLUP::$defaultTeprolinGlobalColumns."\n".implode("\n",$conllu));
