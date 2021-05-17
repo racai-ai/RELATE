@@ -652,6 +652,7 @@ class Corpus {
         $wordformdf=[];
         $lemma=[];
         $charsArr=[];
+        $lemmaUPOS=[];
         while (($file = readdir($dh)) !== false) {
             $dpath="$dir/$file";
             if(!is_file($dpath))continue;
@@ -666,6 +667,8 @@ class Corpus {
                 $this->mergeStatistics($dpath,$lemma);
             }else if(startsWith($file,"chars_")){
                 $this->mergeStatistics($dpath,$charsArr);
+            }else if(startsWith($file,"lemma_upos_")){
+                $this->mergeStatistics($dpath,$lemmaUPOS);
             }
         }
         closedir($dh);
@@ -693,6 +696,16 @@ class Corpus {
         $stat['Basic.Hapax Legomena']=$once;
         $stat['Basic.Dis Legomena']=$twice;
         $stat['Basic.Tris Legomena']=$three;
+        
+        $uniqueLemmaUPOS=[];
+        foreach($lemmaUPOS as $k=>$v){
+            $lu=explode("_",$k,2);
+            if(!isset($uniqueLemmaUPOS[$lu[0]]))$uniqueLemmaUPOS[$lu[0]]=1;
+            else $uniqueLemmaUPOS[$lu[0]]++;        
+        }
+        foreach($uniqueLemmaUPOS as $k=>$v){
+            $stat["Unique Lemma.$k"]=$v;
+        }
         
         $h=0.0;
         $total=0;
@@ -728,6 +741,14 @@ class Corpus {
         arsort($charsArr);
         $fp=fopen($base_dir."/statistics/list_letters.csv","w");
         foreach($charsArr as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+        
+        arsort($lemmaUPOS);
+        $fp=fopen($base_dir."/statistics/list_lemma_upos.csv","w");
+        foreach($lemmaUPOS as $k=>$v){
+            $lu=explode("_",$k,2);
+            fputcsv($fp,[$lu[0],$lu[1],$v]);
+        }
         fclose($fp);
 
         return $stat;    

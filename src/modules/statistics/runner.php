@@ -48,6 +48,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $stat=["tok"=>0,"sent"=>0,"documents"=>1];
         $wordForm=[];
         $lemma=[];
+        $lemmaUPOS=[];
 
         $chars="abcdefghijklmnopqrstuvqxyzăîâșț";
         $charsArr=[];
@@ -92,6 +93,10 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                 if(!isset($lemma[$lem]))$lemma[$lem]=1;
                 else $lemma[$lem]++;
                 
+                $lemUPOS=$upos."_".$lem;
+                if(!isset($lemmaUPOS[$lemUPOS]))$lemmaUPOS[$lemUPOS]=1;
+                else $lemmaUPOS[$lemUPOS]++;
+                
                 for($i=0;$i<mb_strlen($form);$i++){
                     $c=mb_strtolower(mb_substr($form,$i,1));
                     if(isset($charsArr[$c]))$charsArr[$c]++;
@@ -108,6 +113,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         saveStat("wordformdf",$wordForm,$corpus,$trun);
         saveStat("lemma",$lemma,$corpus,$trun);
         saveStat("chars",$charsArr,$corpus,$trun);
+        saveStat("lemma_upos",$lemmaUPOS,$corpus,$trun);
     }
     
     storeFile($corpus->getFolderPath()."/changed_statistics.json",json_encode(["changed"=>time()]));            
