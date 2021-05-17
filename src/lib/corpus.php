@@ -663,12 +663,12 @@ class Corpus {
                 $this->mergeStatistics($dpath,$wordform);
             }else if(startsWith($file,"wordformdf_")){
                 $this->mergeStatistics($dpath,$wordformdf);
+            }else if(startsWith($file,"lemma_upos_")){
+                $this->mergeStatistics($dpath,$lemmaUPOS);
             }else if(startsWith($file,"lemma_")){
                 $this->mergeStatistics($dpath,$lemma);
             }else if(startsWith($file,"chars_")){
                 $this->mergeStatistics($dpath,$charsArr);
-            }else if(startsWith($file,"lemma_upos_")){
-                $this->mergeStatistics($dpath,$lemmaUPOS);
             }
         }
         closedir($dh);
