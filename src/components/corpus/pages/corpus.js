@@ -287,6 +287,12 @@ function openStatsLetters(){
     //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_letters.csv";
 }
 
+function openStatsLemmaUPOS(){
+    viewFileCSV("statistics/list_lemma_upos.csv","csv2");
+    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_lemma_upos.csv";
+}
+
+
 var $grid=false;
 var $gridStandoff=false;
 var $gridTasks=false;
@@ -1212,6 +1218,8 @@ function initGridStatistics(){
                 { type: 'button', label: 'View Lemma Stats', listeners: [{ click: openStatsLemma}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'View WordForm Doc Freq', listeners: [{ click: openStatsWordFormDF}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'View Letters Stats', listeners: [{ click: openStatsLetters}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View Lemma UPOS Stats', listeners: [{ click: openStatsLemmaUPOS}], icon: 'ui-icon-plus' },
+                
          ]};
 
         var obj = {
