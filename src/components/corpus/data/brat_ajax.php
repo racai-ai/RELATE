@@ -8,7 +8,26 @@ $cacheData=false;
 header('Content-Type: application/json');
 
 if($a=="getCollectionInformation"){
-//$_REQUEST['collection']
+      $cname=trim($_REQUEST['collection'],'/');
+      $corpora=new Corpora();
+      $corpus=new Corpus($corpora,$cname);
+      if(!$corpus->loadData())die("Invalid corpus");
+
+      $fname=$corpus->getFolderPath()."/standoff/brat_profile.json";
+      
+      if(is_file($fname)){
+            $bratProfile=file_get_contents($fname);
+      }else{
+            $bratProfile=<<<EOT
+[
+	{"borderColor": "darken", "normalizations": [], "name": "ORG", "labels": null, "children": [], "unused": false, "bgColor": "#8fb2ff", "attributes": [], "type": "ORG", "fgColor": "black"}, 
+	{"borderColor": "darken", "normalizations": [], "name": "PER", "labels": null, "children": [], "unused": false, "bgColor": "#ffccaa", "attributes": [], "type": "PER", "fgColor": "black"}, 
+	{"borderColor": "darken", "normalizations": [], "name": "LOC", "labels": null, "children": [], "unused": false, "bgColor": "lightgreen", "attributes": [], "type": "LOC", "fgColor": "black"}, 
+	{"borderColor": "darken", "normalizations": [], "name": "TIME", "labels": null, "children": [], "unused": false, "bgColor": "#f1f447", "attributes": [], "type": "TIME", "fgColor": "black"}
+]
+EOT;
+      }
+
 echo <<<EOT
 {"protocol": 1, 
 "description": null, 
@@ -30,12 +49,8 @@ echo <<<EOT
 "search_config": [], 
 "ner_taggers": [], 
 "relation_types": [], 
-"entity_types": [
-	{"borderColor": "darken", "normalizations": [], "name": "ORG", "labels": null, "children": [], "unused": false, "bgColor": "#8fb2ff", "attributes": [], "type": "ORG", "fgColor": "black"}, 
-	{"borderColor": "darken", "normalizations": [], "name": "PER", "labels": null, "children": [], "unused": false, "bgColor": "#ffccaa", "attributes": [], "type": "PER", "fgColor": "black"}, 
-	{"borderColor": "darken", "normalizations": [], "name": "LOC", "labels": null, "children": [], "unused": false, "bgColor": "lightgreen", "attributes": [], "type": "LOC", "fgColor": "black"}, 
-	{"borderColor": "darken", "normalizations": [], "name": "TIME", "labels": null, "children": [], "unused": false, "bgColor": "#f1f447", "attributes": [], "type": "TIME", "fgColor": "black"}
-], "relation_attribute_types": []}
+"entity_types": $bratProfile, 
+"relation_attribute_types": []}
 EOT;
 die();
 }
