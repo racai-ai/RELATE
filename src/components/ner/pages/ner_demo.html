@@ -1,0 +1,78 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Named Entity Recognition</h6>
+                  <div class="mT-30">
+                  
+                    <div id="input">                  
+                        <form id="inputForm">
+                            <p>Selectați modelul NER dorit și introduceți un document în limba română pentru recunoașterea entităților. 
+                            Modelele bazate pe corpusul LegalNERo presupun un text de tip legislație. Utilizarea de texte din alte domenii reduce calitatea rezultatelor.</p>
+                      
+                            <select name="model" id="model">
+                                <option value="legalnero_legal_per_loc_org_time" selected="true">LegalNERo LEGAL, PER, LOC, ORG, TIME</option>
+                                <option value="legalnero_per_loc_org_time">LegalNERo PER, LOC, ORG, TIME</option>
+                            </select>
+                      
+                            <textarea id='text' name="text" style='width:100%; height:300px;'></textarea>
+                            <input type="hidden" name="path" value="ner/do_ner_span"/>
+
+                            <br/>
+                            <button type="button"  class="btn cur-p btn-secondary" onclick="run_ner();">NER</button>
+                        </form>
+                    
+                    </div>
+  
+                    {{loading}}
+
+                    <div style="display:none" id="output">
+                        <p>Entități identificate:</p>
+                        
+                        <div id="outputText" style="border: 1px solid gray;">
+                        </div>
+                        
+                        <br/>
+                        
+                        <div id="output1">
+                        </div>
+                        
+                        <br/>
+                        <button type="button"  class="btn cur-p btn-secondary" onclick="again();">Document nou</button>
+                    </div>
+
+                    <div>
+                        <br/>
+                        <p>LegalNERo is a manually annotated corpus for Romanian named entity recognition (NER) in the legal domain, available for download here: 
+                        <a href="https://doi.org/10.5281/zenodo.4772094" target="_blank">https://doi.org/10.5281/zenodo.4772094</a>. If using this corpus, please cite as
+                        <i>Păiș, Vasile, Mitrofan, Maria, Gasan, Carol Luca, Ianov, Alexandru, Ghiță, Corvin, Coneschi, Vlad Silviu, & Onuț, Andrei. (2021). Romanian Named Entity Recognition in the Legal domain (LegalNERo) [Data set]. Zenodo. http://doi.org/10.5281/zenodo.4772094</i>
+                        </p>
+                        
+                        <p><b>Model evaluation and Download</b><br/>
+                        Models were trained using <a href="http://neuroner.com/" target="_blank">NeuroNER</a>, using 80% data for training, 10% for validation during training and 10% for testing. 
+                        Results are presented as reported by the NeuroNER tool based on the test split. During training we used CoRoLa based word embeddings as described in 
+                        <i>Vasile Păiș, and Dan Tufiș. “Computing distributed representations of words using the CoRoLa corpus”. In: Proceedings of the Romanian Academy Series A - Mathematics
+Physics Technical Sciences Information Science 19.2 (2018), pp. 185–191</i> (available for download <a href="http://corolaws.racai.ro/word_embeddings/" target="_blank">here</a>).
+                        </p>
+<p>  
+<i>LegalNERo_LEGAL_PER_LOC_ORG_TIME</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_legal_per_loc_org_time.zip">Download</a><br/>
+<pre>
+accuracy:  95.75%; precision:  86.03%; recall:  82.06%; FB1:  84.00
+            LEGAL: precision:  89.66%; recall:  88.35%; FB1:  89.00  406
+              LOC: precision:  77.51%; recall:  72.78%; FB1:  75.07  169
+              ORG: precision:  80.64%; recall:  75.35%; FB1:  77.90  470
+              PER: precision:  94.16%; recall:  96.99%; FB1:  95.56  137
+             TIME: precision:  91.29%; recall:  83.68%; FB1:  87.32  264
+</pre>
+<br/>
+<i>LegalNERo_PER_LOC_ORG_TIME</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_per_loc_org_time.zip">Download</a><br/><br/>
+<pre>
+accuracy:  97.40%; precision:  86.29%; recall:  83.16%; FB1:  84.70
+              LOC: precision:  70.65%; recall:  72.22%; FB1:  71.43  184
+              ORG: precision:  84.04%; recall:  78.70%; FB1:  81.28  633
+              PER: precision:  98.47%; recall:  96.99%; FB1:  97.73  131
+             TIME: precision:  91.04%; recall:  88.55%; FB1:  89.77  569
+</pre></p>                        
+                    </div>
+
+                  </div>
+                </div>
+              </div>
