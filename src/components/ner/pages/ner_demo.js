@@ -6,6 +6,20 @@ function again() {
 
 }
 
+function demo(){
+document.getElementById('text').value=
+"Se promulgă Legea privind respingerea Ordonanței de urgență a Guvernului nr. 75/2018 pentru modificarea și completarea unor acte normative în domeniul protecției mediului și al regimului străinilor și se dispune publicarea acestei legi în Monitorul Oficial al României , Partea I.\n"+
+"ORDIN nr. 823 din 27 mai 2021 privind numirea reprezentanților părții române în cadrul organismelor create în temeiul tratatelor bilaterale privind gospodărirea apelor de frontieră\n"+
+"EMITENT\n"+
+"MINISTERUL MEDIULUI , APELOR ȘI PĂDURILOR\n"+
+"Publicat în  MONITORUL OFICIAL nr. 573 din 7 iunie 2021\n"+
+"\n"+
+"Având în vedere Referatul de aprobare nr. DMRA/192.653/5.04.2021 al Direcției managementul resurselor de apă ,\n"+
+"luând în considerare prevederile Acordului dintre Guvernul României și Guvernul Republicii Serbia privind cooperarea în domeniul gospodăririi durabile a apelor transfrontaliere , semnat la București la 5 iunie 2019, aprobat prin Hotărârea Guvernului nr. 725/2020, prevederile Acordului dintre Guvernul României și Guvernul Ucrainei privind cooperarea în domeniul gospodăririi apelor de frontieră, semnat la Galați la 30 septembrie 1997, ratificat prin Legea nr. 16/1999 , prevederile Acordului dintre Guvernul României și Guvernul Republicii Ungare privind colaborarea pentru protecția și utilizarea durabilă a apelor de frontieră, semnat la Budapesta la 15 septembrie 2003 , aprobat prin Hotărârea Guvernului nr. 577/2004 , prevederile Acordului dintre Guvernul României și Guvernul Republicii Moldova privind cooperarea pentru protecția și utilizarea durabilă a apelor Prutului și Dunării, semnat la Chișinău la 28 iunie 2010 , aprobat prin Hotărârea Guvernului nr. 1.092/2010 , în temeiul art. 2 alin. (1) din Hotărârea Guvernului nr. 1.079/2010 pentru reprezentarea în cadrul organismelor create în temeiul tratatelor bilaterale privind gospodărirea apelor de frontieră , al art. 57 alin. (1), (4) și (5) din Ordonanța de urgență a Guvernului nr. 57/2019 privind Codul administrativ, cu modificările și completările ulterioare, precum și al art. 13 alin. (4) din Hotărârea Guvernului nr. 43/2020 privind organizarea și funcționarea Ministerului Mediului , Apelor și Pădurilor ,\n"+
+"ministrul mediului, apelor și pădurilor emite prezentul ordin .";
+}
+
+
 function run_ner(){
     var text=document.getElementById('text').value;
     

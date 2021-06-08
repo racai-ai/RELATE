@@ -6,7 +6,9 @@
                     <div id="input">                  
                         <form id="inputForm">
                             <p>Selectați modelul NER dorit și introduceți un document în limba română pentru recunoașterea entităților. 
-                            Modelele bazate pe corpusul LegalNERo presupun un text de tip legislație. Utilizarea de texte din alte domenii reduce calitatea rezultatelor.</p>
+                            Modelele bazate pe corpusul LegalNERo presupun un text de tip legislație. Utilizarea de texte din alte domenii reduce calitatea rezultatelor. 
+                            Pentru a putea realiza ancorarea corectă a rezultatelor în textul introdus, nu sunt realizate curățări ale datelor. 
+                            Textul trebuie să conțină doar caractere în limba română, cu virgula și punctul separate de cuvântul anterior.</p>
                       
                             <select name="model" id="model">
                                 <option value="legalnero_legal_per_loc_org_time" selected="true">LegalNERo LEGAL, PER, LOC, ORG, TIME</option>
@@ -17,7 +19,8 @@
                             <input type="hidden" name="path" value="ner/do_ner_span"/>
 
                             <br/>
-                            <button type="button"  class="btn cur-p btn-secondary" onclick="run_ner();">NER</button>
+                            <button type="button"  class="btn cur-p btn-primary" onclick="run_ner();">NER</button>
+                            <button type="button"  class="btn cur-p btn-secondary" onclick="demo();">Demo text</button>
                         </form>
                     
                     </div>
@@ -27,7 +30,7 @@
                     <div style="display:none" id="output">
                         <p>Entități identificate:</p>
                         
-                        <div id="outputText" style="border: 1px solid gray;">
+                        <div id="outputText" style="overflow:scroll; height:430px">
                         </div>
                         
                         <br/>
