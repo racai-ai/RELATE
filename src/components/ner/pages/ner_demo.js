@@ -39,7 +39,7 @@ function run_ner(){
         else
             document.getElementById("outputText").innerText="";
         
-        var html='<table>';
+        var html='<table cellpadding="3">';
         html+='<tr><th>ID</th><th>Type</th><th>Text</th><th>Start</th><th>End</th></tr>';
         
         for(var i=0;i<data.result.length;i++){
