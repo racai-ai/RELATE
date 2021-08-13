@@ -25,7 +25,7 @@ function PYEUROVOC_Predict($text){
         CURLOPT_POSTFIELDS => $data,
         CURLOPT_HTTPHEADER => array(
           //"Authorization: Bearer $TOKEN",
-          "Content-Type: application/x-www-form-urlencoded",
+          "Content-Type: application/json",
           "Content-Length: " . strlen($data)
       
         ),
