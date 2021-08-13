@@ -11,6 +11,10 @@
                             <input type="hidden" name="path" value="eurovoc/get_classes"/>
 
                             <br/>
+                            Model <select name="model">
+                                <option value="1">FastText</option>
+                                <option value="2" selected="selected">PyEurovoc</option>
+                            </select>
                             Num <input type="text" name="num" value="6"/> Threshold (0.0 - 1.0) <input type="text" name="threshold" value="0.0"/>
                             <button type="button"  class="btn cur-p btn-secondary" onclick="classify();">Classify</button>
                         </form>
@@ -28,12 +32,19 @@
                     </div>
 
 <div id="text">
-<p>The EUROVOC classification model for Romanian language was trained using <a href="https://fasttext.cc/" target="_blank">FastText</a> 
-using <a href="http://corolaws.racai.ro/word_embeddings/" target="_blank">CoRoLa based word embeddings</a>. It is served using a 
+<p>The <b>PyEurovoc classification model</b> is based on contextualized word embeddings, trained using bert-base-romanian-cased-v1.
+A GitHub repo with scripts and example usage is available 
+        <a href="https://github.com/racai-ai/pyeurovoc" target="_blank">here</a>. Related paper is 
+        <i>Avram Andrei-Marius, Vasile Păiș, and Dan Tufiș. "PyEuroVoc: A Tool for Multilingual Legal Document Classification with EuroVoc Descriptors."  In Proceedings of the International Conference on Recent Advances in Natural Language Processing (RANLP 2021), 2021.</i>
+        The model achieves F1=80.90 on EUROVOC IDs, while conversion to MT labels translates into F1=86.12 and for top-level domains P=88.40.
+</p>
+ 
+<p>The <b>FastText EuroVoc classification model</b> for Romanian language was trained using <a href="https://fasttext.cc/" target="_blank">FastText</a> 
+with <a href="http://corolaws.racai.ro/word_embeddings/" target="_blank">CoRoLa based word embeddings</a>. It is served using a 
 changed version of FastText supporting serving trained models. It can be downloaded from our github: 
-<a href="https://github.com/racai-ai/ServerFastText" target="_blank">https://github.com/racai-ai/ServerFastText</a>.</p>
-<p>The model achieves P=50.93, R=56.40, F1=53.53 on EUROVOC IDs, while conversion to MT labels translates into P=56.05, R=68.95, F1=61.83 and for top-level domains P=64.9, R=77.89, F1=70.80.</p>
-<p>The model can be downloaded here: <a href="https://relate.racai.ro/resources/EUROVOC/eurovoc.ro.bin">BIN</a> or <a href="https://relate.racai.ro/resources/EUROVOC/eurovoc.ro.vec">VEC</a>.</p>
+<a href="https://github.com/racai-ai/ServerFastText" target="_blank">https://github.com/racai-ai/ServerFastText</a>.
+The model achieves P=50.93, R=56.40, F1=53.53 on EUROVOC IDs, while conversion to MT labels translates into P=56.05, R=68.95, F1=61.83 and for top-level domains P=64.9, R=77.89, F1=70.80.
+The model can be downloaded here: <a href="https://relate.racai.ro/resources/EUROVOC/eurovoc.ro.bin">BIN</a> or <a href="https://relate.racai.ro/resources/EUROVOC/eurovoc.ro.vec">VEC</a>.</p>
 
 </div>
 
