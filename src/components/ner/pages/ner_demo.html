@@ -11,7 +11,9 @@
                             Textul trebuie să conțină doar caractere în limba română, cu virgula și punctul separate de cuvântul anterior.</p>
                       
                             <select name="model" id="model">
-                                <option value="legalnero_legal_per_loc_org_time" selected="true">LegalNERo LEGAL, PER, LOC, ORG, TIME</option>
+                                <option value="legalnero_legal_per_loc_org_time_gaz" selected="true">LegalNERo LEGAL, PER, LOC, ORG, TIME with Gazetteer</option>
+                                <option value="legalnero_per_loc_org_time_gaz">LegalNERo PER, LOC, ORG, TIME with Gazetteer</option>
+                                <option value="legalnero_legal_per_loc_org_time">LegalNERo LEGAL, PER, LOC, ORG, TIME</option>
                                 <option value="legalnero_per_loc_org_time">LegalNERo PER, LOC, ORG, TIME</option>
                             </select>
                       
@@ -50,29 +52,64 @@
                         </p>
                         
                         <p><b>Model evaluation and Download</b><br/>
-                        Models were trained using <a href="http://neuroner.com/" target="_blank">NeuroNER</a>, using 80% data for training, 10% for validation during training and 10% for testing. 
-                        Results are presented as reported by the NeuroNER tool based on the test split. During training we used CoRoLa based word embeddings as described in 
+                        Models were constructed using pre-trained word embeddings and on-the-fly character embeddings fed into a BiLSTM layer. For certain models, additional gazetteer resources
+                        were employed. We used 80% of the data for training, 10% for validation during training and 10% for testing. Used splits can be downloaded from here:
+                        <a href="https://relate.racai.ro/resources/legalnero/legalnero_split_5classes.zip">all classes</a> and 
+                        <a href="https://relate.racai.ro/resources/legalnero/legalnero_split_4classes.zip"> 4 classes (without LEGAL class)</a>.
+                        As word embeddings, we used CoRoLa based word embeddings as described in 
                         <i>Vasile Păiș, and Dan Tufiș. “Computing distributed representations of words using the CoRoLa corpus”. In: Proceedings of the Romanian Academy Series A - Mathematics
 Physics Technical Sciences Information Science 19.2 (2018), pp. 185–191</i> (available for download <a href="http://corolaws.racai.ro/word_embeddings/" target="_blank">here</a>).
-                        </p>
+Additional embeddings trained on the MARCELL legislative corpus are available <a href="https://relate.racai.ro/resources/legalnero/marcell.300.20.5.vec.gz">here</a>.
+
+                        <br/>Experiments with other models not available in the demo can be seen here: <a href="https://relate.racai.ro/resources/legalnero/report.html" target="_blank">Report1</a> and
+                        <a href="https://relate.racai.ro/resources/legalnero/report2.html" target="_blank">Report2</a>. 
+                       
+                        
+                         </p>
 <p>  
-<i>LegalNERo_LEGAL_PER_LOC_ORG_TIME</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_legal_per_loc_org_time.zip">Download</a><br/>
+<i>LegalNERo_LEGAL_PER_LOC_ORG_TIME_Gazetteer</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_legal_per_loc_org_time_gazetter.zip">Download</a><br/>
+Trained using <a href="https://github.com/TeMU-BSC/PharmaCoNER-Tagger" target="_blank">PharmaCoNER-Tagger (NeuroNER variant)</a> with MARCELL embeddings and 
+<a href="https://relate.racai.ro/resources/legalnero/legalnero_all.gaz.gz">Gazetteer</a>. Overall macro F1=85.34 on the test set. Individual F1 scores:
 <pre>
-accuracy:  95.75%; precision:  86.03%; recall:  82.06%; FB1:  84.00
-            LEGAL: precision:  89.66%; recall:  88.35%; FB1:  89.00  406
-              LOC: precision:  77.51%; recall:  72.78%; FB1:  75.07  169
-              ORG: precision:  80.64%; recall:  75.35%; FB1:  77.90  470
-              PER: precision:  94.16%; recall:  96.99%; FB1:  95.56  137
-             TIME: precision:  91.29%; recall:  83.68%; FB1:  87.32  264
+            LEGAL: 86.98
+              LOC: 75.94
+              ORG: 80.60
+              PER: 98.48
+             TIME: 84.09
 </pre>
 <br/>
-<i>LegalNERo_PER_LOC_ORG_TIME</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_per_loc_org_time.zip">Download</a><br/><br/>
+
+<i>LegalNERo_PER_LOC_ORG_TIME_Gazetteer</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_per_loc_org_time_gazetteer.zip">Download</a><br/>
+Trained using <a href="https://github.com/TeMU-BSC/PharmaCoNER-Tagger" target="_blank">PharmaCoNER-Tagger (NeuroNER variant)</a> with a combination of CoRoLa and 
+MARCELL embeddings, 
+<a href="https://relate.racai.ro/resources/legalnero/legalnero_all.gaz.gz">Gazetteer</a> and 
+<a href="https://relate.racai.ro/resources/legalnero/legalnero_affixes.tsv.gz">Affixes</a>. Overall macro F1=86.84 on the test set. Individual F1 scores:
 <pre>
-accuracy:  97.40%; precision:  86.29%; recall:  83.16%; FB1:  84.70
-              LOC: precision:  70.65%; recall:  72.22%; FB1:  71.43  184
-              ORG: precision:  84.04%; recall:  78.70%; FB1:  81.28  633
-              PER: precision:  98.47%; recall:  96.99%; FB1:  97.73  131
-             TIME: precision:  91.04%; recall:  88.55%; FB1:  89.77  569
+              LOC: 76.01
+              ORG: 80.89
+              PER: 98.86
+             TIME: 91.39
+</pre>
+<br/>
+
+<i>LegalNERo_LEGAL_PER_LOC_ORG_TIME</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_legal_per_loc_org_time.zip">Download</a><br/>
+Trained using  <a href="http://neuroner.com/" target="_blank">NeuroNER</a> with CoRoLa embeddings. Overall F1=84.00 on the test set. Individual F1 scores:
+<pre>
+            LEGAL: 89.00
+              LOC: 75.07
+              ORG: 77.90
+              PER: 95.56
+             TIME: 87.32
+</pre>
+<br/>
+
+<i>LegalNERo_PER_LOC_ORG_TIME</i> <a href="https://relate.racai.ro/resources/legalnero/legalnero_per_loc_org_time.zip">Download</a><br/>
+Trained using  <a href="http://neuroner.com/" target="_blank">NeuroNER</a> with CoRoLa embeddings. Overall F1=84.70 on the test set. Individual F1 scores:
+<pre>
+              LOC: 71.43
+              ORG: 81.28
+              PER: 97.73
+             TIME: 89.77
 </pre></p>                        
                     </div>
 
