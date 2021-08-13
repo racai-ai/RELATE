@@ -6,17 +6,16 @@
         "label":"CURLICAT Anonymization",
         "icon":"c-deep-purple-500 ti-comment-alt",
         "path":"roanon/anonymize",
-        "rights":["corpus"],
         "menu":[
-            {"label":"Anonymization", "path":"roanon/anonymize","rights":["corpus"]}
+            {"label":"Anonymization", "path":"roanon/anonymize"}
         ]
       }
 
 ],
 
 "handlers":[
-		{"path":"roanon/anonymize","script":"pages/anonymize.php","rights":["corpus"]},
-		{"path":"roanon/do_anonymize","script":"data/do_anonymize.php","data":true,"rights":["corpus"]}
+		{"path":"roanon/anonymize","script":"pages/anonymize.php"},
+		{"path":"roanon/do_anonymize","script":"data/do_anonymize.php","data":true}
 
 ]
 
