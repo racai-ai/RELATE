@@ -2,7 +2,7 @@
 
 function ANONYMIZATION_anonymize_text($text){
 
-    $url="http://127.0.0.1:8202/anonymize";
+    $url="http://127.0.0.1:8202/anonymize?test=test";  // dummy parameter to avoid crash
 
     /*$out=[];
     foreach(explode("\n",$text) as $line){
@@ -34,7 +34,7 @@ function ANONYMIZATION_anonymize_text($text){
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => 1,
         CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 60,
+        CURLOPT_TIMEOUT => 20*60, // 20 minutes
         //CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POST => 1,
@@ -47,7 +47,7 @@ function ANONYMIZATION_anonymize_text($text){
         ),
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
-        //CURLOPT_VERBOSE => $ROBIN_DEBUG
+        //CURLOPT_VERBOSE => 1
     ));
     
     
