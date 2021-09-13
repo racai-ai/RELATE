@@ -55,6 +55,10 @@ function ANONYMIZATION_anonymize_text($text){
     
     curl_close ($ch);
     
-    return $server_output;
+    $anon=json_decode($server_output,true);
+    $anon=$anon['text'];
+    
+    
+    return $anon;
 
 }
