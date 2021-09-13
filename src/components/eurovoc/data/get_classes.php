@@ -4,15 +4,8 @@ if(!isset($_REQUEST['text']))die("Invalid call");
 if(!isset($_REQUEST['num']))die("Invalid call");
 if(!isset($_REQUEST['threshold']))die("Invalid call");
 
-$text=cleanupTextForServerFastText($_REQUEST['text']);
 
-$ret=callFastTextClassifier(
-    $text,
-    "http://127.0.0.1:8201/classifier_predict",
-    intval($_REQUEST['num']),floatval($_REQUEST['threshold']),true
-);
-
-//$ret=["428","7927"];
+$ret=EUROVOC_Classify($_REQUEST['text'],intval($_REQUEST['num']),floatval($_REQUEST['threshold']),false,false, intval($_REQUEST["model"]));
 
 sort($ret);
 $mtids=EUROVOC_getMT($ret);
