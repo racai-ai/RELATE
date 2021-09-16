@@ -46,13 +46,29 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
     
     $current="";
     $ret="";
+    $lastSentId=0;
     foreach(explode("\n",$text) as $line){
         if(strlen($current)+strlen($line)+1>770000){
             $r=UDPIPE_call_internal($current,$lang,$process,$debug);
             if($r===false || $r===null)return false;
 			$r=json_decode($r,true);
 			if(!isset($r['result']))return false;
-            $ret.=$r['result'];
+            if(strlen($ret)==0){
+                $ret=$r['result'];
+                foreach(explode("\n",$ret) as $l){
+                    if(startsWith($l,"# sent_id ="))$lastSentId++;
+                }
+            }else{
+                foreach(explode("\n",$r['result']) as $l){
+                    if(startsWith($l,"# newdoc"))continue;
+                    if(startsWith($l,"# sent_id =")){
+                        $lastSentId++;
+                        $ret.="# sent_id = $lastSentId\n";
+                        continue;
+                    }
+                    $ret.="$l\n";
+                }            
+            }
             $current=$line;
         }else $current.="$line\n";
     }
@@ -63,7 +79,22 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
             if($r===false || $r===null)return false;
 			$r=json_decode($r,true);
 			if(!isset($r['result']))return false;
-            $ret.=$r['result'];
+            if(strlen($ret)==0){
+                $ret=$r['result'];
+                foreach(explode("\n",$ret) as $l){
+                    if(startsWith($l,"# sent_id ="))$lastSentId++;
+                }
+            }else{
+                foreach(explode("\n",$r['result']) as $l){
+                    if(startsWith($l,"# newdoc"))continue;
+                    if(startsWith($l,"# sent_id =")){
+                        $lastSentId++;
+                        $ret.="# sent_id = $lastSentId\n";
+                        continue;
+                    }
+                    $ret.="$l\n";
+                }            
+            }
     }
     
     return json_encode(["result"=>$ret]);
