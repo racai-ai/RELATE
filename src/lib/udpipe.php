@@ -1,6 +1,6 @@
 <?php
 
-function UDPIPE_call($text,$lang,$process=false,$debug=false){
+function UDPIPE_call_internal($text,$lang,$process=false,$debug=false){
     global $UDPIPE_baseurls;
 
 		if(!isset($UDPIPE_baseurls[$lang]))return false;
@@ -29,6 +29,44 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
     
     return $server_output;
 
+}
+
+
+function UDPIPE_call($text,$lang,$process=false,$debug=false){
+    global $UDPIPE_baseurls;
+
+	if(!isset($UDPIPE_baseurls[$lang]))return false;
+
+    $sz=strlen($text);
+    if($sz<770000){  // size of a known working file was 778787; 780469 failed 
+        return UDPIPE_call_internal($text,$lang,$process,$debug);
+    }
+
+    // use chunks
+    
+    $current="";
+    $ret="";
+    foreach(explode("\n",$text) as $line){
+        if(strlen($current)+strlen($line)+1>770000){
+            $r=UDPIPE_call_internal($current,$lang,$process,$debug);
+            if($r===false || $r===null)return false;
+			$r=json_decode($r,true);
+			if(!isset($r['result']))return false;
+            $ret.=$r;
+            $current=$line;
+        }else $current.="$line\n";
+    }
+    
+    $current=trim($current);
+    if(strlen($current)>0){
+            $r=UDPIPE_call_internal($current,$lang,$process,$debug);
+            if($r===false || $r===null)return false;
+			$r=json_decode($r,true);
+			if(!isset($r['result']))return false;
+            $ret.=$r;
+    }
+    
+    return json_encode(["result"=>$ret]);
 }
 
 ?>
