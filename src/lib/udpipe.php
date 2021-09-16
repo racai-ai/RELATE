@@ -52,7 +52,7 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
             if($r===false || $r===null)return false;
 			$r=json_decode($r,true);
 			if(!isset($r['result']))return false;
-            $ret.=$r;
+            $ret.=$r['result'];
             $current=$line;
         }else $current.="$line\n";
     }
@@ -63,7 +63,7 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
             if($r===false || $r===null)return false;
 			$r=json_decode($r,true);
 			if(!isset($r['result']))return false;
-            $ret.=$r;
+            $ret.=$r['result'];
     }
     
     return json_encode(["result"=>$ret]);
