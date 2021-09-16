@@ -38,7 +38,8 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
 	if(!isset($UDPIPE_baseurls[$lang]))return false;
 
     $sz=strlen($text);
-    if($sz<770000){  // size of a known working file was 778787; 780469 failed 
+    if($sz<700000){  // size of a known working file was 778787; 780469 failed
+        // o tentativa cu 770.000 a dat eroare => probabil datorita codarii  
         return UDPIPE_call_internal($text,$lang,$process,$debug);
     }
 
@@ -48,7 +49,7 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
     $ret="";
     $lastSentId=0;
     foreach(explode("\n",$text) as $line){
-        if(strlen($current)+strlen($line)+1>770000){
+        if(strlen($current)+strlen($line)+1>700000){
             $r=UDPIPE_call_internal($current,$lang,$process,$debug);
             if($r===false || $r===null)return false;
 			$r=json_decode($r,true);
