@@ -1,6 +1,6 @@
 <?php
 
-function UDPIPE_call($text,$lang,$process=false,$debug=false){
+function UDPIPE_call_internal($text,$lang,$process=false,$debug=false){
     global $UDPIPE_baseurls;
 
 		if(!isset($UDPIPE_baseurls[$lang]))return false;
@@ -29,6 +29,76 @@ function UDPIPE_call($text,$lang,$process=false,$debug=false){
     
     return $server_output;
 
+}
+
+
+function UDPIPE_call($text,$lang,$process=false,$debug=false){
+    global $UDPIPE_baseurls;
+
+	if(!isset($UDPIPE_baseurls[$lang]))return false;
+
+    $sz=strlen($text);
+    if($sz<700000){  // size of a known working file was 778787; 780469 failed
+        // o tentativa cu 770.000 a dat eroare => probabil datorita codarii  
+        return UDPIPE_call_internal($text,$lang,$process,$debug);
+    }
+
+    // use chunks
+    
+    $current="";
+    $ret="";
+    $lastSentId=0;
+    foreach(explode("\n",$text) as $line){
+        if(strlen($current)+strlen($line)+1>700000){
+            $r=UDPIPE_call_internal($current,$lang,$process,$debug);
+            if($r===false || $r===null)return false;
+			$r=json_decode($r,true);
+			if(!isset($r['result']))return false;
+            if(strlen($ret)==0){
+                $ret=$r['result'];
+                foreach(explode("\n",$ret) as $l){
+                    if(startsWith($l,"# sent_id ="))$lastSentId++;
+                }
+            }else{
+                foreach(explode("\n",$r['result']) as $l){
+                    if(startsWith($l,"# newdoc"))continue;
+                    if(startsWith($l,"# sent_id =")){
+                        $lastSentId++;
+                        $ret.="# sent_id = $lastSentId\n";
+                        continue;
+                    }
+                    $ret.="$l\n";
+                }            
+            }
+            $current=$line;
+        }else $current.="$line\n";
+    }
+    
+    $current=trim($current);
+    if(strlen($current)>0){
+            $r=UDPIPE_call_internal($current,$lang,$process,$debug);
+            if($r===false || $r===null)return false;
+			$r=json_decode($r,true);
+			if(!isset($r['result']))return false;
+            if(strlen($ret)==0){
+                $ret=$r['result'];
+                foreach(explode("\n",$ret) as $l){
+                    if(startsWith($l,"# sent_id ="))$lastSentId++;
+                }
+            }else{
+                foreach(explode("\n",$r['result']) as $l){
+                    if(startsWith($l,"# newdoc"))continue;
+                    if(startsWith($l,"# sent_id =")){
+                        $lastSentId++;
+                        $ret.="# sent_id = $lastSentId\n";
+                        continue;
+                    }
+                    $ret.="$l\n";
+                }            
+            }
+    }
+    
+    return json_encode(["result"=>$ret]);
 }
 
 ?>
