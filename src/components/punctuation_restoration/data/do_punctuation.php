@@ -22,7 +22,7 @@ function callPunctuation($url,$text){
     $data .= "--" . $delimiter . $eol
                 . 'Content-Disposition: form-data; name="text"; filename="text.txt"'.$eol
                 . 'Content-type: text/text'.$eol.$eol
-                . $text . $eol;
+                . implode("\n",explode(" ",$text)) . $eol;
     $data .= "--" . $delimiter . "--".$eol;
 
     curl_setopt_array($ch, array(
