@@ -8,7 +8,7 @@ function again() {
 
 function demo(){
 document.getElementById('text').value=
-"Demo";
+"președintele a vizitat românia suedia și danemarca";
 }
 
 
