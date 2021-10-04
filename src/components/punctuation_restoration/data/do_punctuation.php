@@ -61,6 +61,20 @@ $url=$models[$model]["url"];
 $data=callPunctuation($url,$text);
 //$data='{"text":"Acesta este un test.","mappings":["aaaa\\t_#312312#"]}';
 
-echo $data;
+$data=json_decode($data,true);
+$newt="";
+$rdata=explode(" ",$data['result']);
+$tdata=explode(" ",$text);
+$ndata=[];
+for($i=0;$i<count($tdata);$i++){
+    $ndata[]=$tdata[$i];
+    if($rdata[$i]=="COMMA")$ndata[]=",";
+    if($rdata[$i]=="PERIOD")$ndata[]=".";
+}
+
+if($ndata[count($ndata)-1]!=".")$ndata[]=".";
+
+$data['new_text']=implode(" ",$ndata);
+echo json_encode($data);
 
 die();
