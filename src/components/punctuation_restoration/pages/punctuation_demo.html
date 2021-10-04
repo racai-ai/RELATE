@@ -1,0 +1,59 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Punctuation Restoration</h6>
+                  <div class="mT-30">
+                  
+                    <div id="input">                  
+                        <form id="inputForm">
+                            <p>Selectați modelul dorit și introduceți un document în limba română, fără punctuație și cu litere mici. 
+                            Modelele bazate pe corpusul MARCELL presupun un text de tip legislație. Utilizarea de texte din alte domenii reduce calitatea rezultatelor. 
+                            Nu sunt realizate curățări ale datelor, astfel încât textul trebuie să conțină doar caractere în limba română.</p>
+                      
+                            <select name="model" id="model">
+                                <option value="marcell_punctuation" selected="true">MARCELL Punctuation Restoration</option>
+                            </select>
+                      
+                            <textarea id='text' name="text" style='width:100%; height:300px;'></textarea>
+                            <input type="hidden" name="path" value="punctuation_restoration/do_punctuation"/>
+
+                            <br/>
+                            <button type="button"  class="btn cur-p btn-primary" onclick="run_punctuation();">Punctuation</button>
+                            <button type="button"  class="btn cur-p btn-secondary" onclick="demo();">Demo text</button>
+                        </form>
+                    
+                    </div>
+  
+                    {{loading}}
+
+                    <div style="display:none" id="output">
+                        <p>Entități identificate:</p>
+                        
+                        <div id="outputText" >
+                        </div>
+                        
+                        <br/>
+                        
+                        <br/>
+                        <button type="button"  class="btn cur-p btn-secondary" onclick="again();">Document nou</button>
+                    </div>
+
+                    <div>
+                        <br/>
+                        <p><b>Model evaluation and Download</b></p>
+<p>  
+<i>MARCELL Punctuation Restoration</i> <a href="https://relate.racai.ro/resources/punctuation_restoration/marcell_punctuation_model.tar.bz2">Download</a><br/>
+Trained using the Romanian MARCELL corpus ( Tufiș, Dan and Mitrofan, Maria and Păiș, Vasile and Ion, Radu and Coman, Andrei. Collection and Annotation of the Romanian Legal Corpus. In Proceedings of The 12th Language Resources and Evaluation Conference. European Language Resources Association, Marseille, France, pp. 2766-2770, May 2020 <a href="https://www.aclweb.org/anthology/2020.lrec-1.337/" target="_blank">Link</a> ),
+combined with Romanian BERT contextual embeddings (Stefan Dumitrescu, Andrei-Marius Avram, Sampo Pyysalo. The birth of Romanian BERT. In Findings of the Association for Computational Linguistics: EMNLP 2020, pp. 4324–4328, <a href="https://aclanthology.org/2020.findings-emnlp.387/" target="_blank">Link</a> ).   
+
+Overall micro F1=90.81 on the test set. Individual F1 scores:
+<pre>
+            COMMA: 87.17
+           PERIOD: 95.63
+</pre>
+<br/>
+</p>                        
+                    </div>
+
+                  </div>
+                </div>
+              </div>
