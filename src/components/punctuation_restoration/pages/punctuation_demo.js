@@ -29,7 +29,7 @@ function run_punctuation(){
         if(data.status!="OK")
             document.getElementById("outputText").innerText="ERROR";
         else
-            document.getElementById("outputText").innerText=data.result;
+            document.getElementById("outputText").innerText=data.new_text;
     
         document.getElementById("output").setAttribute("style","display:block");
         document.getElementById("loading").setAttribute("style","display:none");
