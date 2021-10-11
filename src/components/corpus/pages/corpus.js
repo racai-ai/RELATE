@@ -535,12 +535,71 @@ function closeFileViewerBRAT(){
     window.location.hash=previousHash;
 }
 
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+ 
+function saveMetadata(n,file){
+    setAttribute("fileViewerText","style","display:none;");
+    setAttribute("loading","style","display:block;");
+
+    content=encodeURIComponent(document.getElementById("metadataEdit"+n).value);
+
+    loadData("path=corpus/file_savemetadatastandoff&corpus={{CORPUS_NAME}}&file="+file+"&meta="+metadataEdit[n].name+"&content="+content,function(data){
+        setAttribute("loading","style","display:none;");
+        setAttribute("fileViewerText","style","display:block;");
+    },function(){
+        alert("Error saving standoff metadata");
+        setAttribute("loading","style","display:none;");
+        setAttribute("fileViewerText","style","display:block;");
+    });
+
+}
+ 
+function editFileMetadata(file){
+    setAttribute("fileViewerText","style","display:none;");
+    setAttribute("loading","style","display:block;");
+
+    loadData("path=corpus/file_getmetadatastandoff&corpus={{CORPUS_NAME}}&file="+file,function(data){
+    
+        data=JSON.parse(data);
+        metadataEdit=data;
+        var html="";
+        for(var i=0;i<data.length;i++){
+            html+='<b>'+data[i].name+"&nbsp;&nbsp;</b>";
+            html+='<button type="button" class="btn cur-p btn-secondary" onclick="saveMetadata('+i+','+"'"+file+"'"+');">Save</button><br/>';
+            html+='<textarea id="metadataEdit'+i+'" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:200px;">'+escapeHtml(data[i].content)+'</textarea><br/>';            
+        }
+        
+        document.getElementById("fileViewerTextMetadataDiv").innerHTML=html;
+    
+        setAttribute("loading","style","display:none;");
+        setAttribute("fileViewerText","style","display:block;");
+        setAttribute("fileViewerTextMetadataDiv","style","display:inline-block; width:40%; vertical-align:top;");
+        setAttribute("inputFileViewerText","style","display:inline-block; width:50%") ;
+    },function(){
+        alert("Error loading standoff metadata");
+        setAttribute("loading","style","display:none;");
+        setAttribute("fileViewerText","style","display:block;");
+    });
+    
+}
+
 function viewFileText(file,showBrat=false){
     currentFileView=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerTextDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
     setAttribute("fileViewerTextBrat","onclick","closeFileViewerText();viewFileBrat('"+file+"');");
+    setAttribute("fileViewerTextMetadata","onclick","editFileMetadata('"+file+"');");
+    
+    setAttribute("fileViewerTextMetadataDiv","style","display:none");
+    setAttribute("inputFileViewerText","style","display:inline-block; width:100%") ;
 
     if(!showBrat)setAttribute("fileViewerTextBrat","style","display:none;");
 		else setAttribute("fileViewerTextBrat","style","{{hidebratbutton}}"); 
