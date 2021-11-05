@@ -235,10 +235,14 @@
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerText();">Back</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextDownload" onclick="">Download</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextBrat" onclick="" style="{{hidebratbutton}}">BRAT</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextMetadata" onclick="">Edit Metadata</button>
                       
                       <div class="mT-30">
-                        <div id="inputFileViewerText">                  
-                            <textarea id="textFileViewerText" cols="140" style="font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                        <div id="inputFileViewerText" style="display: inline-block; width:100%">                  
+                            <textarea id="textFileViewerText" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                        </div>
+                        <div id="fileViewerTextMetadataDiv" style="display:none">
+                            <!-- zone metadata -->
                         </div>
                       </div>
                     
