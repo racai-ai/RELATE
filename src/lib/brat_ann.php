@@ -56,7 +56,7 @@ class BratAnn{
     public function deleteById($id){
         $found=false;
         foreach($this->data as $k=>$ldata){
-            if($ldata[0]==$id){$found=$k;break;}
+            if($ldata['id']==$id){$found=$k;break;}
         }
         if($found!==false){
             unset($this->data[$k]);
