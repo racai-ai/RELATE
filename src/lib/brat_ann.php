@@ -69,7 +69,7 @@ class BratAnn{
         if(empty($this->data)){
             $newid="T1";
         }else{
-            $oldid=$this->data[count($this->data)-1][0];
+            $oldid=$this->data[count($this->data)-1]['id'];
             $oldid=intval(substr($oldid,1));
             $newid="T".($oldid+1);
         }
