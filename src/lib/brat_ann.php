@@ -10,6 +10,8 @@ class BratAnn{
         $this->data=[];    
     }
     
+    // ID<tab>TYPE start end;start end<tab>text
+    
     public function load(){
         $this->data=[];
         if(!is_file($this->path))return ;
@@ -18,16 +20,23 @@ class BratAnn{
             $ldata=explode("\t",$line);
             if(count($ldata)!==3)continue;
             
-            $ldata[1]=explode(" ",$ldata[1]);
+            $frags=explode(" ",$ldata[1],2);
+            $type=$frags[0];
+            $frags=explode(";",$frags[1]);
+            $fragArr=[];
+            foreach($frags as $v)$fragArr[]=explode(" ",$v);
             
-            $this->data[]=$ldata;            
+            $this->data[]=["id"=>$ldata[0], "type"=>$type, "frags"=>$fragArr,"text"=>$ldata[2]];            
         }
     }
     
     public function save(){
         $fout=fopen($this->path,"w");
         foreach($this->data as $ldata){
-            fwrite($fout,"${ldata[0]}\t".$ldata[1][0]." ".$ldata[1][1]." ".$ldata[1][2]."\t${ldata[2]}\n");
+            $ann=[];
+            foreach($ldata['frags'] as $a)$ann[]=implode(" ",$a);
+            $ann=implode(";",$ann);
+            fwrite($fout,"${ldata['id']}\t${ldata['type']} $ann\t${ldata['text']}\n");
         }
         fclose($fout);
         
@@ -39,7 +48,7 @@ class BratAnn{
     public function getForBrat(){
         $ret=[];
         foreach($this->data as $ldata){
-             $ret[]=[$ldata[0],$ldata[1][0],[[$ldata[1][1],$ldata[1][2]]]];
+             $ret[]=[$ldata['id'],$ldata['type'],$ldata['frags']];
         }
         return $ret;
     }
@@ -47,7 +56,7 @@ class BratAnn{
     public function deleteById($id){
         $found=false;
         foreach($this->data as $k=>$ldata){
-            if($ldata[0]==$id){$found=$k;break;}
+            if($ldata['id']==$id){$found=$k;break;}
         }
         if($found!==false){
             unset($this->data[$k]);
@@ -60,13 +69,16 @@ class BratAnn{
         if(empty($this->data)){
             $newid="T1";
         }else{
-            $oldid=$this->data[count($this->data)-1][0];
+            $oldid=$this->data[count($this->data)-1]['id'];
             $oldid=intval(substr($oldid,1));
             $newid="T".($oldid+1);
         }
-        
-        $textann=mb_substr($text,$offsets[0][0],($offsets[0][1]-$offsets[0][0]));        
-        $this->data[]=[$newid,[$type,$offsets[0][0],$offsets[0][1]],$textann];
+
+        $textann="";
+        for($i=0;$i<count($offsets);$i++){
+            $textann.=mb_substr($text,$offsets[$i][0],($offsets[$i][1]-$offsets[$i][0]));
+        }        
+        $this->data[]=['id'=>$newid,'type'=>$type,'frags'=>$offsets,'text'=>$textann];
     }
 
 }
