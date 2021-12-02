@@ -1,0 +1,23 @@
+{
+"order":90,
+
+"menu":[
+      {
+        "label":"Resources and Models",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"lrlt/models",
+        "menu":[
+            {"label":"Language Models", "path":"lrlt/models"},
+            {"label":"Language Resources", "path":"lrlt/lr"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"pretrainedlm/list","script":"pages/lmlist.php"},
+		{"path":"lrlt/models","script":"pages/lmlist.php"},
+		{"path":"lrlt/lr","script":"pages/lrlist.php"}
+]
+
+}
