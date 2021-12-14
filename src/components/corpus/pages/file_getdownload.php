@@ -1,6 +1,6 @@
 <?php
 
-global $DirectoryAnnotated;
+global $DirectoryAnnotated,$user;
 
 if(!isset($_REQUEST['corpus']))die("Invalid call");
 if(!isset($_REQUEST['file']))die("Invalid call");
@@ -168,6 +168,9 @@ if($basicTagging){
         $dir.="/files";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
+        
+        $user->setProfile("last_viewed_file_".$_REQUEST['corpus'],$fname);
+        $user->saveProfile();
 }
 
     header('Content-Description: File Transfer');

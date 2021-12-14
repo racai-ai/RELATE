@@ -28,6 +28,9 @@ var corpus_lang="{{CORPUS_LANG}}";
 var recorder_name="{{RECORDER_NAME}}";
 var hasAudio={{HAS_AUDIO}};
 var hasGold={{HAS_GOLD}};
+var hasClassification={{HAS_CLASSIFICATION}};
+var classificationProfile={{CLASSIFICATION_PROFILE}};
+var last_viewed_file="{{LAST_VIEWED_FILE}}";
 
 function loadData(data,func,error){
     loadDataComplete("index.php","POST",data,func,error);
@@ -138,6 +141,12 @@ function gridAddTXT(){
             });
             $("#popup-dialog-crud-txt").dialog("open");
 } 
+
+function gridLastFileTXT(){
+    if(last_viewed_file=="")alert("There is no record of the last file you accessed!");
+    else viewFileText(last_viewed_file,true);
+} 
+
 
 function gridAddStandoff(){
 
@@ -590,19 +599,48 @@ function editFileMetadata(file){
     
 }
 
+function viewNextFileBrat(file){
+    loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileBrat(data.next);
+        }else{
+            alert("No additional file found! Maybe end of corpus ?");
+        }
+    });
+}
+
+function viewNextFile(file){
+    loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileText(data.next,true);
+        }else{
+            alert("No additional file found! Maybe end of corpus ?");
+        }
+    });
+}
+
 function viewFileText(file,showBrat=false){
     currentFileView=file;
+    last_viewed_file=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerTextDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
     setAttribute("fileViewerTextBrat","onclick","closeFileViewerText();viewFileBrat('"+file+"');");
     setAttribute("fileViewerTextMetadata","onclick","editFileMetadata('"+file+"');");
+    setAttribute("fileViewerTextNext","onclick","viewNextFile('"+file+"');");
     
     setAttribute("fileViewerTextMetadataDiv","style","display:none");
     setAttribute("inputFileViewerText","style","display:inline-block; width:100%") ;
 
-    if(!showBrat)setAttribute("fileViewerTextBrat","style","display:none;");
-		else setAttribute("fileViewerTextBrat","style","{{hidebratbutton}}"); 
+    if(!showBrat){
+        setAttribute("fileViewerTextBrat","style","display:none;");
+        setAttribute("fileViewerText_classification_div","style","display:none;");
+    }else{
+        setAttribute("fileViewerTextBrat","style","{{hidebratbutton}}");
+        setAttribute("fileViewerText_classification_div","style","display:block; border:1px solid black; margin-top:10px; padding:5px");
+    } 
 		
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
@@ -613,6 +651,30 @@ function viewFileText(file,showBrat=false){
         setAttribute("loading","style","display:none;");
         setAttribute("fileViewerText","style","display:block;");
         document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";
+        if(hasClassification && showBrat){
+        
+          var frm=document.getElementById('fileViewerText_classification_form');
+          if(frm!==undefined)frm.reset();
+          frm=document.getElementById('fileViewerBrat_classification_form');
+          if(frm!==undefined)frm.reset();
+        
+          loadData("path=corpus/file_getclassification&corpus={{CORPUS_NAME}}&file="+file,function(data){
+                data=JSON.parse(data);
+                console.log(data);
+                if(data.status=="OK"){
+                    for(var i=0;i<classificationProfile.length;i++){
+                        var key=classificationProfile[i].variable;
+                        var value=false;
+                        if(data['data'][key]!==undefined)value=data['data'][key];
+                        if(value!==false){
+                            document.getElementById('fileViewerText_classification_'+key).value=value;
+                            document.getElementById('fileViewerBrat_classification_'+key).value=value;
+                        }
+                    }
+                
+                }
+          });
+        }
     },function(){
         alert("Error loading text");
         setAttribute("loading","style","display:none;");
@@ -620,6 +682,35 @@ function viewFileText(file,showBrat=false){
     });
     
 }
+
+function fileViewerText_saveFileClassification(){
+    var data={};
+    for(var i=0;i<classificationProfile.length;i++){
+        var key=classificationProfile[i].variable;
+        var value=document.getElementById('fileViewerText_classification_'+key).value;
+        data[key]=value;
+    }
+
+
+    loadData("path=corpus/file_saveclassification&corpus={{CORPUS_NAME}}&file="+currentFileView+"&data="+encodeURIComponent(JSON.stringify(data)),function(d){
+    });    
+    
+}
+
+function fileViewerBrat_saveFileClassification(){
+    var data={};
+    for(var i=0;i<classificationProfile.length;i++){
+        var key=classificationProfile[i].variable;
+        var value=document.getElementById('fileViewerBrat_classification_'+key).value;
+        data[key]=value;
+    }
+
+
+    loadData("path=corpus/file_saveclassification&corpus={{CORPUS_NAME}}&file="+currentFileView+"&data="+encodeURIComponent(JSON.stringify(data)),function(d){
+    });    
+    
+}
+
 
 function closeFileViewerAudio(){
     setAttribute("fileViewerAudio","style","display:none;");
@@ -686,11 +777,13 @@ function saveToGold(corpus,file){
 
 function viewFileBrat(file){
     currentFileView=file;
+    last_viewed_file=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerBratDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
     setAttribute("fileViewerBratDownloadAnn","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file=standoff/"+changeFileExtension(file,"ann")+"';");
     setAttribute("fileViewerBratSaveGold","onclick","saveToGold('{{CORPUS_NAME}}','"+file+"');");
+    setAttribute("fileViewerBratNext","onclick","viewNextFileBrat('"+file+"');");
 
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
@@ -701,6 +794,30 @@ function viewFileBrat(file){
     
     setAttribute("loading","style","display:none;");
     setAttribute("fileViewerBrat","style","display:block; height:100%;");
+
+    if(hasClassification){
+          var frm=document.getElementById('fileViewerText_classification_form');
+          if(frm!==undefined)frm.reset();
+          frm=document.getElementById('fileViewerBrat_classification_form');
+          if(frm!==undefined)frm.reset();
+        
+          loadData("path=corpus/file_getclassification&corpus={{CORPUS_NAME}}&file="+file,function(data){
+                data=JSON.parse(data);
+                console.log(data);
+                if(data.status=="OK"){
+                    for(var i=0;i<classificationProfile.length;i++){
+                        var key=classificationProfile[i].variable;
+                        var value=false;
+                        if(data['data'][key]!==undefined)value=data['data'][key];
+                        if(value!==false){
+                            document.getElementById('fileViewerText_classification_'+key).value=value;
+                            document.getElementById('fileViewerBrat_classification_'+key).value=value;
+                        }
+                    }
+                
+                }
+          });
+    }
     
 }
 
@@ -833,6 +950,7 @@ function initGridFiles(){
                 { type: 'button', label: 'Add TEXT', listeners: [{ click: gridAddTXT}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Add CSV/TSV', listeners: [{ click: gridAddCSV}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Add ZIP TEXT/StandoffMeta', listeners: [{ click: gridAddZIPTXT}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Access Last File', listeners: [{ click: gridLastFileTXT}], icon: 'ui-icon-plus' },
                 //{ type: 'button', label: 'Edit', listeners: [{ click: gridEdit}], icon: 'ui-icon-pencil' },
                 //{ type: 'button', label: 'Delete', listeners: [{ click: gridDelete}], icon: 'ui-icon-minus' }                
             ]
@@ -859,6 +977,7 @@ function initGridFiles(){
                     viewFileCSV(ui.rowData.name);
                     //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
                 }else{
+                    last_viewed_file=ui.rowData.name;
                     viewFileText(ui.rowData.name,true);
                     //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file="+ui.rowData.name;
                 }

@@ -39,6 +39,9 @@
 		{"path":"corpus/audio_get","script":"pages/audio_get.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/data/add","script":"data/add_file.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getcolumns","script":"data/file_getcolumns.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_getclassification","script":"data/file_getclassification.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_saveclassification","script":"data/file_saveclassification.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_getnext","script":"data/file_getnext.php","data":true,"rights":["corpus"]},
 
 		{"path":"corpus/brat_ajax","script":"data/brat_ajax.php", "data":true, "rights":["corpus"]},
 		{"path":"corpus/savegold","script":"data/savegold.php", "data":true, "rights":["corpus"]},
