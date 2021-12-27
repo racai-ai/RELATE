@@ -13,4 +13,4 @@ rm -fr "$2/curlicat-xml"
 mkdir -p "$2/curlicat-xml"
 
 
-find "$2/basic_tagging" -name '*conllup' | parallel -j 20 "python conllup2xml.py < {} > \"$2/curlicat-xml/\$(basename {}).xml\""
+find "$2/curlicat" -name '*conllup' | parallel -j 20 "python conllup2xml.py < {} > \"$2/curlicat-xml/\$(basename {}).xml\""
