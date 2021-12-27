@@ -25,6 +25,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
             $chunk="_";
             if($n<count($chunks))$chunk=$chunks[$n];
             $tok->set("RELATE:NP",$chunk);
+            $n++;
         }
     }
 
