@@ -24,7 +24,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         foreach($sent->getTokenIterator() as $tok){
             $chunk="_";
             if($n<count($chunks))$chunk=$chunks[$n];
-            $tok->set("XPOS",$chunk);
+            $tok->set("RELATE:NP",$chunk);
         }
     }
 
