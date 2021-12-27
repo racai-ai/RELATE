@@ -1,0 +1,24 @@
+{
+
+"order":100,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"NER-Legal",
+				"type":"ner_legalner",
+				"description":"Perform NER using the LegalNER model (on raw text).",
+				"scheduler":"scheduler.php:Modules\\nerlegalner\\schedule",
+				"runner":"runner.php:Modules\\nerlegalner\\runner",
+   				"additionalData":[
+						{
+                            "name":"model","description":"Model","default":"legalnero_per_loc_org_time_gaz", "type":"select", 
+                            "values":["legalnero_per_loc_org_time_gaz","legalnero_legal_per_loc_org_time_gaz","legalnero_per_loc_org_time","legalnero_legal_per_loc_org_time"]
+                        }
+				]
+
+		}
+]
+
+}

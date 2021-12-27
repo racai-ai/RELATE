@@ -74,14 +74,27 @@ class Modules {
                       ((isset($task['description']))?("<table align=\"center\"><tbody><tr><td>${task['description']}</td></tr></tbody></table>"):("")).
                       "            <table align=\"center\"><tbody>\n";
                 if(isset($task['additionalData'])){
-										foreach($task['additionalData'] as $add){
-												if(!isset($add['description']))$add['description']=$add['name'];
-												if(!isset($add['default']))$add['default']="";
-												$ret.="<tr><td>${add['description']}</td><td><input type=\"text\" size=\"50\" name=\"${add['name']}\" id=\"${add['name']}\" placeholder=\"${add['default']}\"/></td></tr>\n";
-										}
-								}  
-								$valueRunners="";
-								if(isset($task['defaultRunners']))$valueRunners=$task['defaultRunners'];    
+						foreach($task['additionalData'] as $add){
+                        
+								if(!isset($add['description']))$add['description']=$add['name'];
+								if(!isset($add['default']))$add['default']="";
+                                
+                                if(isset($add['type']) && strcasecmp($add['type'],"select")==0){
+								    $ret.="<tr><td>${add['description']}</td><td>";
+                                    $ret.="<select name=\"${add['name']}\" id=\"${add['name']}\">";
+                                    foreach($add['values'] as $value){
+                                        $selected="";
+                                        if($value==$add['default'])$selected=" selected=\"true\" ";
+                                        $ret.="<option value=\"$value\" $selected>$value</option>";
+                                    }
+                                    $ret.="</select></td></tr>\n";
+                                }else{
+								    $ret.="<tr><td>${add['description']}</td><td><input type=\"text\" size=\"50\" name=\"${add['name']}\" id=\"${add['name']}\" placeholder=\"${add['default']}\"/></td></tr>\n";
+                                }
+						}
+				}  
+				$valueRunners="";
+				if(isset($task['defaultRunners']))$valueRunners=$task['defaultRunners'];    
                 $ret.="                <tr><td>Description:</td><td><textarea name=\"desc\" rows=\"4\" cols=\"50\"></textarea></td></tr>\n".
                       "                <tr><td>Runners (optional):</td><td><input type=\"text\" size=\"50\" name=\"runners\" id=\"runners\" value=\"$valueRunners\"/></td></tr>\n".
                       "                <tr><td>Overwrite:</td><td><input type=\"checkbox\" name=\"overwrite\" id=\"overwrite\" value=\"1\"/></td></tr>\n".
