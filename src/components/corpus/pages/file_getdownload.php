@@ -75,6 +75,11 @@ if(startsWith($fname,"marcell-out/")){
     $marcell_out=true;
     $fname=substr($fname,strlen("marcell-out/"));
 }
+$curlicat_out=false;
+if(startsWith($fname,"curlicat-out/")){
+    $curlicat_out=true;
+    $fname=substr($fname,strlen("curlicat-out/"));
+}
 
 $audio=false;
 if(startsWith($fname,"audio/")){
@@ -88,7 +93,7 @@ if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $fname=substr($fname,strlen("zip_$DirectoryAnnotated/"));
 }
 
-if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff && !$zip_audio){
+if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$curlicat_out && !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff && !$zip_audio){
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -142,6 +147,11 @@ if($basicTagging){
 }else if($marcell_out){
         $dir=$corpus->getFolderPath();
         $dir.="/marcell-out";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+}else if($curlicat_out){
+        $dir=$corpus->getFolderPath();
+        $dir.="/curlicat-out";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
 

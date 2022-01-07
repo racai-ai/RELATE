@@ -1,0 +1,17 @@
+{
+
+"order":80,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"Export CURLICAT",
+				"type":"curlicat",
+				"description":"Export corpus into CURLICAT format (raw, conllu, xml archives)",
+				"scheduler":"scheduler.php:Modules\\export_curlicat\\schedule",
+				"runner":"runner.php:Modules\\export_curlicat\\runner"
+		}
+]
+
+}

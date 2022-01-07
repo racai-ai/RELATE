@@ -62,5 +62,7 @@ require_once "${LIB_PATH}/task.php";
 
 require_once "${LIB_PATH}/IATE_EUROVOC_Client.php";
 require_once "${LIB_PATH}/anonymization.php";
+require_once "${LIB_PATH}/ttlchunker.php";
+require_once "${LIB_PATH}/ner_legalner.php";
 
 ?>

@@ -1,0 +1,17 @@
+{
+
+"order":46,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"TTLChunker",
+				"type":"ttlchunker",
+				"description":"Romanian chunking based on TTL",
+				"scheduler":"scheduler.php:Modules\\ttlchunker\\schedule",
+				"runner":"runner.php:Modules\\ttlchunker\\runner"
+		}
+]
+
+}
