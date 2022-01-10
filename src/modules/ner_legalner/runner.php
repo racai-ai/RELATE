@@ -2,7 +2,7 @@
 
 namespace Modules\ner_legalner;
 
-function runNER($fcontent,$fpathOut,$url){
+function runNERL($fcontent,$fpathOut,$url){
     file_put_contents($fpathOut,NER_callNER($url,$fcontent));
 }
 
@@ -21,7 +21,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     ];
     $url=$ner_models[$taskDesc['model']['url']];
 
-    runNER($contentIn,$finalFile,$url);
+    runNERL($contentIn,$finalFile,$url);
     
     file_put_contents($corpus->getFolderPath()."/changed_standoff.json",json_encode(["changed"=>time()]));            
 }
