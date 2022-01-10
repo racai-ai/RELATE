@@ -19,7 +19,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     "legalnero_legal_per_loc_org_time_gaz" => ["url"=>"http://127.0.0.1:5103/api/v1.0/ner"],
     "legalnero_per_loc_org_time_gaz" => ["url"=>"http://127.0.0.1:5104/api/v1.0/ner"],
     ];
-    $url=$ner_models[$taskDesc['model']['url']];
+    $url=$ner_models[$taskDesc['model']]['url'];
 
     runNERL($contentIn,$finalFile,$url);
     
