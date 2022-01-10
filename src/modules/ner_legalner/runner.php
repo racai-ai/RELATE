@@ -3,7 +3,16 @@
 namespace Modules\ner_legalner;
 
 function runNERL($fcontent,$fpathOut,$url){
-    file_put_contents($fpathOut,NER_callNER($url,$fcontent));
+    $data=NER_callNER($url,$fcontent);
+    $data=json_decode($data,true);
+    $rdata=[];
+    if($data!==null && is_array($data) && isset($data['status']) && $data['status']=="OK"){
+        foreach($data['result'] as $ob){
+            $rdata[]="${ob['id']}\t${ob['type']} ${ob['start']} ${ob['end']}\t${ob['text']}";
+        }
+
+    }
+    file_put_contents($fpathOut,implode("\n",$rdata));
 }
 
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
