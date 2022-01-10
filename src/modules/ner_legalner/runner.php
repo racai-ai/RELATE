@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\nerlegalner;
+namespace Modules\ner_legalner;
 
 function runNER($fcontent,$fpathOut,$url){
     file_put_contents($fpathOut,NER_callNER($url,$fcontent));
