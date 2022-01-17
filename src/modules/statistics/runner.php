@@ -58,6 +58,9 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $conllup->readFromString($contentIn);
         foreach($conllup->getSentenceIterator() as $k_sent=>$sentence){
             $stat['sent']++;
+            $iateTerms=[];
+            $eurovocIds=[];
+            $eurovocMts=[];
             foreach($sentence->getTokenIterator() as $k_tok=>$token){
                 $stat['tok']++;  
                 
@@ -72,6 +75,19 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                 $deps=$token->get("DEPS");
                 $misc=$token->get("MISC");
                 $ner=$token->get("RELATE:NE");
+                $iate=$token->get("RELATE:IATE");
+                $eurovocid=$token->get("RELATE:EUROVOCID");
+                $eurovocmt=$token->get("RELATE:EUROVOCMT");
+                
+                if($iate!==false && $iate!=="_"){
+                    foreach(explode(";",$iate) as $term)$iateTerms[$term]=true;
+                }
+                if($eurovocid!==false && $eurovocid!=="_"){
+                    foreach(explode(";",$eurovocid) as $term)$eurovocIds[$term]=true;
+                }
+                if($eurovocmt!==false && $eurovocmt!=="_"){
+                    foreach(explode(";",$eurovocmt) as $term)$eurovocMts[$term]=true;
+                }
                 
                 //list($id,$form,$lem,$upos,$xpos,$feats,$head,$deprel,$deps,$misc,$ner,$rest)=explode("\t",$line,12);
                 
@@ -102,6 +118,13 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                     if(isset($charsArr[$c]))$charsArr[$c]++;
                 }
             }
+
+            if(!isset($stat["IATE"]))$stat["IATE"]=0;
+            $stat["IATE"]+=count($iateTerms);    
+            if(!isset($stat["EUROVOCID"]))$stat["EUROVOCID"]=0;
+            $stat["EUROVOCID"]+=count($eurovocIds);    
+            if(!isset($stat["EUROVOCMT"]))$stat["EUROVOCMT"]=0;
+            $stat["EUROVOCMT"]+=count($eurovocMts);    
             
         }
         
