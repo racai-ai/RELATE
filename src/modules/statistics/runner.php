@@ -49,6 +49,9 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $wordForm=[];
         $lemma=[];
         $lemmaUPOS=[];
+        $allIateTerms=[];
+        $allEurovocIds=[];
+        $allEurovocMts=[];
 
         $chars="abcdefghijklmnopqrstuvqxyzăîâșț";
         $charsArr=[];
@@ -126,6 +129,28 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
             if(!isset($stat["EUROVOCMT"]))$stat["EUROVOCMT"]=0;
             $stat["EUROVOCMT"]+=count($eurovocMts);    
             
+            foreach($iateTerms as $term=>$t){
+                $data=explode(":",$term);
+                if(count($data)==2){
+                    if(!isset($allIateTerms[$data[1]]))$allIateTerms[$data[1]]=1;
+                    else $allIateTerms[$data[1]]++;
+                }
+            }
+            foreach($eurovocIds as $term=>$t){
+                $data=explode(":",$term);
+                if(count($data)==2){
+                    if(!isset($allEurovocIds[$data[1]]))$allEurovocIds[$data[1]]=1;
+                    else $allEurovocIds[$data[1]]++;
+                }
+            }
+            foreach($eurovocMts as $term=>$t){
+                $data=explode(":",$term);
+                if(count($data)==2){
+                    if(!isset($allEurovocMts[$data[1]]))$allEurovocMts[$data[1]]=1;
+                    else $allEurovocMts[$data[1]]++;
+                }
+            }
+            
         }
         
         
@@ -137,6 +162,18 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         saveStat("lemma",$lemma,$corpus,$trun);
         saveStat("chars",$charsArr,$corpus,$trun);
         saveStat("lemma_upos",$lemmaUPOS,$corpus,$trun);
+
+        saveStat("iateterms",$allIateTerms,$corpus,$trun);
+        foreach($allIateTerms as $w=>$v)$allIateTerms[$w]=1;
+        saveStat("iatetermsdf",$allIateTerms,$corpus,$trun);
+        
+        saveStat("eurovocids",$allEurovocIds,$corpus,$trun);
+        foreach($allEurovocIds as $w=>$v)$allEurovocIds[$w]=1;
+        saveStat("eurovocidsdf",$allEurovocIds,$corpus,$trun);
+        
+        saveStat("eurovocmts",$allEurovocMts,$corpus,$trun);
+        foreach($allEurovocMts as $w=>$v)$allEurovocMts[$w]=1;
+        saveStat("eurovocmtsdf",$allEurovocMts,$corpus,$trun);
     }
     
     storeFile($corpus->getFolderPath()."/changed_statistics.json",json_encode(["changed"=>time()]));            

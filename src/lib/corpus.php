@@ -654,6 +654,12 @@ class Corpus {
         $lemma=[];
         $charsArr=[];
         $lemmaUPOS=[];
+        $iateTerms=[];
+        $iateTermsdf=[];
+        $eurovocIds=[];
+        $eurovocIdsdf=[];
+        $eurovocMts=[];
+        $eurovocMtsdf=[];
         while (($file = readdir($dh)) !== false) {
             $dpath="$dir/$file";
             if(!is_file($dpath))continue;
@@ -670,6 +676,18 @@ class Corpus {
                 $this->mergeStatistics($dpath,$lemma);
             }else if(startsWith($file,"chars_")){
                 $this->mergeStatistics($dpath,$charsArr);
+            }else if(startsWith($file,"iateterms_")){
+                $this->mergeStatistics($dpath,$iateTerms);
+            }else if(startsWith($file,"iatetermsdf_")){
+                $this->mergeStatistics($dpath,$iateTermsdf);
+            }else if(startsWith($file,"eurovocids_")){
+                $this->mergeStatistics($dpath,$eurovocIds);
+            }else if(startsWith($file,"eurovocidsdf_")){
+                $this->mergeStatistics($dpath,$eurovocIdsdf);
+            }else if(startsWith($file,"eurovocmts_")){
+                $this->mergeStatistics($dpath,$eurovocMts);
+            }else if(startsWith($file,"eurovocmtsdf_")){
+                $this->mergeStatistics($dpath,$eurovocMtsdf);
             }
         }
         closedir($dh);
@@ -684,6 +702,15 @@ class Corpus {
         
         $stat['Basic.Unique Tokens']=count($wordform);
         $stat['Basic.Unique Lemma']=count($lemma);
+        
+        $stat['Basic.Number of IATE terms']=$stat['IATE']; unset($stat['IATE']);
+        $stat['Basic.Unique IATE terms']=count($iateTerms);
+
+        $stat['Basic.Number of EUROVOC IDs']=$stat['EUROVOCID']; unset($stat['EUROVOCID']);
+        $stat['Basic.Unique EUROVOC IDs']=count($eurovocIds);
+        
+        $stat['Basic.Number of EUROVOC MTs']=$stat['EUROVOCMT']; unset($stat['EUROVOCMT']);
+        $stat['Basic.Unique EUROVOC MTs']=count($eurovocMts);
 
         $once=0;
         $twice=0;
@@ -732,6 +759,36 @@ class Corpus {
         arsort($wordformdf);
         $fp=fopen($base_dir."/statistics/list_wordformdf.csv","w");
         foreach($wordformdf as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($iateTerms);
+        $fp=fopen($base_dir."/statistics/list_iate_terms.csv","w");
+        foreach($iateTerms as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($iateTermsdf);
+        $fp=fopen($base_dir."/statistics/list_iate_termsdf.csv","w");
+        foreach($iateTermsdf as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($eurovocIds);
+        $fp=fopen($base_dir."/statistics/list_eurovoc_ids.csv","w");
+        foreach($eurovocIds as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($eurovocIdsdf);
+        $fp=fopen($base_dir."/statistics/list_eurovoc_idsdf.csv","w");
+        foreach($eurovocIdsdf as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($eurovocMts);
+        $fp=fopen($base_dir."/statistics/list_eurovoc_mt.csv","w");
+        foreach($eurovocMts as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($eurovocMtsdf);
+        $fp=fopen($base_dir."/statistics/list_eurovoc_mtdf.csv","w");
+        foreach($eurovocMtsdf as $k=>$v)fputcsv($fp,[$k,$v]);
         fclose($fp);
 
         arsort($lemma);
