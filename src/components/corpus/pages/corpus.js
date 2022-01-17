@@ -266,6 +266,29 @@ function gridAddTask(htmlId,title){
       $("#popup-dialog-crud-task-"+htmlId).dialog("open");
 }
 
+function openStatsIATE(){
+    viewFileCSV("statistics/list_iate_terms.csv","csv2");
+}
+
+function openStatsIATEDF(){
+    viewFileCSV("statistics/list_iate_termsdf.csv","csv2");
+}
+
+function openStatsEurovocId(){
+    viewFileCSV("statistics/list_eurovoc_ids.csv","csv2");
+}
+
+function openStatsEurovocIdDF(){
+    viewFileCSV("statistics/list_eurovoc_idsdf.csv","csv2");
+}
+
+function openStatsEurovocMt(){
+    viewFileCSV("statistics/list_eurovoc_mt.csv","csv2");
+}
+
+function openStatsEurovocMtDF(){
+    viewFileCSV("statistics/list_eurovoc_mtdf.csv","csv2");
+}
 
 function openStatsWordForm(){
     viewFileCSV("statistics/list_wordform.csv","csv2");
@@ -1278,6 +1301,12 @@ function initGridStatistics(){
                 { type: 'button', label: 'View WordForm Doc Freq', listeners: [{ click: openStatsWordFormDF}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'View Letters Stats', listeners: [{ click: openStatsLetters}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'View Lemma UPOS Stats', listeners: [{ click: openStatsLemmaUPOS}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View IATE Stats', listeners: [{ click: openStatsIATE}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View IATE Doc Freq', listeners: [{ click: openStatsIATEDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View EUROVOC ID Stats', listeners: [{ click: openStatsEurovocId}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View EUROVOC ID Doc Freq', listeners: [{ click: openStatsEurovocIdDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View EUROVOC MT Stats', listeners: [{ click: openStatsEurovocMt}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'View EUROVOC MT Doc Freq', listeners: [{ click: openStatsEurovocMtDF}], icon: 'ui-icon-plus' },
                 
          ]};
 
