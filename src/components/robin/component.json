@@ -8,7 +8,8 @@
         "menu":[
             {"label":"ROBIN ASR", "path":"robin/asr"},
             {"label":"ROBIN ASR Development", "path":"robin/asrdev"},
-            {"label":"ROBIN TTS", "path":"robin/tts"}
+            {"label":"ROBIN TTS", "path":"robin/tts"},
+            {"label":"ASR WAV2VEC2", "path":"speech/wav2vec2"}
         ]
       }
 
@@ -20,7 +21,9 @@
 		{"path":"robinasrws","script":"data/asr.php","data":true},
 		{"path":"robinasrwsdev","script":"data/asrdev.php","data":true},
 		{"path":"robin/tts","script":"pages/tts.php"},
-		{"path":"robinttsws","script":"data/tts.php","data":true}
+		{"path":"robinttsws","script":"data/tts.php","data":true},
+		{"path":"speech/wav2vec2","script":"pages/wav2vec2.php"},
+		{"path":"wav2vec2asrws","script":"data/wav2vec2.php","data":true}
 
 ]
 

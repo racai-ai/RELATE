@@ -6,7 +6,8 @@ function getPageContent(){
 
 		$systems_asr=[
 				["name"=>"ROBIN ASR","value"=>"robin_asr_ro","default"=>true],
-				["name"=>"ROBIN ASR Dev","value"=>"robin_asrdev_ro"]
+				["name"=>"ROBIN ASR Dev","value"=>"robin_asrdev_ro"],
+				["name"=>"WAV2VEC2 ASR Dev","value"=>"wav2vec2_asrdev_ro"]
 		];
 		$systems_correction=[
 				["name"=>"No Correction","value"=>"none"],

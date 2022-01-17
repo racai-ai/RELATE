@@ -8,6 +8,9 @@ function runASR($fileContent,$type){
 		}else if($type=="robin_asrdev_ro"){
 				$r=ROBIN_runASR($fileContent,true);
 				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
+		}else if($type=="wav2vec2_asrdev_ro"){
+				$r=ROBIN_runASR($fileContent,true);
+				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}else if($type=="en_deepspeech2"){
 				$r=ROBIN_runASR($fileContent,false,true);
 				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
