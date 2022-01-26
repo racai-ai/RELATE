@@ -45,7 +45,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     echo "Destination for Text Translation $finalFile\n";
     @mkdir($path);        
 
-    $sysid=getTranslationSystem();
+    $sysid=getTranslationSystem($taskDesc);
     if($sysid===false){
         echo "ERROR Retrieving translation system";
     }else{
