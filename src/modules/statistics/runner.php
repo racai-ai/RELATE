@@ -49,6 +49,9 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $wordForm=[];
         $lemma=[];
         $lemmaUPOS=[];
+        $allIateTerms=[];
+        $allEurovocIds=[];
+        $allEurovocMts=[];
 
         $chars="abcdefghijklmnopqrstuvqxyzăîâșț";
         $charsArr=[];
@@ -58,6 +61,9 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $conllup->readFromString($contentIn);
         foreach($conllup->getSentenceIterator() as $k_sent=>$sentence){
             $stat['sent']++;
+            $iateTerms=[];
+            $eurovocIds=[];
+            $eurovocMts=[];
             foreach($sentence->getTokenIterator() as $k_tok=>$token){
                 $stat['tok']++;  
                 
@@ -72,6 +78,19 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                 $deps=$token->get("DEPS");
                 $misc=$token->get("MISC");
                 $ner=$token->get("RELATE:NE");
+                $iate=$token->get("RELATE:IATE");
+                $eurovocid=$token->get("RELATE:EUROVOCID");
+                $eurovocmt=$token->get("RELATE:EUROVOCMT");
+                
+                if($iate!==false && $iate!=="_"){
+                    foreach(explode(";",$iate) as $term)$iateTerms[$term]=true;
+                }
+                if($eurovocid!==false && $eurovocid!=="_"){
+                    foreach(explode(";",$eurovocid) as $term)$eurovocIds[$term]=true;
+                }
+                if($eurovocmt!==false && $eurovocmt!=="_"){
+                    foreach(explode(";",$eurovocmt) as $term)$eurovocMts[$term]=true;
+                }
                 
                 //list($id,$form,$lem,$upos,$xpos,$feats,$head,$deprel,$deps,$misc,$ner,$rest)=explode("\t",$line,12);
                 
@@ -102,6 +121,35 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                     if(isset($charsArr[$c]))$charsArr[$c]++;
                 }
             }
+
+            if(!isset($stat["IATE"]))$stat["IATE"]=0;
+            $stat["IATE"]+=count($iateTerms);    
+            if(!isset($stat["EUROVOCID"]))$stat["EUROVOCID"]=0;
+            $stat["EUROVOCID"]+=count($eurovocIds);    
+            if(!isset($stat["EUROVOCMT"]))$stat["EUROVOCMT"]=0;
+            $stat["EUROVOCMT"]+=count($eurovocMts);    
+            
+            foreach($iateTerms as $term=>$t){
+                $data=explode(":",$term);
+                if(count($data)==2){
+                    if(!isset($allIateTerms[$data[1]]))$allIateTerms[$data[1]]=1;
+                    else $allIateTerms[$data[1]]++;
+                }
+            }
+            foreach($eurovocIds as $term=>$t){
+                $data=explode(":",$term);
+                if(count($data)==2){
+                    if(!isset($allEurovocIds[$data[1]]))$allEurovocIds[$data[1]]=1;
+                    else $allEurovocIds[$data[1]]++;
+                }
+            }
+            foreach($eurovocMts as $term=>$t){
+                $data=explode(":",$term);
+                if(count($data)==2){
+                    if(!isset($allEurovocMts[$data[1]]))$allEurovocMts[$data[1]]=1;
+                    else $allEurovocMts[$data[1]]++;
+                }
+            }
             
         }
         
@@ -114,6 +162,18 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         saveStat("lemma",$lemma,$corpus,$trun);
         saveStat("chars",$charsArr,$corpus,$trun);
         saveStat("lemma_upos",$lemmaUPOS,$corpus,$trun);
+
+        saveStat("iateterms",$allIateTerms,$corpus,$trun);
+        foreach($allIateTerms as $w=>$v)$allIateTerms[$w]=1;
+        saveStat("iatetermsdf",$allIateTerms,$corpus,$trun);
+        
+        saveStat("eurovocids",$allEurovocIds,$corpus,$trun);
+        foreach($allEurovocIds as $w=>$v)$allEurovocIds[$w]=1;
+        saveStat("eurovocidsdf",$allEurovocIds,$corpus,$trun);
+        
+        saveStat("eurovocmts",$allEurovocMts,$corpus,$trun);
+        foreach($allEurovocMts as $w=>$v)$allEurovocMts[$w]=1;
+        saveStat("eurovocmtsdf",$allEurovocMts,$corpus,$trun);
     }
     
     storeFile($corpus->getFolderPath()."/changed_statistics.json",json_encode(["changed"=>time()]));            
