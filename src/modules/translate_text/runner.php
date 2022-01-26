@@ -4,7 +4,7 @@ namespace Modules\translate_text;
 
 $cached_translation_system=null;
 
-function getSystem($taskDesc){
+function getTranslationSystem($taskDesc){
     global $cached_translation_system;
     if($cached_translation_system===null){
         $found=false;
