@@ -41,7 +41,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $path=$corpus->getFolderPath()."/files/";
     $fnameOut=changeFileExtension($fnameOut,$extensions[$taskDesc['system']]);
     $finalFile=$path.$fnameOut;
-    $finalFileMeta=$corpus->getFolderPath()."/meta/".$finalFile.".meta";
+    $finalFileMeta=$corpus->getFolderPath()."/meta/".$fnameOut.".meta";
     echo "Destination for Text Translation $finalFile\n";
     @mkdir($path);        
 
@@ -49,6 +49,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     if($sysid===false){
         echo "ERROR Retrieving translation system";
     }else{
+        $sysid=$sysid['id'];
         $translate=TILDE_Translate($sysid,$contentIn);
         file_put_contents($finalFile,$translate);
         $meta=["name"=>$fnameOut,"corpus"=>$corpus->getName(),"type"=>"text","created_by"=>"translation","created_date"=>strftime("%Y-%m-%d")];
