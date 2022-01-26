@@ -48,6 +48,11 @@ class Corpus {
 			return $this->data['brat_profiles'];
 	}
 
+	public function hasClassificationProfiles(){
+			if(!isset($this->data['hasclassification']))return false;
+			return $this->data['hasclassification'];
+	}
+
 	public function hasGoldAnnotations(){
 			if(!isset($this->data['gold']))return false;
 			return $this->data['gold'];

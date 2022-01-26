@@ -239,6 +239,9 @@
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextDownload" onclick="">Download</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextBrat" onclick="" style="{{hidebratbutton}}">BRAT</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextMetadata" onclick="">Edit Metadata</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerTextNext" onclick="">NEXT</button>
+                      
+                      {{classification_html_fileviewertext}}
                       
                       <div class="mT-30">
                         <div id="inputFileViewerText" style="display: inline-block; width:100%">                  
@@ -276,6 +279,10 @@
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratDownload" onclick="">Download</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratDownloadAnn" onclick="">Download ANN</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratSaveGold" onclick="">Save To GOLD</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerBratNext" onclick="">NEXT</button>
+                      
+                      {{classification_html_fileviewerbrat}}
+                      
                       <p>To see annotations from CONLLUP files make sure to run the CONLLUP2BRAT task.</p>
                          <iframe style="width:100%; height:100%; border:0" id="bratIframe" name="bratIframe"></iframe>
                          <div style="display:none">

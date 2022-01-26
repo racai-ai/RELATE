@@ -1,0 +1,8 @@
+[
+
+{ "message":"Language", "variable":"language", "values":["Romanian", "Mixed RO+English", "Mixed RO+Other", "Other"]},
+{ "message":"Sentiment", "variable":"sentiment", "values":["Neutral", "Positive", "Negative"]},
+{ "message":"Hate", "variable":"hate", "values":["No","Yes"]},
+{ "message":"Language Type", "variable":"language_type", "values":["Regular","Twitter Slang"]}
+
+]

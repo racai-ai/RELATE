@@ -18,6 +18,7 @@ function gridAdd(){
                         hasaudio:$frm.find("input[name='hasaudio']").is(":checked")?("yes"):("no"),
                         hasgold:$frm.find("input[name='hasgold']").is(":checked")?("yes"):("no"),
                         hasbrat:$frm.find("input[name='hasbrat']").is(":checked")?("yes"):("no"),
+                        hasclassification:$frm.find("input[name='hasclassification']").is(":checked")?("yes"):("no"),
                     };
                     
                     var dia=$(this);
