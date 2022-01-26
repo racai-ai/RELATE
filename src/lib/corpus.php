@@ -1,5 +1,7 @@
 <?php
 
+function CORPUS_UASORT_FILES($f1,$f2){return strcasecmp($f1['name'],$f2['name']);}
+
 class Corpus {
     private $corpora;
     private $data;
@@ -204,6 +206,7 @@ class Corpus {
             $corpora[]=json_decode(file_get_contents($dpath_meta),true);
         }
         closedir($dh);
+        uasort($corpora,'CORPUS_UASORT_FILES');
         
         file_put_contents($base_dir."/list_files.json",json_encode($corpora));
         
