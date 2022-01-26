@@ -6,15 +6,17 @@ $ROBIN_ASRDEV_URL="http://127.0.0.1:7002/transcribe";
 $ROBIN_TTS_URL="http://89.38.230.18:8080/synthesis";
 $ROBIN_DEBUG=false;
 $ROBIN_ASR_URL_EN="http://127.0.0.1:7003/transcribe";
+$ROBIN_ASR_URL_WAV2VEC="http://127.0.0.1:7004/transcribe";
 
-function ROBIN_runASR($wave,$isDev=false,$isEN=false){
-    global $ROBIN_ASR_URL,$ROBIN_DEBUG,$ROBIN_ASRDEV_URL,$ROBIN_ASR_URL_EN;
+function ROBIN_runASR($wave,$isDev=false,$isEN=false,$isWav2vec=false){
+    global $ROBIN_ASR_URL,$ROBIN_DEBUG,$ROBIN_ASRDEV_URL,$ROBIN_ASR_URL_EN,$ROBIN_ASR_URL_WAV2VEC;
     
     set_time_limit(80);
 
     $ch = curl_init();
     if($isDev)$url=$ROBIN_ASRDEV_URL;
     else if($isEN)$url=$ROBIN_ASR_URL_EN;
+    else if($isWav2vec)$url=$ROBIN_ASR_URL_WAV2VEC;
     else $url=$ROBIN_ASR_URL;
     
     $boundary = uniqid();
