@@ -51,8 +51,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     }else{
         $sysid=$sysid['id'];
         $translate=TILDE_Translate($sysid,$contentIn);
-        file_put_contents($finalFile,$translate);
-        $meta=["name"=>$fnameOut,"corpus"=>$corpus->getName(),"type"=>"text","created_by"=>"translation","created_date"=>strftime("%Y-%m-%d")];
+        file_put_contents($finalFile,trim($translate,'"'));
+        $meta=["name"=>$fnameOut,"corpus"=>$corpus->getName(),"type"=>"text","desc"=>"","created_by"=>"translation","created_date"=>strftime("%Y-%m-%d")];
         file_put_contents($finalFileMeta,json_encode($meta));
     }
     
