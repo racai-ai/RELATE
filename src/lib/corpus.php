@@ -206,7 +206,7 @@ class Corpus {
             $corpora[]=json_decode(file_get_contents($dpath_meta),true);
         }
         closedir($dh);
-        uasort($corpora,'CORPUS_UASORT_FILES');
+        usort($corpora,'CORPUS_UASORT_FILES');
         
         file_put_contents($base_dir."/list_files.json",json_encode($corpora));
         
