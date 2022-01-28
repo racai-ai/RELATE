@@ -11,7 +11,11 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     echo "Destination for ASR $finalFile\n";
     @mkdir($path);        
 
+    var_dump($data);
+
     $contentIn=file_get_contents($data['fpath']);
+
+    var_dump($taskDesc);
 
     if($taskDesc['system']=="RO DeepSpeech2")
         $result=ROBIN_runASR($contentIn,false,false,false);
@@ -23,6 +27,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $result=ROBIN_runASR($contentIn,false,false,true);
     else // Default assume default system => should never get here since systems are selected from a dropdown
         $result=ROBIN_runASR($contentIn,false,false,false);
+
+    var_dump($result);
 
     $asr="";
     if(isset($result['transcription'])){
