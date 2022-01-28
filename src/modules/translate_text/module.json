@@ -1,0 +1,24 @@
+{
+
+"order":100,
+
+"languages":["ro","en"],
+
+"tasks":[
+		{
+				"name":"Translate Text",
+				"type":"translate_text",
+				"description":"Perform text translation.",
+				"scheduler":"scheduler.php:Modules\\translate_text\\schedule",
+				"runner":"runner.php:Modules\\translate_text\\runner",
+   				"additionalData":[
+						{
+                            "name":"system","description":"Type","default":"RO-EN", "type":"select", 
+                            "values":["RO-EN","EN-RO"]
+                        }
+				]
+
+		}
+]
+
+}

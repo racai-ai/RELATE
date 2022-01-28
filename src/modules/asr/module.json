@@ -1,0 +1,24 @@
+{
+
+"order":100,
+
+"languages":["ro","en"],
+
+"tasks":[
+		{
+				"name":"ASR",
+				"type":"asr",
+				"description":"Perform ASR on recorded speech files.",
+				"scheduler":"scheduler.php:Modules\\asr\\schedule",
+				"runner":"runner.php:Modules\\asr\\runner",
+   				"additionalData":[
+						{
+                            "name":"system","description":"Type","default":"RO DeepSpeech2", "type":"select", 
+                            "values":["RO DeepSpeech2","EN DeepSpeech2","RO ROBIN Dev","RO WAV2VEC2"]
+                        }
+				]
+
+		}
+]
+
+}

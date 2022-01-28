@@ -9,7 +9,7 @@ function runASR($fileContent,$type){
 				$r=ROBIN_runASR($fileContent,true);
 				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}else if($type=="wav2vec2_asrdev_ro"){
-				$r=ROBIN_runASR($fileContent,true);
+				$r=ROBIN_runASR($fileContent,false,false,true);
 				return ["text"=>$r['transcription'],"status"=>$r['status'],"comments"=>[],"translated"=>"","tts"=>""];
 		}else if($type=="en_deepspeech2"){
 				$r=ROBIN_runASR($fileContent,false,true);

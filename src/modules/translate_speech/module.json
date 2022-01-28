@@ -1,0 +1,36 @@
+{
+
+"order":100,
+
+"languages":["ro","en"],
+
+"tasks":[
+		{
+				"name":"Translate S2S",
+				"type":"translate_s2s",
+				"description":"Perform speech to speech translation.",
+				"scheduler":"scheduler.php:Modules\\translate_s2s\\schedule",
+				"runner":"runner.php:Modules\\translate_s2s\\runner",
+   				"additionalData":[
+						{
+                            "name":"system_asr","description":"ASR","default":"RO DeepSpeech2", "type":"select", 
+                            "values":["RO DeepSpeech2","EN DeepSpeech2","RO ROBIN Dev","RO WAV2VEC2"]
+                        },
+						{
+                            "name":"system_punct","description":"Punctuation","default":"MARCELL", "type":"select", 
+                            "values":["MARCELL", "NONE"]
+                        },
+						{
+                            "name":"system_translate","description":"Translate","default":"RO-EN", "type":"select", 
+                            "values":["RO-EN","EN-RO"]
+                        },
+						{
+                            "name":"system_tts","description":"TTS","default":"EN Mozilla TTS", "type":"select", 
+                            "values":["RO RACAI SSLA","RO RomanianTTS","EN Mozilla TTS"]
+                        }
+				]
+
+		}
+]
+
+}

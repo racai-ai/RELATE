@@ -1,0 +1,24 @@
+{
+
+"order":100,
+
+"languages":["ro","en"],
+
+"tasks":[
+		{
+				"name":"TTS",
+				"type":"tts",
+				"description":"Create audio files from text using TTS.",
+				"scheduler":"scheduler.php:Modules\\tts\\schedule",
+				"runner":"runner.php:Modules\\tts\\runner",
+   				"additionalData":[
+						{
+                            "name":"system","description":"Type","default":"RO RACAI SSLA", "type":"select", 
+                            "values":["RO RACAI SSLA","RO RomanianTTS","EN Mozilla TTS"]
+                        }
+				]
+
+		}
+]
+
+}

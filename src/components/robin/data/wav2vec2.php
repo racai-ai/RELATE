@@ -11,7 +11,7 @@ if($d===false || $d>5*60){
 }
 
 $fileContent = file_get_contents($fname);
-$result=ROBIN_runASR($fileContent,true);
+$result=ROBIN_runASR($fileContent,false,false,true);
 if(isset($result['transcription'])){
     die(json_encode(["asr"=>$result['transcription'],"error"=>false,"success"=>$result['status']]));
 }else{

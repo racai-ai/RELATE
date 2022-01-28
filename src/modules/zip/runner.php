@@ -38,6 +38,12 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @chown($dir_annotated,$settings->get("owner_user"));
     @chgrp($dir_annotated,$settings->get("owner_group"));    
 
+    $dir_audio=$corpus->getFolderPath();
+    $dir_audio.="/audio";
+    @mkdir($dir_audio);
+    @chown($dir_audio,$settings->get("owner_user"));
+    @chgrp($dir_audio,$settings->get("owner_group"));    
+
     $dh = opendir($pathOut);
     while (($file = readdir($dh)) !== false) {
         $pathFile=$pathOut."/".$file;
@@ -46,6 +52,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
         $pathMeta=$dir_meta."/".$file;
         $pathStandoff=$dir_standoff."/".$file;
         $pathAnnotated=$dir_annotated."/".$file;
+        $pathAudio=$dir_audio."/".$file;
         
         if(endsWith(strtolower($file),".txt")){
             if(!is_file($pathMeta)){
@@ -67,6 +74,11 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
             @chown($pathAnnotated,$settings->get("owner_user"));
             @chgrp($pathAnnotated,$settings->get("owner_group"));
             
+        }else if(endsWith(strtolower($file),".wav") || endsWith(strtolower($file),".wav")){
+            @rename($pathFile,$pathAudio);
+            @chown($pathAudio,$settings->get("owner_user"));
+            @chgrp($pathAudio,$settings->get("owner_group"));
+
         }else{
             @rename($pathFile,$pathStandoff);
             @chown($fpathStandoff,$settings->get("owner_user"));
@@ -78,6 +90,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     file_put_contents($corpus->getFolderPath()."/changed_files.json",json_encode(["changed"=>time()]));            
     file_put_contents($corpus->getFolderPath()."/changed_standoff.json",json_encode(["changed"=>time()]));            
     file_put_contents($corpus->getFolderPath()."/changed_annotated.json",json_encode(["changed"=>time()]));            
+    file_put_contents($corpus->getFolderPath()."/changed_audio.json",json_encode(["changed"=>time()]));            
 
     @chown($corpus->getFolderPath()."/changed_files.json",$settings->get("owner_user"));
     @chgrp($corpus->getFolderPath()."/changed_files.json",$settings->get("owner_group"));
@@ -87,6 +100,9 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
 
     @chown($corpus->getFolderPath()."/changed_annotated.json",$settings->get("owner_user"));
     @chgrp($corpus->getFolderPath()."/changed_annotated.json",$settings->get("owner_group"));
+
+    @chown($corpus->getFolderPath()."/changed_audio.json",$settings->get("owner_user"));
+    @chgrp($corpus->getFolderPath()."/changed_audio.json",$settings->get("owner_group"));
 }
 
 function runUnzipAnnotated($fnameIn,$pathOut){

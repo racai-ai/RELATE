@@ -100,6 +100,16 @@ function scheduleFilesFolder($corpus,$task_name){
             }
 }
 
+function scheduleAudioFolder($corpus,$task_name){
+            foreach($corpus->getAudio() as $fdata){
+                    scheduleFile(
+                    		$corpus,
+                        "audio/".$fdata['name'],
+                        $task_name,
+                        "audio"
+                    );
+            }
+}
 
 function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false){
 
