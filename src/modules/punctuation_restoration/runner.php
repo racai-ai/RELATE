@@ -24,6 +24,9 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     file_put_contents($finalFileMeta,json_encode($meta));
     
     file_put_contents($corpus->getFolderPath()."/changed_files.json",json_encode(["changed"=>time()]));            
+    @chown($corpus->getFolderPath()."/changed_files.json",$settings->get("owner_user"));
+    @chgrp($corpus->getFolderPath()."/changed_files.json",$settings->get("owner_group"));
+
 }
 
 

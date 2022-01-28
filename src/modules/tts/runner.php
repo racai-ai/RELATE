@@ -26,6 +26,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     file_put_contents($finalFile,$tts);
     
     file_put_contents($corpus->getFolderPath()."/changed_audio.json",json_encode(["changed"=>time()]));            
+    @chown($corpus->getFolderPath()."/changed_audio.json",$settings->get("owner_user"));
+    @chgrp($corpus->getFolderPath()."/changed_audio.json",$settings->get("owner_group"));
 }
 
 
