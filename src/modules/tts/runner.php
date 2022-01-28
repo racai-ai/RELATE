@@ -18,7 +18,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 		$tts=ROMANIANTTS_runTTS($contentIn);
 		$tts=file_get_contents(trim($tts));
     }else if($taskDesc['system']=="EN Mozilla TTS") 
-		$tts=file_get_contents("http://127.0.0.1:7011/api/tts?text=".urlencode($data['text']));
+		$tts=file_get_contents("http://127.0.0.1:7011/api/tts?text=".urlencode($contentIn));
     else // Default assume default system => should never get here since systems are selected from a dropdown
         $tts=TTS_SSLA_runTTS($contentIn);
 
