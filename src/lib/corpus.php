@@ -511,6 +511,7 @@ class Corpus {
                         if(!is_file($dpath)) continue;
                         $meta=[];
                         $meta['fname']=substr($dir,strrpos($dir,'/')+1)."/".$file;
+                        $meta['name']=$file;
                         $meta['type']='audio';
                         
                         $size=filesize($dpath);
