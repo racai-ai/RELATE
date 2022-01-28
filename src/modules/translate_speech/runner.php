@@ -47,13 +47,13 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 
     $contentIn=file_get_contents($data['fpath']);
 
-    if($taskDesc['system']=="RO DeepSpeech2")
+    if($taskDesc['system_asr']=="RO DeepSpeech2")
         $result=ROBIN_runASR($contentIn,false,false,false);
-    else if($taskDesc['system']=="EN DeepSpeech2") 
+    else if($taskDesc['system_asr']=="EN DeepSpeech2") 
         $result=ROBIN_runASR($contentIn,false,true,false);
-    else if($taskDesc['system']=="RO ROBIN Dev") 
+    else if($taskDesc['system_asr']=="RO ROBIN Dev") 
         $result=ROBIN_runASR($contentIn,true,false,false);
-    else if($taskDesc['system']=="RO WAV2VEC2") 
+    else if($taskDesc['system_asr']=="RO WAV2VEC2") 
         $result=ROBIN_runASR($contentIn,false,false,true);
     else // Default assume default system => should never get here since systems are selected from a dropdown
         $result=ROBIN_runASR($contentIn,false,false,false);
