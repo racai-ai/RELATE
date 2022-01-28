@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\asr;
+namespace Modules\tts;
 
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 
