@@ -1,0 +1,24 @@
+{
+
+"order":100,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"Punctuation",
+				"type":"punctuation_restoration",
+				"description":"Restore punctuation (useful for transcriptions with no punctuation).",
+				"scheduler":"scheduler.php:Modules\\punctuation_restoration\\schedule",
+				"runner":"runner.php:Modules\\punctuation_restoration\\runner",
+   				"additionalData":[
+						{
+                            "name":"system","description":"Type","default":"MARCELL", "type":"select", 
+                            "values":["MARCELL"]
+                        }
+				]
+
+		}
+]
+
+}
