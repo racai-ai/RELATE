@@ -67,7 +67,7 @@ if($a=="loadConf"){
 }
 
 function loadData(){
-		global $cacheName,$cacheData;
+		global $cacheName,$cacheData,$user;
 		
         $cname=trim($_REQUEST['collection'],'/');
         $fname=$_REQUEST['document'];
@@ -82,6 +82,10 @@ function loadData(){
         if(!is_file($fpath))die("Invalid file");
         
         $text=file_get_contents($fpath);
+
+        $user->setProfile("last_viewed_file_".$cname,$fname);
+        $user->saveProfile();
+        
         
         $dir=$corpus->getFolderPath()."/standoff/";
         @mkdir($dir);
