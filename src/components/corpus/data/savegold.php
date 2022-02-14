@@ -27,7 +27,10 @@ $dst=changeFileExtension($dst,"ann");
 if(is_file($src)){
 		file_put_contents($dst,file_get_contents($src));
 		echo "ANN OK\n";
-}else echo "ANN Not Found\n";
+}else {
+		file_put_contents($dst,""); // place empty ann
+        echo "ANN Not Found\n";
+}
 
 $src=$corpus->getFolderPath()."/".$settings->get("dir.annotated")."/$fname";
 $src=changeFileExtension($src,"conllup");
