@@ -52,7 +52,7 @@ class Corpus {
 
 	public function hasClassificationProfiles(){
 			if(!isset($this->data['hasclassification']))return false;
-			return $this->data['hasclassification'];
+			return $this->data['hasclassification']==="yes";
 	}
 
 	public function hasGoldAnnotations(){
