@@ -644,6 +644,29 @@ function viewNextFile(file){
     });
 }
 
+function viewPrevFileBrat(file){
+    loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileBrat(data.prev);
+        }else{
+            alert("No additional file found! Maybe first file ?");
+        }
+    });
+}
+
+function viewPrevFile(file){
+    loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileText(data.prev,true);
+        }else{
+            alert("No additional file found! Maybe first file ?");
+        }
+    });
+}
+
+
 function viewFileText(file,showBrat=false){
     currentFileView=file;
     last_viewed_file=file;
@@ -653,6 +676,7 @@ function viewFileText(file,showBrat=false){
     setAttribute("fileViewerTextBrat","onclick","closeFileViewerText();viewFileBrat('"+file+"');");
     setAttribute("fileViewerTextMetadata","onclick","editFileMetadata('"+file+"');");
     setAttribute("fileViewerTextNext","onclick","viewNextFile('"+file+"');");
+    setAttribute("fileViewerTextPrev","onclick","viewPrevFile('"+file+"');");
     
     setAttribute("fileViewerTextMetadataDiv","style","display:none");
     setAttribute("inputFileViewerText","style","display:inline-block; width:100%") ;
@@ -807,6 +831,7 @@ function viewFileBrat(file){
     setAttribute("fileViewerBratDownloadAnn","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file=standoff/"+changeFileExtension(file,"ann")+"';");
     setAttribute("fileViewerBratSaveGold","onclick","saveToGold('{{CORPUS_NAME}}','"+file+"');");
     setAttribute("fileViewerBratNext","onclick","viewNextFileBrat('"+file+"');");
+    setAttribute("fileViewerBratPrev","onclick","viewPrevFileBrat('"+file+"');");
 
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
