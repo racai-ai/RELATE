@@ -14,6 +14,7 @@ var VisualizerUI = (function($, window, undefined) {
       var loadedSearchData = null;
 
       var currentForm;
+
       var spanTypes = null;
       var relationTypesHash = null;
       // TODO: confirm unnecessary and remove
@@ -22,6 +23,7 @@ var VisualizerUI = (function($, window, undefined) {
       var mtime = null;
       var searchConfig = null;
       var coll, doc, args;
+      var pagingOffset = 0;
       var collScroll;
       var docScroll;
       var user = null;
@@ -35,8 +37,11 @@ var VisualizerUI = (function($, window, undefined) {
       var currentDocumentSVGsaved = false;
       var fileBrowserClosedWithSubmit = false;
 
-      // normalization: server-side DB by norm DB name
+      // normalization:
       var normServerDbByNormDbName = {};
+      var normInfoCache = {};
+      var normInfoCacheSize = 0;
+      var normInfoCacheMaxSize = 100;
 
       var matchFocus = '';
       var matches = '';
@@ -227,7 +232,12 @@ var VisualizerUI = (function($, window, undefined) {
 
       /* START comment popup - related */
 
+      var cursor = { x: 0, y: 0 };
       var adjustToCursor = function(evt, element, offset, top, right) {
+        if (evt) {
+          cursor.x = evt.clientX;
+          cursor.y = evt.clientY;
+        }
         // get the real width, without wrapping
         element.css({ left: 0, top: 0 });
         var screenHeight = $(window).height();
@@ -238,18 +248,18 @@ var VisualizerUI = (function($, window, undefined) {
         var x, y;
         offset = offset || 0;
         if (top) {
-          y = evt.clientY - elementHeight - offset;
+          y = cursor.y - elementHeight - offset;
           if (y < 0) top = false;
         }
         if (!top) {
-          y = evt.clientY + offset;
+          y = cursor.y + offset;
         }
         if (right) {
-          x = evt.clientX + offset;
+          x = cursor.x + offset;
           if (x >= screenWidth - elementWidth) right = false;
         }
         if (!right) {
-          x = evt.clientX - elementWidth - offset;
+          x = cursor.x - elementWidth - offset;
         }
         if (y < 0) y = 0;
         if (x < 0) x = 0;
@@ -294,6 +304,85 @@ var VisualizerUI = (function($, window, undefined) {
         if (b[0].toLowerCase() == '<img>') return 1;
         // otherwise stable
         return Util.cmp(a[2],b[2]);
+      }
+
+      var fillNormInfo = function(infoData, infoSeqId) {
+        // extend comment popup with normalization data
+        var norminfo = '';
+        // flatten outer (name, attr, info) array (idx for sort)
+        var infos = [];
+        var idx = 0;
+        for (var i = 0; i < infoData.length; i++) {
+          for (var j = 0; j < infoData[i].length; j++) {
+            var label = infoData[i][j][0];
+            var value = infoData[i][j][1];
+            infos.push([label, value, idx++]);
+          }
+        }
+        // sort, prioritizing images (to get floats right)
+        infos = infos.sort(normInfoSortFunction);
+        // combine several consequtive values with the same label
+        var combined = [];
+        var prev_label = '';
+        for (var i = 0; i < infos.length; i++) {
+          var label = infos[i][0];
+          var value = infos[i][1];
+          if (label == prev_label) {
+            combined[combined.length-1][1] += ', '+value;
+          } else {
+            combined.push([label, value]);
+          }
+          prev_label = label;
+        }
+        infos = combined;
+        // generate HTML
+        for (var i = 0; i < infos.length; i++) {
+          var label = infos[i][0];
+          var value = infos[i][1];
+          if (label && value) {
+            // special treatment for some label values
+            if (label.toLowerCase() == '<img>') {
+              norminfo += ('<img class="norm_info_img" src="'+
+                           Util.escapeHTML(value)+
+                           '"/>');
+            } else {
+              // normal, as text
+
+              // max length restriction
+              if (value.length > 300) {
+                value = value.substr(0, 300) + ' ...';
+              }
+
+              norminfo += ('<span class="norm_info_label">'+
+                           Util.escapeHTML(label)+
+                           '</span>'+
+                           '<span class="norm_info_value">'+':'+
+                           Util.escapeHTML(value)+
+                           '</span>'+
+                           '<br/>');
+            }
+          }
+        }
+        var drop=$('#norm_info_drop_point_'+infoSeqId);
+        if (drop.length) {
+          drop.html(norminfo);
+          adjustToCursor(null, commentPopup, 10, true, true);
+        } else {
+          console.log('norm info drop point not found!'); //TODO XXX
+        }
+      }
+
+      var normCacheGet = function(dbName, dbKey, value) {
+        return normInfoCache[dbName+':'+dbKey];
+      }
+      var normCachePut = function(dbName, dbKey, value) {
+        // TODO: non-stupid cache max size limit
+        if (normInfoCacheSize >= normInfoCacheMaxSize) {
+          normInfoCache = {};
+          normInfoCacheSize = 0;
+        }
+        normInfoCache[dbName+':'+dbKey] = value;
+        normInfoCacheSize++;
       }
 
       var displaySpanComment = function(
@@ -361,69 +450,27 @@ var VisualizerUI = (function($, window, undefined) {
         $.each(normsToQuery, function(normqNo, normq) {
           // TODO: cache some number of most recent norm_get_data results
           var dbName = normq[0], dbKey = normq[1], infoSeqId = normq[2];
-          dispatcher.post('ajax', [{
-            action: 'normData',
-            database: dbName,
-            key: dbKey,
-            collection: coll,
-          },
-          function(response) {
-            if (response.exception) {
-              ; // TODO: response to error
-            } else if (!response.value) {
-              ; // TODO: response to missing key
-            } else {
-              // extend comment popup with normalization data
-              norminfo = '';
-              // flatten outer (name, attr, info) array (idx for sort)
-              infos = [];
-              var idx = 0;
-              for (var i = 0; i < response.value.length; i++) {
-                for (var j = 0; j < response.value[i].length; j++) {
-                  var label = response.value[i][j][0];
-                  var value = response.value[i][j][1];
-                  infos.push([label, value, idx++]);
-                }
-              }
-              // sort, prioritizing images (to get floats right)
-              infos = infos.sort(normInfoSortFunction);
-              // generate HTML
-              for (var i = 0; i < infos.length; i++) {
-                var label = infos[i][0];
-                var value = infos[i][1];
-                if (label && value) {
-                  // special treatment for some label values
-                  if (label.toLowerCase() == '<img>') {
-                    // image
-                    norminfo += ('<img class="norm_info_img" src="'+
-                                 value+
-                                 '"/>');
-                  } else {
-                    // normal, as text
-
-                    // max length restriction
-                    if (value.length > 300) {
-                      value = value.substr(0, 300) + ' ...';
-                    }                          
-
-                    norminfo += ('<span class="norm_info_label">'+
-                                 Util.escapeHTML(label)+
-                                 '</span>'+
-                                 '<span class="norm_info_value">'+':'+
-                                 Util.escapeHTML(value)+
-                                 '</span>'+
-                                 '<br/>');
-                  }
-                }
-              }
-              var drop=$('#norm_info_drop_point_'+infoSeqId);
-              if (drop) {
-                drop.html(norminfo);
+          
+          if (normCacheGet(dbName, dbKey)) {
+            fillNormInfo(normCacheGet(dbName, dbKey), infoSeqId);
+          } else {
+            dispatcher.post('ajax', [{
+              action: 'normData',
+              database: dbName,
+              key: dbKey,
+              collection: coll,
+            },
+            function(response) {
+              if (response.exception) {
+                ; // TODO: response to error
+              } else if (!response.value) {
+                ; // TODO: response to missing key
               } else {
-                console.log('norm info drop point not found!'); //TODO XXX
+                fillNormInfo(response.value, infoSeqId);
+                normCachePut(dbName, dbKey, response.value);
               }
-            }
-          }]);
+            }]);
+          }
         });
       };
 
@@ -531,7 +578,7 @@ var VisualizerUI = (function($, window, undefined) {
           }, opts);
 
         form.dialog(opts);
-        form.bind('dialogclose', function() {
+        form.on('dialogbeforeclose', function(evt) {
           if (form == currentForm) {
             currentForm = null;
           }
@@ -547,11 +594,39 @@ var VisualizerUI = (function($, window, undefined) {
         }
       };
 
-      var showForm = function(form) {
+      var unsafeDialogOpen = function($dialog) {
+        // does not restrict tab key to the dialog
+        // does not set the focus, nor change position
+        // but is much faster than dialog('open') for large dialogs, see
+        // https://github.com/nlplab/brat/issues/934
+
+        var self = $dialog.dialog('instance');
+        
+        if (self._isOpen) { return; }
+
+        self._isOpen = true;
+        self.opener = $(self.document[0].activeElement);
+
+        self._size();
+        //self._createOverlay();
+        self._moveToTop(null, true);
+
+        //if (self.overlay) {
+        //  self.overlay.css( "z-index", self.uiDialog.css( "z-index" ) - 1 );
+        //}
+        self._show(self.uiDialog, self.options.show);
+        self._trigger('open');
+      };
+
+      var showForm = function(form, unsafe) {
         currentForm = form;
         // as suggested in http://stackoverflow.com/questions/2657076/jquery-ui-dialog-fixed-positioning
         form.parent().css({position:"fixed"});
-        form.dialog('open');
+        if (unsafe) {
+          unsafeDialogOpen(form);
+        } else {
+          form.dialog('open');
+        }
         slideToggle($('#pulldown').stop(), false);
         return form;
       };
@@ -560,7 +635,6 @@ var VisualizerUI = (function($, window, undefined) {
         if (!currentForm) return;
         // currentForm.fadeOut(function() { currentForm = null; });
         currentForm.dialog('close');
-        currentForm = null;
       };
 
       /* END form management - related */
@@ -675,7 +749,7 @@ var VisualizerUI = (function($, window, undefined) {
         fileBrowser.find('#document_select tbody').empty();
 
         if (coll != _coll || doc != _doc ||
-            Util.paramArray(args.matchfocus) != matchFocus) {
+            !Util.isEqual(Util.paramArray(args.matchfocus), (matchFocus || []))) {
           // something changed
 
           // set to allow keeping "blind" down during reload
@@ -795,7 +869,7 @@ var VisualizerUI = (function($, window, undefined) {
             if (formatted === null) {
               var m = type.match(/^(.*?)(?:\/(right))?$/);
               cssClass = m[2] ? 'rightalign' : null;
-              formatted = $.sprintf(m[1], datum);
+              formatted = sprintf(m[1], datum);
             }
             html.push('<td' + (cssClass ? ' class="' + cssClass + '"' : '') + '>' +
                 formatted + '</td>');
@@ -938,7 +1012,7 @@ var VisualizerUI = (function($, window, undefined) {
         };
       };
 
-      $('#search_form_event_roles .search_event_role select').live('change', searchEventRoleChanged);
+      $('#search_form_event_roles').on('change', '.search_event_role select', searchEventRoleChanged);
 
       // adding new role rows
       var addEmptySearchEventRole = function() {
@@ -982,8 +1056,8 @@ var VisualizerUI = (function($, window, undefined) {
         $row.remove();
       }
 
-      $('#search_form_event_roles .search_event_role_add input').live('click', addEmptySearchEventRole);
-      $('#search_form_event_roles .search_event_role_del input').live('click', delSearchEventRole);
+      $('#search_form_event_roles').on('click', '.search_event_role_add input', addEmptySearchEventRole);
+      $('#search_form_event_roles').on('click', '.search_event_role_del input', delSearchEventRole);
 
       // When event type changes, the event roles do as well
       // Also, put in one empty role row
@@ -1092,7 +1166,7 @@ var VisualizerUI = (function($, window, undefined) {
 
       var activeSearchTab = function() {
         // activeTab: 0 = Text, 1 = Entity, 2 = Event, 3 = Relation, 4 = Notes, 5 = Load
-        var activeTab = $('#search_tabs').tabs('option', 'selected');
+        var activeTab = $('#search_tabs').tabs('option', 'active');
         return ['searchText', 'searchEntity', 'searchEvent',
             'searchRelation', 'searchNote', 'searchLoad'][activeTab];
       }
@@ -1182,6 +1256,8 @@ var VisualizerUI = (function($, window, undefined) {
             opts.arg1type = $('#search_form_relation_arg1_type').val() || '';
             opts.arg2 = $('#search_form_relation_arg2_text').val();
             opts.arg2type = $('#search_form_relation_arg2_type').val() || '';
+            opts.show_text = $('#search_form_relation_show_arg_text_on').is(':checked');
+            opts.show_type = $('#search_form_relation_show_arg_type_on').is(':checked');
             break;
           case 'searchNote':
             opts.category = $('#search_form_note_category').val() || '';
@@ -1367,7 +1443,7 @@ var VisualizerUI = (function($, window, undefined) {
         dispatcher.post('showForm', [optionsForm]);
       });
       // make nice-looking buttons for checkboxes and radios
-      $('#options_form').find('input[type="checkbox"]').button();
+      $('#options_form').find('input[type="checkbox"], input[type="button"]').button();
       $('#options_form').find('.radio_group').buttonset();
       $('#rapid_model').addClass('ui-widget ui-state-default ui-button-text');
 
@@ -1429,7 +1505,7 @@ var VisualizerUI = (function($, window, undefined) {
               currentForm.trigger('submit');
               return false;
             }
-          } else if (evt.ctrlKey &&
+          } else if ((Util.isMac ? evt.metaKey : evt.ctrlKey) &&
                 (code == 'F'.charCodeAt(0) || code == 'G'.charCodeAt(0))) {
             // prevent Ctrl-F/Ctrl-G in forms
             evt.preventDefault();
@@ -1441,21 +1517,28 @@ var VisualizerUI = (function($, window, undefined) {
         if (code === $.ui.keyCode.TAB) {
           showFileBrowser();
           return false;
+        } else if (evt.shiftKey && code === $.ui.keyCode.RIGHT) {
+          autoPaging(true);
+        } else if (evt.shiftKey && code === $.ui.keyCode.LEFT) {
+          autoPaging(false);
+        } else if (evt.shiftKey && code === $.ui.keyCode.UP) {
+          pagingOffset -= Configuration.pagingStep;
+          if (pagingOffset < 0) pagingOffset = 0;
+          dispatcher.post('setPagingOffset', [pagingOffset, true]);
+        } else if (evt.shiftKey && code === $.ui.keyCode.DOWN) {
+          pagingOffset += Configuration.pagingStep;
+          dispatcher.post('setPagingOffset', [pagingOffset, true]);
         } else if (code == $.ui.keyCode.LEFT) {
           return moveInFileBrowser(-1);
         } else if (code === $.ui.keyCode.RIGHT) {
           return moveInFileBrowser(+1);
-        } else if (evt.shiftKey && code === $.ui.keyCode.UP) {
-          autoPaging(true);
-        } else if (evt.shiftKey && code === $.ui.keyCode.DOWN) {
-          autoPaging(false);
-        } else if (evt.ctrlKey && code == 'F'.charCodeAt(0)) {
+        } else if ((Util.isMac ? evt.metaKey : evt.ctrlKey) && code == 'F'.charCodeAt(0)) {
           evt.preventDefault();
           showSearchForm();
-        } else if (searchActive && evt.ctrlKey && code == 'G'.charCodeAt(0)) {
+        } else if (searchActive && (Util.isMac ? evt.metaKey : evt.ctrlKey) && code == 'G'.charCodeAt(0)) {
           evt.preventDefault();
           return moveInFileBrowser(+1);
-        } else if (searchActive && evt.ctrlKey && code == 'K'.charCodeAt(0)) {
+        } else if (searchActive && (Util.isMac ? evt.metaKey : evt.ctrlKey) && code == 'K'.charCodeAt(0)) {
           evt.preventDefault();
           clearSearchResults();
         }
@@ -1662,12 +1745,16 @@ var VisualizerUI = (function($, window, undefined) {
         }
       }
 
+      $('#source_collection_conf').buttonset();
+
       var gotCurrent = function(_coll, _doc, _args) {
         var oldColl = coll;
 
         coll = _coll;
         doc = _doc;
         args = _args;
+        if (!args.edited) pagingOffset = 0;
+        dispatcher.post('setPagingOffset', [pagingOffset]);
 
         // if we have a specific document, hide the "no document" message
         if (_doc) {
@@ -1681,6 +1768,7 @@ var VisualizerUI = (function($, window, undefined) {
           var $collectionDownloadLink = $('<a target="brat_search"/>')
             .text('Download tar.gz')
             .attr('href', 'ajax.cgi?action=downloadCollection&collection=' + encodeURIComponent(coll)
+            + '&include_conf=' + ($('#source_collection_conf_on').is(':checked') ? 1 : 0)
             // TODO: Extract the protocol version into somewhere global
             + '&protocol=' + 1);
           $sourceCollection.append($collectionDownloadLink);
@@ -1689,7 +1777,7 @@ var VisualizerUI = (function($, window, undefined) {
           $cmpButton = $('#side-by-side_cmp').empty();
           var $cmpLink = $('<a target="_blank"/>')
             .text('Comparison mode')
-            .attr('href', 'diff.xhtml?diff=' + encodeURIComponent(coll));
+            .attr('href', 'diff.xhtml#?diff=' + encodeURIComponent(coll));
           $cmpButton.append($cmpLink);
           $cmpLink.button();
         }
@@ -1822,11 +1910,11 @@ var VisualizerUI = (function($, window, undefined) {
             resizable: false,
             modal: true,
             open: function() {
-                aboutDialog.find('*').blur();
-              },
+              aboutDialog.find('*').blur();
+            },
             beforeClose: function() {
-                currentForm = null;
-              }
+              currentForm = null;
+            }
           });
       $('#mainlogo').click(function() {
         showForm(aboutDialog);
@@ -1916,7 +2004,8 @@ var VisualizerUI = (function($, window, undefined) {
 
 
       var tutorialForm = $('#tutorial');
-      if (!$.browser.webkit) {
+      var isWebkit = 'WebkitAppearance' in document.documentElement.style;
+      if (!isWebkit) {
         // Inject the browser warning
         $('#browserwarning').css('display', 'block');
       }
@@ -1950,6 +2039,11 @@ var VisualizerUI = (function($, window, undefined) {
               user = response.user;
               dispatcher.post('messages', [[['Welcome back, user "' + user + '"', 'comment']]]);
               auth_button.val('Logout ' + user);
+              dispatcher.post('user', [user]);
+              $('.login').show();
+            } else if (response.anonymous) {
+              user = 'Anonymous';
+              auth_button.hide();
               dispatcher.post('user', [user]);
               $('.login').show();
             } else {
@@ -2126,6 +2220,26 @@ var VisualizerUI = (function($, window, undefined) {
         dispatcher.post('configurationChanged');
       });
 
+      $('#type_collapse_limit').change(function(evt) {
+        Configuration.typeCollapseLimit = parseInt($(this).val(), 10) || 0;
+        dispatcher.post('configurationChanged');
+      });
+
+      $('#paging_size').change(function(evt) {
+        Configuration.pagingSize = parseInt($(this).val(), 10) || 0;
+        dispatcher.post('configurationChanged');
+      });
+      $('#paging_step').change(function(evt) {
+        Configuration.pagingStep = parseInt($(this).val(), 10) || 0;
+        dispatcher.post('configurationChanged');
+      });
+      $('#paging_clear').click(function(evt) {
+        Configuration.pagingSize = 0;
+        Configuration.pagingStep = 0;
+        $('#paging_step, #paging_size').val('');
+        dispatcher.post('configurationChanged');
+      });
+
       var isReloadOkay = function() {
         // do not reload while the user is in the dialog
         return currentForm == null;
@@ -2180,6 +2294,13 @@ var VisualizerUI = (function($, window, undefined) {
         // Autorefresh
         $('#autorefresh_mode')[0].checked = Configuration.autorefreshOn;
         $('#autorefresh_mode').button('refresh');
+
+        // Type Collapse Limit
+        $('#type_collapse_limit')[0].value = Configuration.typeCollapseLimit;
+
+        // Paging
+        $('#paging_size')[0].value = Configuration.pagingSize || '';
+        $('#paging_step')[0].value = Configuration.pagingStep || '';
       }
 
       $('#prev').button().click(function() {
@@ -2189,6 +2310,14 @@ var VisualizerUI = (function($, window, undefined) {
         return moveInFileBrowser(+1);
       });
       $('#footer').show();
+
+      $('#source_collection_conf_on, #source_collection_conf_off').change(function() {
+        var conf = $('#source_collection_conf_on').is(':checked') ? 1 : 0;
+        var $source_collection_link = $('#source_collection a');
+        var link = $source_collection_link.attr('href').replace(/&include_conf=./, '&include_conf=' + conf);
+        $source_collection_link.attr('href', link);
+      });
+
 
       var rememberData = function(_data) {
         if (_data && !_data.exception) {
