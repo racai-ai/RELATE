@@ -1,0 +1,17 @@
+{
+
+"order":100,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"DeAnonymization",
+				"type":"deanonymization",
+				"description":"De-Anonymize raw anonymized text. It will replace pseudo-anonymization identifiers with random PER/LOC/ORG.",
+				"scheduler":"scheduler.php:Modules\\deanonymization\\schedule",
+				"runner":"runner.php:Modules\\deanonymization\\runner"
+		}
+]
+
+}
