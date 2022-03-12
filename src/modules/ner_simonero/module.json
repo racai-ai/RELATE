@@ -1,0 +1,24 @@
+{
+
+"order":100,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"NER-SiMoNERo",
+				"type":"ner_simonero",
+				"description":"Perform NER using the SiMoNERo model (on biomedical text).",
+				"scheduler":"scheduler.php:Modules\\ner_simonero\\schedule",
+				"runner":"runner.php:Modules\\ner_simonero\\runner",
+   				"additionalData":[
+						{
+                            "name":"model","description":"Model","default":"simonero", "type":"select", 
+                            "values":["simonero"]
+                        }
+				]
+
+		}
+]
+
+}

@@ -6,7 +6,9 @@
                     <div id="input">                  
                         <form id="inputForm">
                             <p>Selectați modelul NER dorit și introduceți un document în limba română pentru recunoașterea entităților. 
-                            Modelele bazate pe corpusul LegalNERo presupun un text de tip legislație. Utilizarea de texte din alte domenii reduce calitatea rezultatelor. 
+                            Modelele bazate pe corpusul LegalNERo presupun un text de tip legislație. 
+                            Modelele bazate pe corpusul SiMoNERo presupun un text din domeniul biomedical.
+                            Utilizarea de texte din alte domenii reduce calitatea rezultatelor. 
                             Pentru a putea realiza ancorarea corectă a rezultatelor în textul introdus, nu sunt realizate curățări ale datelor. 
                             Textul trebuie să conțină doar caractere în limba română, cu virgula și punctul separate de cuvântul anterior.</p>
                       
@@ -15,6 +17,7 @@
                                 <option value="legalnero_per_loc_org_time_gaz">LegalNERo PER, LOC, ORG, TIME with Gazetteer</option>
                                 <option value="legalnero_legal_per_loc_org_time">LegalNERo LEGAL, PER, LOC, ORG, TIME</option>
                                 <option value="legalnero_per_loc_org_time">LegalNERo PER, LOC, ORG, TIME</option>
+                                <option value="simonero">SiMoNERo ANAT, CHEM, DISO, PROC</option>
                             </select>
                       
                             <textarea id='text' name="text" style='width:100%; height:300px;'></textarea>
