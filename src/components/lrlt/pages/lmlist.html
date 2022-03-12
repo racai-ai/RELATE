@@ -4,6 +4,9 @@
                   <div class="mT-30">
                     
 <p><b>Annotation models for lemma, UPOS, XPOS and dependency parsing (where supported) trained on RRT UD 2.7.</b></p>
+These models were evaluated in 
+<i>Păiș, Vasile and Ion, Radu and Avram, Andrei-Marius and Mitrofan, Maria and Tufiș, Dan. In-depth evaluation of Romanian natural language processing pipelines. In Romanian Journal of Information Science and Technology (ROMJIST). vol. 24, no. 4, pp. 384--401, 2021</i>.
+The article can be accessed <a href="https://www.romjist.ro/full-texts/paper700.pdf" target="_blank">here</a>.
 <ul>
    <li>Stanza <a href="resources/models/ud27_stanza.zip">Download (756Mb)</a></li>
    <li>RNNTagger <a href="resources/models/ud27_rnntagger.zip">Download (668Mb)</a></li>
@@ -23,7 +26,7 @@
         Italian, Latvian, Lithuanian, Maltese, Polish, Portuguese, Romanian, Spanish, Slovak, Slovene, Swedish).
          A GitHub repo with scripts and example usage is available 
         <a href="https://github.com/racai-ai/pyeurovoc" target="_blank">here</a>. Related paper is 
-        <i>Avram Andrei-Marius, Vasile Pai?, and Dan Tufi?. "PyEuroVoc: A Tool for Multilingual Legal Document Classification with EuroVoc Descriptors."  In Proceedings of the International Conference on Recent Advances in Natural Language Processing (RANLP 2021), 2021.</i>
+        <i>Avram Andrei-Marius, Vasile Păiș, and Dan Tufiș. "PyEuroVoc: A Tool for Multilingual Legal Document Classification with EuroVoc Descriptors."  In Proceedings of the International Conference on Recent Advances in Natural Language Processing (RANLP 2021), 2021.</i>
     </li>
     <li>FastText EuroVoc classification models, based on Common Crawl FastText embeddings for most languages and CoRoLa embeddings for Romanian. Models available for 
         multiple languages can be downloaded <a href="https://relate.racai.ro/resources/EUROVOC/">here</a>. A modified FastText application allowing models to be
@@ -55,7 +58,17 @@
     <li>All word embeddings from the CoRoLa project can be downloaded and used interactively <a href="http://corolaws.racai.ro/word_embeddings/" target="_blank">here</a>.</li>
     <li>The recommended model, according to a number of experiments, can be downloaded directly from <a href="http://corolaws.racai.ro/word_embeddings/we/corola.300.20.vec.zip">here</a>.</li>
 </ul>
+<br/><br/>
 
+<p><b>BioMedical Word Embeddings</b></p>
+These word embeddings were trained on the BioRo corpus (
+<i>Mitrofan, Maria and Tufiș, Dan. BioRo: The Biomedical Corpus for the Romanian Language. In Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018). pp. 1192-1196, 2018</i>
+). The models have dimension 300 and were trained using FastText. Words occuring only 1,5 or 20 times were considered.
+<ul>
+    <li><a href="https://relate.racai.ro/resources/simonero/bioro.300.1.5.vec.gz" target="_blank">bioro.300.1.5.vec.gz</a>.</li>
+    <li><a href="https://relate.racai.ro/resources/simonero/bioro.300.5.5.vec.gz" target="_blank">bioro.300.5.5.vec.gz</a>.</li>
+    <li><a href="https://relate.racai.ro/resources/simonero/bioro.300.20.5.vec.gz" target="_blank">bioro.300.20.5.vec.gz</a>.</li>
+</ul>
 
                   </div>
                 </div>

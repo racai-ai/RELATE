@@ -15,8 +15,15 @@ function anonymize(){
     document.getElementById("loading").setAttribute("style","display:block");
 
     loadDataForm("inputForm",function(data){
-    
-        data=JSON.parse(data);
+        try{
+            data=JSON.parse(data);
+        }catch(error){
+            console.log(error);
+            alert("Error retrieving data");
+            document.getElementById("output1").innerHTML='<font color="red"><b>Error retrieving data. Please try again later.</b></font>';
+            document.getElementById("output").setAttribute("style","display:block");
+            document.getElementById("loading").setAttribute("style","display:none");
+        }
         
         document.getElementById("outputText").innerText=data.text;
         
