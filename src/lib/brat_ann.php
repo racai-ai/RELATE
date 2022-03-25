@@ -15,28 +15,48 @@ class BratAnn{
     public function load(){
         $this->data=[];
         if(!is_file($this->path))return ;
+       
+        $map=[];
         
         foreach(explode("\n",file_get_contents($this->path)) as $line){
             $ldata=explode("\t",$line);
             if(count($ldata)!==3)continue;
-            
-            $frags=explode(" ",$ldata[1],2);
-            $type=$frags[0];
-            $frags=explode(";",$frags[1]);
-            $fragArr=[];
-            foreach($frags as $v)$fragArr[]=explode(" ",$v);
-            
-            $this->data[]=["id"=>$ldata[0], "type"=>$type, "frags"=>$fragArr,"text"=>$ldata[2]];            
+
+            if($ldata[0][0]=="#"){ // comment (note)
+                $frags=explode(" ",$ldata[1],2);
+                $id=$frags[1];
+                if(isset($map[$id]) && isset($this->data[$map[$id]]))
+                    $this->data[$map[$id]]['comment']=$ldata[2];
+            }else{
+                $frags=explode(" ",$ldata[1],2);
+                $type=$frags[0];
+                $frags=explode(";",$frags[1]);
+                $fragArr=[];
+                foreach($frags as $v)$fragArr[]=explode(" ",$v);
+                
+                $map[$ldata[0]]=count($this->data);
+                $this->data[]=["id"=>$ldata[0], "type"=>$type, "frags"=>$fragArr,"text"=>$ldata[2]];
+            }            
         }
     }
     
     public function save(){
         $fout=fopen($this->path,"w");
+        $comments=[];
         foreach($this->data as $ldata){
             $ann=[];
             foreach($ldata['frags'] as $a)$ann[]=implode(" ",$a);
             $ann=implode(";",$ann);
             fwrite($fout,"${ldata['id']}\t${ldata['type']} $ann\t${ldata['text']}\n");
+            if(isset($ldata['comment']) && strlen($ldata['comment'])>0){
+                $comments[]=["id"=>$ldata['id'],"comment"=>$ldata['comment']];
+            }
+        }
+        
+        $cid=0;
+        foreach($comments as $comm){
+            $cid++;
+            fwrite($fout,"#$cid\tAnnotatorNotes ${comm['id']}\t${comm['comment']}\n");
         }
         fclose($fout);
         
@@ -53,6 +73,15 @@ class BratAnn{
         return $ret;
     }
     
+    public function getCommentsForBrat(){
+        $ret=[];
+        foreach($this->data as $ldata){
+             if(isset($ldata['comment']) && strlen($ldata['comment'])>0)
+                $ret[]=[$ldata['id'],"AnnotatorNotes",$ldata['comment']];
+        }
+        return $ret;
+    }
+
     public function deleteById($id){
         $found=false;
         foreach($this->data as $k=>$ldata){
@@ -64,7 +93,7 @@ class BratAnn{
         }
     }
     
-    public function addAnnotation($type,$offsets,$text){
+    public function addAnnotation($type,$offsets,$text,$comment){
         $newid="";
         if(empty($this->data)){
             $newid="T1";
@@ -78,7 +107,7 @@ class BratAnn{
         for($i=0;$i<count($offsets);$i++){
             $textann.=mb_substr($text,$offsets[$i][0],($offsets[$i][1]-$offsets[$i][0]));
         }        
-        $this->data[]=['id'=>$newid,'type'=>$type,'frags'=>$offsets,'text'=>$textann];
+        $this->data[]=['id'=>$newid,'type'=>$type,'frags'=>$offsets,'text'=>$textann,'comment'=>$comment];
     }
 
 }

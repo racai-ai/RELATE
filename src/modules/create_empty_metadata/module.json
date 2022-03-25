@@ -1,0 +1,22 @@
+{
+
+"order":200,
+
+"languages":["*"],
+
+"tasks":[
+    {
+				"name":"Create Empty Metadata",
+				"type":"create_empty_metadata",
+				"description":"Create empty metadata files associated with existing documents.",
+				"scheduler":"scheduler.php:Modules\\create_empty_metadata\\schedule",
+				"runner":"runner.php:Modules\\create_empty_metadata\\runner",
+   				"additionalData":[
+						{
+                            "name":"extension","description":"Extension","default":"corrected", "type":"text" 
+                        }
+				]
+		}
+]
+
+}

@@ -80,12 +80,29 @@ class Modules {
 								if(!isset($add['default']))$add['default']="";
                                 
                                 if(isset($add['type']) && strcasecmp($add['type'],"select")==0){
+                                    $firstval=true;
 								    $ret.="<tr><td>${add['description']}</td><td>";
                                     $ret.="<select name=\"${add['name']}\" id=\"${add['name']}\">";
                                     foreach($add['values'] as $value){
-                                        $selected="";
-                                        if($value==$add['default'])$selected=" selected=\"true\" ";
-                                        $ret.="<option value=\"$value\" $selected>$value</option>";
+                                        if(startsWith($value,"files:")){
+                                        
+                                            $path=$corpus->getFolderPath()."/standoff/*.".substr($value,6);
+                                            foreach(glob($path) as $filename){
+                                                if(is_file($filename)){
+                                                    $fname=substr($filename,strrpos($filename,"/")+1);
+                                                    $selected="";
+                                                    if($firstval)$selected=" selected=\"true\" ";
+                                                    $ret.="<option value=\"$fname\" $selected>$fname</option>";
+                                                }
+                                            }
+                                        
+                                        }else{
+                                            $selected="";
+                                            if($value==$add['default'])$selected=" selected=\"true\" ";
+                                            $ret.="<option value=\"$value\" $selected>$value</option>";
+                                        }
+                                        
+                                        $firstval=false;
                                     }
                                     $ret.="</select></td></tr>\n";
                                 }else{

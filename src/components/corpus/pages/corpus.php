@@ -19,6 +19,13 @@ function corpus_generateClassificationHtml($classProfile, $base){
         return $classHtml;
 }
 
+function corpus_generateCorrectedHtml($base){
+        $classHtml="";
+        $classHtml.='<div style="border:1px solid black; margin-top:10px; padding-top:5px" id="'.$base.'_corrected_div">';
+        $classHtml.="</div>";
+        return $classHtml;
+}
+
 function getPageContent(){
 		global $user,$modules;
 		
@@ -49,6 +56,12 @@ function getPageContent(){
         $classHtmlBrat=corpus_generateClassificationHtml($classProfile,"fileViewerBrat");
       }      
     }
+
+    $correctedHtmlBrat="";
+    if($corpus->hasCorrectedText()){
+        $correctedHtmlBrat=corpus_generateCorrectedHtml("fileViewerBrat");
+    }
+
     
     $modules_task_dialog=$modules->getTaskDialog($corpus);
     $html=str_replace("{{TASK-DIALOG}}",$modules_task_dialog,$html);
@@ -63,6 +76,7 @@ function getPageContent(){
     $html=str_replace("{{hidebratbutton}}",$hidebratbutton,$html);
     $html=str_replace("{{classification_html_fileviewertext}}",$classHtmlFileViewer,$html);
     $html=str_replace("{{classification_html_fileviewerbrat}}",$classHtmlBrat,$html);
+    $html=str_replace("{{corrected_html_fileviewerbrat}}",$correctedHtmlBrat,$html);
     
     return $html;
 }
@@ -83,6 +97,7 @@ function getPageJS(){
     $hasGold="false"; if($corpus->hasGoldAnnotations())$hasGold="true";
     $hasBrat="false"; if($corpus->hasBratProfiles())$hasBrat="true";
     $hasClassification=($corpus->hasClassificationProfiles())?("true"):("false");
+    $hasCorrected=($corpus->hasCorrectedText())?("true"):("false");
     $hidebratbutton=""; if(!$corpus->hasBratProfiles())$hidebratbutton="display:none";
     
     $classificationProfile="[]";
@@ -108,6 +123,7 @@ function getPageJS(){
     $js=str_replace("{{HAS_GOLD}}",$hasGold,$js);
     $js=str_replace("{{HAS_BRAT}}",$hasBrat,$js);
     $js=str_replace("{{HAS_CLASSIFICATION}}",$hasClassification,$js);
+    $js=str_replace("{{HAS_CORRECTED}}",$hasCorrected,$js);
     $js=str_replace("{{hidebratbutton}}",$hidebratbutton,$js);
     $js=str_replace("{{CLASSIFICATION_PROFILE}}",$classificationProfile,$js);
     $js=str_replace("{{LAST_VIEWED_FILE}}",$last_viewed_file,$js);
