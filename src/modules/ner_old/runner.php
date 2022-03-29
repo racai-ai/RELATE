@@ -22,11 +22,18 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         
         $ret=explode("\n",$ret);
         $n=1;
+        $prev="O";
         foreach($sent->getTokenIterator() as $tok){
             $ner="O";
             if($n<count($ret)){
                 $line=explode("\t",$ret[$n]);
                 $ner=$line[count($line)-1];
+                $pner=$ner;
+                if($ner!="O"){
+                    if($ner==$prev)$ner="I-$ner";
+                    else $ner="B-$ner";
+                }
+                $prev=$pner;
             }
             $tok->set("RELATE:NE",$ner);
             $n++;
