@@ -17,6 +17,7 @@ require_once "${LIB_PATH}/mb_additionals.php";
 require_once "${LIB_PATH}/string_utils.php";
 require_once "${LIB_PATH}/header_utils.php";
 require_once "${LIB_PATH}/msd2upos.php";
+require_once "${LIB_PATH}/msd2ctag.php";
 require_once "${LIB_PATH}/msd2feats.php";
 require_once "${LIB_PATH}/string.format.number.php";
 require_once "${LIB_PATH}/wav.php";
