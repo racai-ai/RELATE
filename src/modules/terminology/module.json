@@ -1,0 +1,29 @@
+{
+
+"order":30,
+
+"languages":["ro"],
+
+"tasks":[
+    {
+				"name":"Terminology",
+				"type":"terminology",
+				"description":"Annotate text a custom terminology. The text must be already tokenized and lemmatized. At least one file with .terminology extension must be present in the corpus standoff folder.",
+				"scheduler":"scheduler.php:Modules\\terminology\\schedule",
+				"runner":"runner.php:Modules\\terminology\\runner",
+   				"additionalData":[
+						{
+                            "name":"column","description":"Column","default":"RELATE:TERM", "type":"text" 
+                        },
+						{
+                            "name":"max_term_size","description":"Max Term Size","default":"10", "type":"text" 
+                        },
+						{
+                            "name":"terminology","description":"Terminology", "type":"select", "values":["files:terminology"] 
+                        }
+                        
+				]
+		}
+]
+
+}

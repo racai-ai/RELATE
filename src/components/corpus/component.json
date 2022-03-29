@@ -40,6 +40,7 @@
 		{"path":"corpus/data/add","script":"data/add_file.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getcolumns","script":"data/file_getcolumns.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getclassification","script":"data/file_getclassification.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/file_getcorrected","script":"data/file_getcorrected.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_saveclassification","script":"data/file_saveclassification.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getnext","script":"data/file_getnext.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getprev","script":"data/file_getprev.php","data":true,"rights":["corpus"]},

@@ -31,6 +31,7 @@ var hasGold={{HAS_GOLD}};
 var hasClassification={{HAS_CLASSIFICATION}};
 var classificationProfile={{CLASSIFICATION_PROFILE}};
 var last_viewed_file="{{LAST_VIEWED_FILE}}";
+var hasCorrected={{HAS_CORRECTED}};
 
 function loadData(data,func,error){
     loadDataComplete("index.php","POST",data,func,error);
@@ -722,6 +723,20 @@ function viewFileText(file,showBrat=false){
                 }
           });
         }
+        
+        console.log("hasCorrected=");console.log(hasCorrected);
+        
+        if(hasCorrected && showBrat){
+            document.getElementById('fileViewerBrat_corrected_div').innerText="";
+          loadData("path=corpus/file_getcorrected&corpus={{CORPUS_NAME}}&file="+file,function(data){
+                data=JSON.parse(data);
+                console.log(data);
+                if(data.status=="OK"){
+                    document.getElementById('fileViewerBrat_corrected_div').innerText=data.data;
+                }
+          });
+        
+        }
     },function(){
         alert("Error loading text");
         setAttribute("loading","style","display:none;");
@@ -866,6 +881,21 @@ function viewFileBrat(file){
                 }
           });
     }
+    
+    console.log("hasCorrected=");console.log(hasCorrected);
+    
+    if(hasCorrected){
+        document.getElementById('fileViewerBrat_corrected_div').innerText="";
+      loadData("path=corpus/file_getcorrected&corpus={{CORPUS_NAME}}&file="+file,function(data){
+            data=JSON.parse(data);
+            console.log(data);
+            if(data.status=="OK"){
+                document.getElementById('fileViewerBrat_corrected_div').innerText=data.data;
+            }
+      });
+    
+    }
+    
     
 }
 
