@@ -36,11 +36,12 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         escapeshellarg($terminology)." ".
         $max_term_size." ".
         escapeshellarg($column)." ".
-        escapeshellarg($fpathIn)." ".
+        escapeshellarg("$cwd/$fpathIn")." ".
         escapeshellarg($finalFile)
         ;
     echo "RUNNING [$cmd]\n";
     passthru($cmd);
+    @chdir($cwd);
     @unlink($fpathIn);
 
     file_put_contents($corpus->getFolderPath()."/changed_basictagging.json",json_encode(["changed"=>time()]));            
