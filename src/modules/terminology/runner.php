@@ -34,10 +34,10 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $cmd="./annotator.sh ".
         escapeshellarg($settings->get("tools.python.venv"))." ".
         escapeshellarg($terminology)." ".
-        $max_term_size." "
+        $max_term_size." ".
         escapeshellarg($column)." ".
         escapeshellarg($fpathIn)." ".
-        escapeshellarg($fnameOut)." ".
+        escapeshellarg($fnameOut)
         ;
     echo "RUNNING [$cmd]\n";
     passthru($cmd);
