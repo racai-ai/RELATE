@@ -1,0 +1,17 @@
+{
+
+"order":46,
+
+"languages":["ro"],
+
+"tasks":[
+		{
+				"name":"NER_Old",
+				"type":"ner_old",
+				"description":"Romanian NER based on Vasile's PhD thesis",
+				"scheduler":"scheduler.php:Modules\\ner_old\\schedule",
+				"runner":"runner.php:Modules\\ner_old\\runner"
+		}
+]
+
+}
