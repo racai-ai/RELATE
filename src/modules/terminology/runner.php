@@ -37,7 +37,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $max_term_size." ".
         escapeshellarg($column)." ".
         escapeshellarg($fpathIn)." ".
-        escapeshellarg($fnameOut)
+        escapeshellarg($finalFile)
         ;
     echo "RUNNING [$cmd]\n";
     passthru($cmd);
