@@ -1,0 +1,20 @@
+{
+"order":89,
+
+"menu":[
+      {
+        "label":"Question Answering",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"qa/demo",
+        "menu":[]
+      }
+
+],
+
+"handlers":[
+		{"path":"qa/demo","script":"pages/qa_demo.php"},
+		{"path":"qa/do_qa","script":"data/do_qa.php","data":true}
+
+]
+
+}
