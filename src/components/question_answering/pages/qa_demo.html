@@ -1,0 +1,41 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Question Answering</h6>
+                  <div class="mT-30">
+                  
+                    <div id="input">                  
+                        <form id="inputForm">
+                            <p>Selectați modelul dorit și introduceți o intrebare în limba română. 
+                            Modelul COVID presupune intrebari legate de acesta. Intrebari fara legatura pot produce rezultate irelevante. 
+                            Nu sunt realizate curățări ale datelor, astfel încât textul trebuie să conțină doar caractere în limba română.</p>
+                      
+                            <select name="model" id="model">
+                                <option value="qa_covid" selected="true">COVID</option>
+                            </select>
+                      
+                            <textarea id='text' name="text" style='width:100%; height:50px;'></textarea>
+                            <input type="hidden" name="path" value="qa/do_qa"/>
+
+                            <br/>
+                            <button type="button"  class="btn cur-p btn-primary" onclick="run_qa();">Get Answer</button>
+                            <button type="button"  class="btn cur-p btn-secondary" onclick="demo();">Demo text</button>
+                        </form>
+                    
+                    </div>
+  
+                    {{loading}}
+
+                    <div style="display:none" id="output">
+                        <div id="outputText" >
+                        </div>
+                        
+                        <br/>
+                        
+                        <br/>
+                        <button type="button"  class="btn cur-p btn-secondary" onclick="again();">Intrebare noua</button>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
