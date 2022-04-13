@@ -30,10 +30,12 @@ function run_qa(){
             document.getElementById("outputText").innerText="ERROR";
         else
             document.getElementById("outputText").innerText=data.new_text;*/
-        var html="<table>";
+        var html="<p><b>Question:</b> <i>"+text+"</i><br/><b>Answers:</b></p>"+
+            "<table>";
+        
         for(var i=0;i<data.response.length;i++){
             var ob=data.response[i];
-            html+="<tr><td>"+ob.snippet.substring(0,ob.start_offset)+"<span style=\"background-color:yellow\">"+
+            html+="<tr><td style=\"padding:10px;\">"+ob.snippet.substring(0,ob.start_offset)+"<span style=\"background-color:yellow\">"+
                 ob.snippet.substring(ob.start_offset,ob.end_offset)+"</span>"+
                 ob.snippet.substring(ob.end_offset)+
                 " <a href=\""+ob.url+"\" target=\"blank\">SURSA</a>"+
@@ -41,6 +43,7 @@ function run_qa(){
         }
         html+="</table>";
         document.getElementById("outputText").innerHTML=html;
+        document.getElementById("outputText").setAttribute("style"," height:400px; overflow:auto;");
         
         document.getElementById("output").setAttribute("style","display:block");
         document.getElementById("loading").setAttribute("style","display:none");
