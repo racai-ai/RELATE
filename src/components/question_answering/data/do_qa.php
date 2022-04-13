@@ -1,6 +1,6 @@
 <?php
 
-$qa_debug=true;
+$qa_debug=false;
 
 if(!isset($_REQUEST['text']))die("Invalid call");
 if(!isset($_REQUEST['model']))die("Invalid call");
