@@ -1,0 +1,26 @@
+{
+
+"order":30,
+
+"languages":["ro"],
+
+"tasks":[
+    {
+				"name":"NERRegex",
+				"type":"ner_regex",
+				"description":"Annotate named entities using regex specification. The text must be already tokenized. At least one file with .regex extension must be present in the corpus standoff folder.",
+				"scheduler":"scheduler.php:Modules\\ner_regex\\schedule",
+				"runner":"runner.php:Modules\\ner_regex\\runner",
+   				"additionalData":[
+						{
+                            "name":"column","description":"Column","default":"RELATE:NE", "type":"text" 
+                        },
+						{
+                            "name":"regex","description":"Regex File", "type":"select", "values":["files:regex"] 
+                        }
+                        
+				]
+		}
+]
+
+}

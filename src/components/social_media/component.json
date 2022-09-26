@@ -1,0 +1,21 @@
+{
+"order":60,
+
+"menu":[
+      {
+        "label":"Social Media",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "menu":[
+            {"label":"Hashtag Splitting", "path":"social_media/hashtags"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"social_media/hashtags","script":"pages/hashtags.php"},
+		{"path":"social_media/do_hashtagsplit","script":"data/do_hashtagsplit.php","data":true}
+
+]
+
+}
