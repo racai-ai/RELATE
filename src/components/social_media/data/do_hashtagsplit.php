@@ -8,7 +8,7 @@ if(!isset($_REQUEST['hashtag']))die("Invalid call");
 $hashtag=$_REQUEST['hashtag'];
 if(!preg_match("/^[#a-zA-Z0-9_ăîâșțĂÎÂȘȚ]+$/",$hashtag))die("Invalid call");
 
-$cmd="./hashtag.sh ".escapeshellarg($settings->get("tools.python.venv"))." \"$hashtag\"";
+$cmd="cd ".dirname(__FILE__)."; ./hashtag.sh ".escapeshellarg($settings->get("tools.python.venv"))." \"$hashtag\"";
 
 passthru($cmd);
 

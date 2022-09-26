@@ -23,7 +23,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $regexFile=$corpus->getFolderPath()."/standoff/".$taskDesc['regex'];
     
     $regex=[];
-    for(explode("\n",file_get_contents($regexFile)) as $line){
+    foreach(explode("\n",file_get_contents($regexFile)) as $line){
         $line=trim($line); if(strlen($line)==0 || $line[0]=="#")continue;
         $r=explode(" ",trim($line),2);
         if(!is_array($r) || count($r)!=2)continue;
