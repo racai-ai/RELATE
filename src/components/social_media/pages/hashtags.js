@@ -29,7 +29,12 @@ function split_hashtag(){
             document.getElementById("loading").setAttribute("style","display:none");
         }
         
-        document.getElementById("outputText").innerText=data;
+        html="<table><tr><td><b>Token</b></td><td><b>Start</b></td><td><b>End</b></td></tr>";
+        for(var i=0;i<data.length;i++){
+            html+="<tr><td>"+data[i]["token"]+"</td><td>"+data[i]["start"]+"</td><td>"+data[i]["end"]+"</td></tr>";
+        }
+        html+="</table>";
+        document.getElementById("outputText").innerHTML=html;
             
         document.getElementById("output").setAttribute("style","display:block");
         document.getElementById("loading").setAttribute("style","display:none");
