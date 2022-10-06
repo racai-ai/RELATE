@@ -1,0 +1,41 @@
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Hashtag Splitter</h6>
+                  <div class="mT-30">
+                  
+                    <div id="input">                  
+                        <form id="inputForm">
+                            <p>Introduceți un hashtag pentru a fi despărțit în cuvintele componente.</p>
+                      
+                            <input type="text" id="hashtag" name="hashtag" placeholder="Hashtag"/>
+                            <input type="hidden" name="path" value="social_media/do_hashtagsplit"/>
+
+                            <br/><br/>
+                            <button type="button"  class="btn cur-p btn-primary" onclick="split_hashtag();">Split Hashtag</button>
+                            <button type="button"  class="btn cur-p btn-secondary" onclick="demo();">Demo</button>
+                        </form>
+                    
+                    </div>
+  
+                    {{loading}}
+
+                    <div style="display:none" id="output">
+                        <p>Rezultat despărțire hashtag:</p>
+                        
+                        <div id="outputText" style="border: 1px solid gray;">
+                        </div>
+                        
+                        <br/>
+                        
+                        <div id="output1">
+                        </div>
+                        
+                        <br/>
+                        <button type="button"  class="btn cur-p btn-secondary" onclick="again();">Despărțire hashtag nou</button>
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div>
