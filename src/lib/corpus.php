@@ -159,6 +159,7 @@ class Corpus {
                 'desc' => "Unzip TEXT from ".$data['name'],
                 'created_by'=>$user->getUsername(),
                 'created_date'=>strftime("%Y-%m-%d %H:%M:%S"),
+                'upload_meta' => $data['meta']
             ];
             
             if($tasks->addTask($tdata)===false)return false;
@@ -886,6 +887,14 @@ class Corpus {
         if(!is_file($fpath))return false;
         
         return json_decode(file_get_contents($fpath),true);
+    }
+    
+    public function getMetadataProfile(){
+        $fpath=$this->getFolderPath()."/standoff/metadata.json";
+        if(!is_file($fpath))return [];
+        
+        return json_decode(file_get_contents($fpath),true);
+    
     }
 
 }

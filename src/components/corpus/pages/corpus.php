@@ -1,5 +1,26 @@
 <?php
 
+function getMetadataUploadHTML($corpus){
+    $meta=$corpus->getMetadataProfile();
+    $ret="";
+    if(is_array($meta) && isset($meta["fields"])){
+        foreach($meta["fields"] as $f){
+            if($f["onupload"]){
+                $ret.="<tr><td>".htmlspecialchars($f['name'])."</td><td>";
+                
+                if($f['type']=="text"){
+                    $ret.="<input type=\"text\" name=\"${f['field']}\" size=\"40\"/>";
+                }else{ $ret.="UNKNOWN[".$f['type']."]";}
+                
+                $ret.="</td><td>".
+                    ((empty($f['description']))?("&nbsp;"):(htmlspecialchars($f['description']))).
+                    "</td></tr>\n";
+            }
+        }
+    }
+    return $ret;
+}
+
 function corpus_generateClassificationHtml($classProfile, $base){
         $classHtml="";
         $classHtml.='<div style="border:1px solid black; margin-top:10px; padding-top:5px" id="'.$base.'_classification_div">';
@@ -71,6 +92,7 @@ function getPageContent(){
     $html=str_replace("{{CORPUS_LANG}}",$corpus->getData("lang",""),$html);
     $html=str_replace("{{RECORDER_NAME}}",$user->getProfileHTML("recorder_name",""),$html);
     $html=str_replace("{{LOADING}}",$loading,$html);
+    $html=str_replace("{{METADATA_UPLOAD}}",getMetadataUploadHTML($corpus),$html);
     $html=str_replace("{{hideaudiobutton}}",$hideaudiobutton,$html);
     $html=str_replace("{{hidegoldbutton}}",$hidegoldbutton,$html);
     $html=str_replace("{{hidebratbutton}}",$hidebratbutton,$html);
