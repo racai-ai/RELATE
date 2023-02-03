@@ -25,8 +25,8 @@ function createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata){
                 $ret='?<?xml version="1.0" encoding="UTF-8"?'.">\n<Metadata>\n";
 				$cpath="";
 				foreach($metaData as $k=>$v){
-					$pos=strpos($k,"/");
-					$fname=$k;
+					$pos=strrpos($k,"/");
+					$fieldName=$k;
 					if($pos!==false){
 						$path=substr($k,0,$pos);
 						$fieldName=substr($k,$pos+1);
