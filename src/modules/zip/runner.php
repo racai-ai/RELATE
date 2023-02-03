@@ -39,14 +39,15 @@ function createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata){
 							$arr=explode("/",$cpath);
 							for($i=0;$i<count($arr);$i++)$ret.=str_repeat("    ",$i+1)."<${arr[$i]}>\n";
 						}
+						$arr=explode("/",$cpath);
 					}else{
 							if(strlen($cpath)>0){
 								$arr=explode("/",$cpath);
 								for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
 							}
 							$cpath="";
+							$arr=[];
 					}						
-					$arr=explode("/",$cpath);
 					$ret.=str_repeat("    ",count($arr)+1)."<$fieldName>$v</$fieldName>\n";						
 				}
 				$ret.="</Metadata>\n";
