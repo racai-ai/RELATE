@@ -33,21 +33,21 @@ function createStandoffMetadata($corpus,$taskDesc){
 						if($path!=$cpath){
 							if(strlen($cpath)>0){
 								$arr=explode("/",$cpath);
-								for($i=len($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
+								for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
 							}
 							$cpath=$path;
 							$arr=explode("/",$cpath);
-							for($i=0;$i<len($arr);$i++)$ret.=str_repeat("    ",$i+1)."<${arr[$i]}>\n";
+							for($i=0;$i<count($arr);$i++)$ret.=str_repeat("    ",$i+1)."<${arr[$i]}>\n";
 						}
 					}else{
 							if(strlen($cpath)>0){
 								$arr=explode("/",$cpath);
-								for($i=len($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
+								for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
 							}
 							$cpath="";
 					}						
 					$arr=explode("/",$cpath);
-					$ret.=str_repeat("    ",len($arr)+1)."<$fieldName>$v</$fieldName>\n";						
+					$ret.=str_repeat("    ",count($arr)+1)."<$fieldName>$v</$fieldName>\n";						
 				}
 				$ret.="</Metadata>\n";
 				file_put_contents($pathStandoffMetadata,$ret);
