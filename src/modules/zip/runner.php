@@ -11,7 +11,7 @@ function runZip($pathIn,$pathOut,$fnameOut){
    
 }
 
-function createStandoffMetadata($corpus,$taskDesc){
+function createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata){
             $meta=$corpus->getMetadataProfile();
             if(is_array($meta) && isset($meta["fields"])){
                 $metaData=[];
