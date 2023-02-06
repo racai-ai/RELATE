@@ -124,9 +124,10 @@ class User {
         return $ret;
 		}
 		
-		public function setProfile($key,$value){
-				$this->profile[$key]=$value;
-		}
+	public function setProfile($key,$value){
+		$this->profile[$key]=$value;
+		return true;
+	}
     
     public function isLoggedIn(){
         return $this->username!==false;
@@ -229,27 +230,56 @@ class User {
         @file_put_contents($histFile,json_encode($h)."\n",FILE_APPEND);
         return true;
     }
+
+    public function writeRights(){
+        if($this->username===false)return false;
+        
+        $path=$this->getUserPath($this->username,false);
+        if($path===false)return false;   
+        
+        $rightsFile=$path."/user_rights.json";
+        
+        @file_put_contents($rightsFile,json_encode(array_keys($this->rights)));
+        return true;
+    }
+	
+	public function setRights($r){
+        if($this->username===false)return false;
+		$this->rights=array_flip($r);
+		return $this->writeRights();
+	}
     
     public function saveProfile(){
         if(!$this->isLoggedIn())return false;
-        
+        return $this->writeProfile();
+	}
+	
+    public function writeProfile(){
         $path=$this->getUserPath($this->username,false);
         if($path===false)return false;   
         
         $fpath=$path."/user_profile.json";
         file_put_contents($fpath,json_encode($this->profile));
-		}
+		
+		return true;
+	}
+	
     
     public function saveData(){
         if(!$this->isLoggedIn())return false;
         
+		return $this->writeData();
+    }
+    
+    public function writeData(){
         $path=$this->getUserPath($this->username,false);
         if($path===false)return false;   
         
         $fpath=$path."/user_data.json";
         file_put_contents($fpath,json_encode($this->data));
+		return true;
     }
-    
+
     public function changePassword($old,$new){
         if(!$this->isLoggedIn())return false;
         
@@ -266,7 +296,17 @@ class User {
         return true;
     }
     
+    public function forceChangePassword($new){
+        $r=$this->data['rand'];
+
+        $this->data['hash']=hash('sha512',$r.":".$this->username.$new);
+        
+        return $this->writeData();
+    }
+
     public function getUsername(){ return $this->username; }
+	
+	public function getRights(){ return array_keys($this->rights);}
 }
 
 

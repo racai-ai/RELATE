@@ -43,6 +43,7 @@ require_once "${LIB_PATH}/config.php";
 
 require_once "${LIB_PATH}/settings.php";
 require_once "${LIB_PATH}/user.php";
+require_once "${LIB_PATH}/users.php";
 require_once "${LIB_PATH}/locking.php";
 
 require_once "${LIB_PATH}/teprolin.php";
