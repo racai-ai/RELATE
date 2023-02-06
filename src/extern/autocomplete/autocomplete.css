@@ -1,0 +1,51 @@
+/*.autocomplete-search-container input {
+  border: 0 none;
+}*/
+
+.autocomplete-search-container {
+  /*width: 400px;*/
+  position: relative;
+  margin: 15px auto;
+}
+/*.autocomplete-search-container input,*/
+.autocomplete-search-container .autocomplete-suggestions {
+  width: 100%;
+  background: #fff;
+  text-align: left;
+}
+/*.autocomplete-search-container input {
+  background: rgba(255, 255, 255, 0.2);
+  height: 60px;
+  padding: 0 10px;
+}*/
+.autocomplete-search-container .autocomplete-suggestions {
+  position: absolute;
+  top: 30px;
+}
+
+.autocomplete-search-container .autocomplete-suggestions ul {
+  display: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+}
+.autocomplete-search-container .autocomplete-suggestions ul.has-suggestions {
+  display: block;
+}
+.autocomplete-search-container .autocomplete-suggestions ul li {
+  padding: 10px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+}
+.autocomplete-search-container .autocomplete-suggestions ul li:hover {
+  background-color: #e65c00;
+  color:white;
+  font-weight:bold;
+}
+
+/*.autocomplete-search-container input {
+  border-bottom: 2px solid #e65c00;
+}*/

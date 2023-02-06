@@ -1,6 +1,7 @@
 <?php
-
 namespace Modules\zip;
+
+require_once "../lib/extern/pdf-to-text-2017-05-31/PdfToText.phpclass";
 
 function runZip($pathIn,$pathOut,$fnameOut){
     global $runnerFolder,$corpus,$settings,$taskDesc;
@@ -22,7 +23,7 @@ function createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata){
                 }
                 
                 ksort($metaData);
-                $ret='?<?xml version="1.0" encoding="UTF-8"?'.">\n<Metadata>\n";
+                $ret='<?xml version="1.0" encoding="UTF-8"?'.">\n<Metadata>\n";
 				$cpath="";
 				foreach($metaData as $k=>$v){
 					$pos=strrpos($k,"/");
@@ -134,13 +135,14 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
             @chgrp($fpathStandoff,$settings->get("owner_group"));
             
             // RUN PDF TO TEXT
-			file_put_contents($pathFile,"PDF TO TEXT");
+			$pdf=new \PdfToText($pathStandoff);
+			file_put_contents(changeFileExtension($pathFile,"txt"),$pdf->Text);
             
             // WRITE META
             if(!is_file($pathMeta)){
-                $fpathMeta=$dir_meta."/".$file.".meta";
+                $fpathMeta=$dir_meta."/".changeFileExtension($file,"txt").".meta";
                 file_put_contents($fpathMeta,json_encode([
-                    'name' => $file,
+                    'name' => changeFileExtension($file,"txt"),
                     'corpus' => $corpus->getData("name","unknown"),
                     'type' => 'text',
                     'desc' => '',

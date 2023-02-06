@@ -14,7 +14,8 @@ $components->load();
 $components->registerHandlers();
 
 $PLATFORM=[
-  "path"=>"teprolin/complete",   // this is the main page
+  //"path"=>"teprolin/complete",   // this is the main page
+  "path"=>$settings->get("platform.default_page"),
   "menu"=>$components->getMenu()
 ];
 

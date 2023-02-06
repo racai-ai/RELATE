@@ -568,6 +568,14 @@ function closeFileViewerBRAT(){
     window.location.hash=previousHash;
 }
 
+function closeFileViewerMeta(){
+    setAttribute("fileViewerMeta","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
+
 function escapeHtml(unsafe) {
     return unsafe
          .replace(/&/g, "&amp;")
@@ -578,49 +586,335 @@ function escapeHtml(unsafe) {
 }
  
 function saveMetadata(n,file){
-    setAttribute("fileViewerText","style","display:none;");
+    setAttribute("fileViewerMeta","style","display:none;");
     setAttribute("loading","style","display:block;");
 
-    content=encodeURIComponent(document.getElementById("metadataEdit"+n).value);
+	var form=document.getElementById("metadataEditForm"+n);
+	if(form!=null){
+		var arr={};
+		for ( var i = 0; i < form.elements.length; i++ ) {
+			var e = form.elements[i];
+			arr[e.name]=e.value;
+		}		
+		
+		content=encodeURIComponent(obj2xml(arr));
+	}else{
+		content=encodeURIComponent(document.getElementById("metadataEdit"+n).value);
+	}
 
     loadData("path=corpus/file_savemetadatastandoff&corpus={{CORPUS_NAME}}&file="+file+"&meta="+metadataEdit[n].name+"&content="+content,function(data){
         setAttribute("loading","style","display:none;");
-        setAttribute("fileViewerText","style","display:block;");
+        setAttribute("fileViewerMeta","style","display:block;");
     },function(){
         alert("Error saving standoff metadata");
         setAttribute("loading","style","display:none;");
-        setAttribute("fileViewerText","style","display:block;");
+        setAttribute("fileViewerMeta","style","display:block;");
     });
 
 }
+
+function xml2obj(xmlString){
+	var arr={};
+	
+	var STATE_IGNORE=0;
+	var STATE_VALUE=1;
+	var STATE_TAG=2;
+	var STATE_ENDTAG=3;
+	
+	var path="";
+	var value="";
+	var valueValid=false;
+	var tag="";
+	var depth=0;
+	var state=STATE_IGNORE;
+	
+	for(var i=0;i<xmlString.length;i++){
+		var c=xmlString[i];
+		switch(state){
+			case STATE_IGNORE:
+				if(c=='<'){tag="";state=STATE_TAG;}
+				break;
+			case STATE_TAG:
+				if(c=='?')state=STATE_IGNORE;
+				else if(c=='/')state=STATE_ENDTAG;
+				else if(c=='>'){
+					depth++;
+					if(depth==2)path=tag;
+					else if(depth>2)path+="/"+tag;
+					value="";
+					valueValid=true;
+					state=STATE_VALUE;
+				}else tag+=c;
+				break;
+			case STATE_ENDTAG:
+				if(c=='>'){
+					if(depth>1 && valueValid)arr[path]=value;
+					valueValid=false;
+					depth--;
+					if(depth<2)path="";
+					else {
+						var pos=path.lastIndexOf("/");
+						if(pos!=-1)path=path.substring(0,pos);
+					}
+					state=STATE_IGNORE;
+				}else tag+=c;
+				break;
+			case STATE_VALUE:
+				if(c=='<'){
+					tag="";
+					state=STATE_TAG;
+				}else value+=c;
+				break;
+		}
+	}
+				
+	
+	return arr;
+}
+
+function obj2xml(arrIn){
+	var xml='<?xml version="1.0" encoding="UTF-8"?'+">\n<Metadata>\n";
+	
+	var keys=Object.keys(arrIn);
+	keys=keys.sort();
+	
+	var cpath="";
+	for(var ki=0;ki<keys.length;ki++){
+		var k=keys[ki];
+		var v=arrIn[k];
+		var pos=k.lastIndexOf("/");
+		var fieldName=k;
+		var arr=[];
+		if(pos!=-1){
+			var path=k.substring(0,pos);
+			fieldName=k.substring(pos+1);
+			if(path!=cpath){
+				if(cpath.length>0){
+					arr=cpath.split("/");
+					for(var i=arr.length-1;i>=0;i--)xml+="    ".repeat($i+1)+"</"+arr[i]+">\n";
+				}
+				cpath=path;
+				arr=cpath.split("/");
+				for(var i=0;i<arr.length;i++)xml+="    ".repeat(i+1)+"<"+arr[i]+">\n";
+			}
+			arr=cpath.split("/");
+		}else{
+			if(cpath.length>0){
+				arr=cpath.split("/");
+				for(var i=arr.length-1;i>=0;i--)xml+="    ".repeat(i+1)+"</"+arr[i]+">\n";
+			}
+			cpath="";
+			arr=[];
+		}						
+		xml+="    ".repeat(arr.length+1)+"<"+fieldName+">"+v+"</"+fieldName+">\n";						
+	}
+	xml+="</Metadata>\n";
+	
+	return xml;
+}
+
+var metadataSpec={{METADATA_SPEC}};
+var metadataUploadAutocomplete_ids={{METADATA_UPLOAD_IDS}};
+var metadataUploadAutocomplete_nom={{METADATA_UPLOAD_NOM}};
+
+function getMetadataNom(field,data){
+	var nom=field.nom;
+	var level=0;
+	if(field["level"]!==undefined)level=field.level;
+	
+	var parentValue="";
+	if(level>0){
+		parentValue=data[field["parent"]];
+	}
+	
+	var ret={};
+	for(var i=0;i<metadataSpec["nomenclature"][nom].length;i++){
+		var current=metadataSpec["nomenclature"][nom][i].split("|");
+		if(level==0 || current[level-1]==parentValue)
+			ret[current[level]]=true;
+	}
+	
+	return Object.keys(ret);
+}
+
+function metadataDropdownChanged(el){
+	//console.log(el);
+	//console.log(el.name);
+	//console.log(el.value);
+	//console.log(el.form);
+	
+	var data={};
+	var htmlFields={};
+	for ( var i = 0; i < el.form.elements.length; i++ ) {
+		var e = el.form.elements[i];
+		data[e.name]=e.value;
+		htmlFields[e.name]=e;
+	}		
+	//console.log(data);
+	
+	for(var fi=0;fi<metadataSpec.fields.length;fi++){
+		var field=metadataSpec.fields[fi];	
+		if(field["parent"]!==undefined && field["parent"]==el.name){
+			var htmlElement=htmlFields[field.field];
+			var nom=getMetadataNom(field,data);
+			if(field.type=="dropdown"){
+				var html="";
+				for(var ni=0;ni<nom.length;ni++){
+					var currentN=nom[ni];
+					html+='<option ';
+					if(currentN==data[field.field])html+=' selected="selected"';
+					html+='value="'+escapeHtml(currentN)+'">'+escapeHtml(currentN)+'</option>';
+				}
+				htmlElement.innerHTML=html;
+			}else if(field.type=="autocomplete"){
+				htmlElement.autocompleteData=nom;
+			}
+		}
+	}
+}
+
  
 function editFileMetadata(file){
+    currentFileView=file;
+    last_viewed_file=file;
+
+    setAttribute("output","style","display:none;");
+	
     setAttribute("fileViewerText","style","display:none;");
     setAttribute("loading","style","display:block;");
 
-    loadData("path=corpus/file_getmetadatastandoff&corpus={{CORPUS_NAME}}&file="+file,function(data){
-    
-        data=JSON.parse(data);
-        metadataEdit=data;
-        var html="";
-        for(var i=0;i<data.length;i++){
-            html+='<b>'+data[i].name+"&nbsp;&nbsp;</b>";
-            html+='<button type="button" class="btn cur-p btn-secondary" onclick="saveMetadata('+i+','+"'"+file+"'"+');">Save</button><br/>';
-            html+='<textarea id="metadataEdit'+i+'" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:200px;">'+escapeHtml(data[i].content)+'</textarea><br/>';            
-        }
-        
-        document.getElementById("fileViewerTextMetadataDiv").innerHTML=html;
-    
-        setAttribute("loading","style","display:none;");
-        setAttribute("fileViewerText","style","display:block;");
-        setAttribute("fileViewerTextMetadataDiv","style","display:inline-block; width:40%; vertical-align:top;");
-        setAttribute("inputFileViewerText","style","display:inline-block; width:50%") ;
+    setAttribute("fileViewerMetaNext","onclick","viewNextFileMeta('"+file+"');");
+    setAttribute("fileViewerMetaPrev","onclick","viewPrevFileMeta('"+file+"');");
+
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewermeta:"+file+":"+previousHash;
+
+	// First load the text
+    loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file,function(data){
+        document.getElementById('textFileViewerMeta').value=data;
+
+		// Now load the metadata files
+		loadData("path=corpus/file_getmetadatastandoff&corpus={{CORPUS_NAME}}&file="+file,function(data){
+		
+			data=JSON.parse(data); // list of metadata files
+			metadataEdit=data;
+			var html="";
+			
+			// first display PDFs (should be only one)
+			for(var i=0;i<data.length;i++){
+				if(data[i].content===false){
+					if(data[i].name.toLowerCase().endsWith("pdf")){
+						html+='<object data="index.php?path=corpus/file_getdownload&view=Y&corpus={{CORPUS_NAME}}&file=standoff/'+data[i].name+'" type="application/pdf" width="100%" height="400px" style="border:1px solid black;">';
+						html+='<div>No PDF viewer available</div>';
+						html+='</object>';
+					}
+				}
+			}
+			document.getElementById("fileViewerTextMetadataPdfDiv").innerHTML=html;
+			
+			html="";
+			var autocomplete_ids=[];
+			var autocomplete_nom=[];
+			
+			// Now display the rest of the metadata files
+			for(var i=0;i<data.length;i++){
+				if(data[i].content!==false){
+					html+='<b>'+data[i].name+"&nbsp;&nbsp;</b>";
+					html+='<button type="button" class="btn cur-p btn-secondary" onclick="saveMetadata('+i+','+"'"+file+"'"+');">Save</button><br/>';
+					if(data[i].name.toLowerCase().endsWith("xml") && metadataSpec.fields!==undefined){
+						var xmlArr=xml2obj(data[i].content);
+						html+='<form name="metadataEditForm'+i+'" id="metadataEditForm'+i+'">';
+						// hidden fields
+						for(var fi=0;fi<metadataSpec.fields.length;fi++){
+							var field=metadataSpec.fields[fi];
+							var fhidden=false;
+							if(field["editHidden"]!==undefined && field["editHidden"]==true){
+								html+='<input type="hidden" name="'+field.field+'" value="';
+								if(xmlArr[field.field]!==undefined)html+=escapeHtml(xmlArr[field.field]);
+								else html+=escapeHtml(field["default"]);
+								html+='"/>';
+							}							
+						}
+
+						// Visible fields
+						html+='<table>';
+						for(var fi=0;fi<metadataSpec.fields.length;fi++){
+							var field=metadataSpec.fields[fi];
+							var fhidden=false;
+							if(field["editHidden"]!==undefined && field["editHidden"]==true)
+								fhidden=true;
+							
+							var currentFieldValue=field["default"];
+							if(xmlArr[field.field]!==undefined)currentFieldValue=xmlArr[field.field];
+							else xmlArr[field.field]=currentFieldValue;
+
+							var fdisabled=false;
+							var htmlDisabled="";
+							if(field["editDisable"]!==undefined && field["editDisable"]==true){
+								fdisabled=true;
+								htmlDisabled=' disabled="disabled"';
+							}
+
+							if(!fhidden){
+								html+="<tr><td>"+escapeHtml(field.name)+"</td><td>";
+								if(field.type=="text"){
+									html+='<input type="text" name="'+field.field+'" value="'+escapeHtml(currentFieldValue)+'"'+htmlDisabled+'/></td><td>'+escapeHtml(field["description"])+"</td></tr>";
+								}else if(field.type=="dropdown"){
+									html+='<select name="'+field.field+'"'+htmlDisabled+' onchange="metadataDropdownChanged(this);">';
+									var nom=getMetadataNom(field,xmlArr);
+									for(var ni=0;ni<nom.length;ni++){
+										var currentN=nom[ni];
+										html+='<option ';
+										if(currentN==currentFieldValue)html+=' selected="selected"';
+										html+='value="'+escapeHtml(currentN)+'">'+escapeHtml(currentN)+'</option>';
+									}
+									html+='</select>';
+									html+='</td><td>'+escapeHtml(field["description"])+"</td></tr>";
+								}else if(field.type=="autocomplete"){
+									var id='metadataEditForm'+i+'_'+field.field;
+									autocomplete_ids[autocomplete_ids.length]=id;
+									autocomplete_nom[autocomplete_nom.length]=getMetadataNom(field,xmlArr);
+									html+='<div class="autocomplete-search-container">';
+									html+='<input type="text" name="'+field.field+'" id="'+id+'" value="'+escapeHtml(currentFieldValue)+'"'+htmlDisabled+'/>';
+									html+='<div class="autocomplete-suggestions">';
+									html+='<ul></ul>';
+									html+='</div>';
+									html+='</div>';
+									html+='</td><td>'+escapeHtml(field["description"])+"</td></tr>";
+								}
+							}							
+						}
+						html+='</table></form>';
+					}else{
+						html+='<textarea id="metadataEdit'+i+'" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:200px;">'+escapeHtml(data[i].content)+'</textarea><br/>';            
+					}
+				}
+			}
+			
+			document.getElementById("fileViewerTextMetadataDiv").innerHTML=html;
+			
+			for(var i=0;i<autocomplete_ids.length;i++){
+				var el=document.getElementById(autocomplete_ids[i]);
+				el.autocompleteData=autocomplete_nom[i];
+				enableAutocomplete(el);
+			}
+		
+			setAttribute("loading","style","display:none;");
+			setAttribute("fileViewerMeta","style","display:block;");
+			setAttribute("fileViewerTextMetadataPdfDiv","style","display:inline-block; width:50%; vertical-align:top;");
+			setAttribute("fileViewerTextMetadataDiv","style","display:block; width:100%; vertical-align:top;");
+			setAttribute("inputFileViewerMetaText","style","display:inline-block; width:45%") ;
+		},function(){
+			alert("Error loading standoff metadata");
+			setAttribute("loading","style","display:none;");
+			setAttribute("fileViewerMeta","style","display:block;");
+		}); // end load metadata files
     },function(){
-        alert("Error loading standoff metadata");
-        setAttribute("loading","style","display:none;");
-        setAttribute("fileViewerText","style","display:block;");
-    });
-    
+		alert("Error loading text");
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerMeta","style","display:block;");
+	});// end load text
 }
 
 function viewNextFileBrat(file){
@@ -645,6 +939,18 @@ function viewNextFile(file){
     });
 }
 
+function viewNextFileMeta(file){
+    loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            editFileMetadata(data.next);
+        }else{
+            alert("No additional file found! Maybe end of corpus ?");
+        }
+    });
+}
+
+
 function viewPrevFileBrat(file){
     loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
         data=JSON.parse(data);
@@ -667,6 +973,17 @@ function viewPrevFile(file){
     });
 }
 
+function viewPrevFileMeta(file){
+    loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            editFileMetadata(data.prev);
+        }else{
+            alert("No additional file found! Maybe first file ?");
+        }
+    });
+}
+
 
 function viewFileText(file,showBrat=false){
     currentFileView=file;
@@ -675,7 +992,7 @@ function viewFileText(file,showBrat=false){
     setAttribute("loading","style","display:block;");
     setAttribute("fileViewerTextDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
     setAttribute("fileViewerTextBrat","onclick","closeFileViewerText();viewFileBrat('"+file+"');");
-    setAttribute("fileViewerTextMetadata","onclick","editFileMetadata('"+file+"');");
+    setAttribute("fileViewerTextMetadata","onclick","closeFileViewerText();editFileMetadata('"+file+"');");
     setAttribute("fileViewerTextNext","onclick","viewNextFile('"+file+"');");
     setAttribute("fileViewerTextPrev","onclick","viewPrevFile('"+file+"');");
     
@@ -1097,7 +1414,7 @@ function initGridFiles(){
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-ziptext").dialog({ width: 600, modal: true,
+          $("#popup-dialog-crud-ziptext").dialog({ width: 800, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });
@@ -1663,6 +1980,13 @@ function showBasedOnHash(hash){
         window.location.hash="#"+from;
         showBasedOnHash(from);
         viewFileBrat(file);
+    }else if(hash.startsWith("fileviewermeta")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        editFileMetadata(file);
     }else if(hash.startsWith("recorder")){
         var data=hash.split(":",3);
         var from=data[1];
@@ -1682,6 +2006,13 @@ $(document).ready(function () {
     initGridAudio(); 
     initGridGoldAnn(); 
     initGridGoldStandoff(); 
+	
+	for(var i=0;i<metadataUploadAutocomplete_ids.length;i++){
+		var el=document.getElementById(metadataUploadAutocomplete_ids[i]);
+		el.autocompleteData=metadataUploadAutocomplete_nom[i];
+		enableAutocomplete(el);
+	}
+		
     
     var h = window.location.hash.substr(1);
     

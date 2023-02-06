@@ -249,9 +249,6 @@
                         <div id="inputFileViewerText" style="display: inline-block; width:100%">                  
                             <textarea id="textFileViewerText" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
                         </div>
-                        <div id="fileViewerTextMetadataDiv" style="display:none">
-                            <!-- zone metadata -->
-                        </div>
                       </div>
                     
                     </div>
@@ -297,6 +294,27 @@
                          </div>
                     </div>
 
+                    <!-- METADATA VIEW -->
+                    <div style="display:none" id="fileViewerMeta">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerMeta();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerMetaPrev" onclick="">PREVIOUS</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerMetaNext" onclick="">NEXT</button>
+                      
+                      <div class="mT-30">
+                        <div id="fileViewerTextMetadataPdfDiv" style="display:none">
+                            <!-- zone metadata -->
+                        </div>
+                        <div id="inputFileViewerMetaText" style="display: inline-block; width:100%">                  
+                            <textarea id="textFileViewerMeta" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                        </div>
+                      </div>
+                      <div class="mT-30">
+                        <div id="fileViewerTextMetadataDiv" style="display:none">
+                            <!-- zone metadata -->
+                        </div>
+                      </div>
+                    
+                    </div>
                     
                     <!-- AUDIO RECORDER -->
                     <div style="display:none" id="recorderView">
