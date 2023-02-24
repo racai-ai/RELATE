@@ -29,9 +29,10 @@ function getMetadataUploadHTML($corpus){
     $meta=$corpus->getMetadataProfile();
     $ret="";
 	$dataDef=[];
-    foreach($meta["fields"] as $f){$dataDef[$f['field']]=$f['default'];}
 	
     if(is_array($meta) && isset($meta["fields"])){
+		foreach($meta["fields"] as $f){$dataDef[$f['field']]=$f['default'];}
+		
         foreach($meta["fields"] as $f){
             if($f["onupload"]){
                 $ret.="<tr><td>".htmlspecialchars($f['name'])."</td><td>";
