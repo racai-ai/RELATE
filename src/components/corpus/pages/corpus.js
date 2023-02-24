@@ -1384,10 +1384,10 @@ function initGridFiles(){
         obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
         obj.colModel = [
             { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-            { title: "Type", dataType: "string", dataIndx: "type" },
-            { title: "Description", dataType: "string", dataIndx: "desc" },
-            { title: "User", dataType: "string", dataIndx: "created_by" },
-            { title: "Creation Date", dataType: "string", dataIndx: "created_date" }
+            { title: "Type", dataType: "string", dataIndx: "type", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Description", dataType: "string", dataIndx: "desc", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "User", dataType: "string", dataIndx: "created_by", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Creation Date", dataType: "string", dataIndx: "created_date", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } }
         ];
         obj.dataModel = {
             location: "remote",
