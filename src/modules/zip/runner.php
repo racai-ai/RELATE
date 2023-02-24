@@ -98,6 +98,10 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @mkdir($dir_files);
     @chown($dir_files,$settings->get("owner_user"));
     @chgrp($dir_files,$settings->get("owner_group"));    
+	
+	$pos=strrpos($fnameIn,"/");
+	$archiveName=$fnameIn;
+	if($pos!==false)$archiveName=substr($fnameIn,$pos+1);
 
     $dh = opendir($tempOut);
 	if($dh!==false){
@@ -123,7 +127,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
                     'name' => $file,
                     'corpus' => $corpus->getData("name","unknown"),
                     'type' => 'text',
-                    'desc' => "$fnameIn",
+                    'desc' => "$archiveName",
                     'created_by' => $taskDesc['created_by'],
                     'created_date' => $taskDesc['created_date']
                 ]));
@@ -168,7 +172,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
                     'name' => changeFileExtension($file,"txt"),
                     'corpus' => $corpus->getData("name","unknown"),
                     'type' => 'text',
-                    'desc' => "$fnameIn",
+                    'desc' => "$archiveName",
                     'created_by' => $taskDesc['created_by'],
                     'created_date' => $taskDesc['created_date']
                 ]));
