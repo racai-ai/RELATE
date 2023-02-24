@@ -64,6 +64,8 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @chgrp($pathOut,$settings->get("owner_group"));
     
 	$tempOut=tempnam(".","zip");
+	@unlink($tempOut);
+	@mkdir($tempOut);
     passthru("unzip -j -o ".escapeshellarg($fnameIn)." -d ".escapeshellarg($tempOut));
     passthru("chown -R ".$settings->get("owner_user").":".$settings->get("owner_group")." ".escapeshellarg($tempOut));
    
@@ -98,6 +100,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @chgrp($dir_files,$settings->get("owner_group"));    
 
     $dh = opendir($tempOut);
+	if($dh!==false){
     while (($file = readdir($dh)) !== false) {
         $pathFile=$tempOut."/".$file;
         if(!is_file($pathFile))continue;
@@ -184,6 +187,10 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
         }
     }
     closedir($dh);
+	} // if dh!==false
+	else{
+		echo "Cannot open tempOut [$tempOut] directory\n";
+	}
 	rmdir($tempOut);
         
     file_put_contents($corpus->getFolderPath()."/changed_files.json",json_encode(["changed"=>time()]));            
