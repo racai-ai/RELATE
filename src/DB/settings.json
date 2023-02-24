@@ -3,6 +3,8 @@
 "RegistrationEnabled":false,
 "TaskRunners":13,
 
+"pdftotext.use_internal":false,
+
 "platform.default_page":"teprolin/complete",
 
 "dir.annotated":"basic_tagging",

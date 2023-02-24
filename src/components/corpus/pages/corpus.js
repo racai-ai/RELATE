@@ -1414,7 +1414,7 @@ function initGridFiles(){
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-ziptext").dialog({ width: 800, modal: true,
+          $("#popup-dialog-crud-ziptext").dialog({ width: 1000, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });
