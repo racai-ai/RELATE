@@ -4,6 +4,15 @@ setInterval(function(){
     for(var i=0;i<elements.length;i++)elements[i].onclick=function(e){e.stopPropagation();}
 },500);
 
+// Show SAVE button in metadata editor when text changed
+setInterval(function(){
+	var current=document.getElementById('textFileViewerMeta').value;
+	if(current!=currentFileText){
+		setAttribute("fileViewerMetaSaveText","style","display:inline;");
+		setAttribute("fileViewerMetaUndoText","style","display:inline;");
+	}
+},500);
+
 function convertSize(s){
     if(s.length==0)return 0;
     var data=s.split(" ");
@@ -32,6 +41,10 @@ var hasClassification={{HAS_CLASSIFICATION}};
 var classificationProfile={{CLASSIFICATION_PROFILE}};
 var last_viewed_file="{{LAST_VIEWED_FILE}}";
 var hasCorrected={{HAS_CORRECTED}};
+
+var $fileViewerCSVgrid=false;
+var currentFileView="";
+var currentFileText="";
 
 function loadData(data,func,error){
     loadDataComplete("index.php","POST",data,func,error);
@@ -143,6 +156,23 @@ function gridAddTXT(){
             $("#popup-dialog-crud-txt").dialog("open");
 } 
 
+function gridAddPDF(){
+
+            var $frm = $("form#crud-form-pdf");
+            //$frm.find("input").val("");
+
+            $("#popup-dialog-crud-pdf").dialog({ title: "Add PDF", buttons: {
+                Add: function () {
+                    $frm.submit();
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+            });
+            $("#popup-dialog-crud-pdf").dialog("open");
+} 
+
 function gridLastFileTXT(){
     if(last_viewed_file=="")alert("There is no record of the last file you accessed!");
     else viewFileText(last_viewed_file,true);
@@ -208,7 +238,7 @@ function gridAddZIPTXT(){
             var $frm = $("form#crud-form-ziptext");
             //$frm.find("input").val("");
 
-            $("#popup-dialog-crud-ziptext").dialog({ title: "Add File ZIP with TEXT", buttons: {
+            $("#popup-dialog-crud-ziptext").dialog({ title: "Add ZIP archive", buttons: {
                 Add: function () {
                     $frm.submit();
                 },
@@ -773,7 +803,36 @@ function metadataDropdownChanged(el){
 	}
 }
 
+function fileViewerMeta_saveText(){
+	setAttribute("fileViewerMeta","style","display:none;");
+	setAttribute("loading","style","display:block;");
+
+	var data = new FormData();
+	data.append('path', 'corpus/file_savecontent');
+	data.append('corpus','{{CORPUS_NAME}}');
+	data.append('file',currentFileView);
+	data.append('content', document.getElementById('textFileViewerMeta').value);				    
+	loadData(data,function(d){
+        currentFileText=document.getElementById('textFileViewerMeta').value;
+		setAttribute("fileViewerMetaSaveText","style","display:none;");
+		setAttribute("fileViewerMetaUndoText","style","display:none;");
+
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerMeta","style","display:block;");
+	},function(){
+		alert("ERROR SAVING FILE");
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerMeta","style","display:block;");
+	});
+						
+}
  
+function fileViewerMeta_revertText(){
+	document.getElementById('textFileViewerMeta').value=currentFileText;
+	setAttribute("fileViewerMetaSaveText","style","display:none;");
+	setAttribute("fileViewerMetaUndoText","style","display:none;");
+}
+
 function editFileMetadata(file){
     currentFileView=file;
     last_viewed_file=file;
@@ -793,6 +852,9 @@ function editFileMetadata(file){
 	// First load the text
     loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file,function(data){
         document.getElementById('textFileViewerMeta').value=data;
+		currentFileText=document.getElementById('textFileViewerMeta').value;
+		setAttribute("fileViewerMetaSaveText","style","display:none;");
+		setAttribute("fileViewerMetaUndoText","style","display:none;");
 
 		// Now load the metadata files
 		loadData("path=corpus/file_getmetadatastandoff&corpus={{CORPUS_NAME}}&file="+file,function(data){
@@ -857,7 +919,7 @@ function editFileMetadata(file){
 							}
 
 							if(!fhidden){
-								html+="<tr><td>"+escapeHtml(field.name)+"</td><td>";
+								html+="<tr><td style=\"vertical-align:top\">"+escapeHtml(field.name)+"</td><td style=\"vertical-align:top\">";
 								if(field.type=="text"){
 									html+='<input type="text" name="'+field.field+'" value="'+escapeHtml(currentFieldValue)+'"'+htmlDisabled+'/></td><td>'+escapeHtml(field["description"])+"</td></tr>";
 								}else if(field.type=="dropdown"){
@@ -1216,10 +1278,6 @@ function viewFileBrat(file){
     
 }
 
-
-var $fileViewerCSVgrid=false;
-var currentFileView="";
-
 function closeFileViewerCSV(){
     setAttribute("fileViewerCSV","style","display:none;");
     setAttribute("output","style","display:block;");
@@ -1344,7 +1402,8 @@ function initGridFiles(){
                 
                 { type: 'button', label: 'Add TEXT', listeners: [{ click: gridAddTXT}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Add CSV/TSV', listeners: [{ click: gridAddCSV}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'Add ZIP TEXT/StandoffMeta', listeners: [{ click: gridAddZIPTXT}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Add PDF', listeners: [{ click: gridAddPDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Add ZIP', listeners: [{ click: gridAddZIPTXT}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Access Last File', listeners: [{ click: gridLastFileTXT}], icon: 'ui-icon-plus' },
                 //{ type: 'button', label: 'Edit', listeners: [{ click: gridEdit}], icon: 'ui-icon-pencil' },
                 //{ type: 'button', label: 'Delete', listeners: [{ click: gridDelete}], icon: 'ui-icon-minus' }                
@@ -1409,12 +1468,17 @@ function initGridFiles(){
             autoOpen: false
         });
 
-          $("#popup-dialog-crud-txt").dialog({ width: 600, modal: true,
+          $("#popup-dialog-crud-txt").dialog({ width: 1000, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });
 
           $("#popup-dialog-crud-ziptext").dialog({ width: 1000, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#grid" }); },
+            autoOpen: false
+        });
+
+          $("#popup-dialog-crud-pdf").dialog({ width: 1000, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
             autoOpen: false
         });

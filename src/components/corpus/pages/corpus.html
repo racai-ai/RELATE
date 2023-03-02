@@ -59,12 +59,13 @@
                                         <tr><td>File:</td><td><input type="file" name="file" id="file"></td></tr>
                                         <tr><td>FileName (optional):</td><td><input type="text" name="name" size="50"/></td></tr>
                                         <tr><td>Description:</td><td><textarea name="desc" rows="4" cols="50"></textarea></td></tr>
+                                        {{METADATA_UPLOAD}}
                                     </tbody></table>
                                 </form>
                                 </div>                                      
 
                                 <div id="popup-dialog-crud-ziptext" style="display:none;">
-                                <p>All text files must have .txt extension. All other extensions will be considered standoff metadata.</p>
+                                <p>Files will be distributed and processed according to their extension. Text from PDF files will be automatically extracted. XML, JSON files and unknown extensions will be considered standoff metadata.</p>
                                 <form id="crud-form-ziptext" method="POST" enctype="multipart/form-data" action="index.php">
                                     <input type="hidden" name="path" value="corpus/files_add">
                                     <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
@@ -78,6 +79,20 @@
                                 </form>
                                 </div>                                      
 
+                                <div id="popup-dialog-crud-pdf" style="display:none;">
+                                <p>Text from the PDF file will be extracted automatically. The original PDF file will be available in the "Standoff" tab and in the "Edit Metadata" page, associated to the extracted text file.</p>
+                                <form id="crud-form-pdf" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="corpus/files_add">
+                                    <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                    <input type="hidden" name="type" value="pdf">
+                                    <table align="center"><tbody>
+                                        <tr><td>File:</td><td><input type="file" name="file" id="file"></td><td>&nbsp;</td></tr>
+                                        <tr><td>FileName (optional):</td><td><input type="text" name="name" size="40"/></td><td>&nbsp;</td></tr>
+                                        <tr><td>Description:</td><td><textarea name="desc" rows="2" cols="40"></textarea></td><td>&nbsp;</td></tr>
+                                        {{METADATA_UPLOAD}}
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
                         </div>
 
                         <!-- Standoff -->
@@ -306,6 +321,8 @@
                         </div>
                         <div id="inputFileViewerMetaText" style="display: inline-block; width:100%">                  
                             <textarea id="textFileViewerMeta" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+							<button type="button" class="btn cur-p btn-secondary" id="fileViewerMetaSaveText" onclick="fileViewerMeta_saveText()" style="display:none;">SAVE</button>
+							<button type="button" class="btn cur-p btn-secondary" id="fileViewerMetaUndoText" onclick="fileViewerMeta_revertText()" style="display:none;">Revert</button>
                         </div>
                       </div>
                       <div class="mT-30">

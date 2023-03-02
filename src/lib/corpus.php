@@ -21,7 +21,7 @@ class Corpus {
         if($name===false)
             $un=$this->name;
         else $un=$name;
-        return strlen($un)>3 && preg_match("/[^-_a-zA-Z0-9@(). ]/",$un)===0 && $un[0]!=' ' && $un[strlen($un)-1]!=' ' && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;    
+        return strlen($un)>3 && preg_match("/[^-_a-zA-Z0-9ăîâșțĂÎÂȘȚ@(). ]/",$un)===0 && $un[0]!=' ' && $un[strlen($un)-1]!=' ' && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;    
     }
     
     public function loadData(){
@@ -103,6 +103,51 @@ class Corpus {
         $this->data[$key]=$val;
     }
     
+	public function createStandoffMetadata($taskDesc,$pathStandoffMetadata){
+		$meta=$this->getMetadataProfile();
+		if(is_array($meta) && isset($meta["fields"])){
+			$metaData=[];
+			foreach($meta["fields"] as $f){
+				if($f["onupload"] && isset($taskDesc["upload_meta"]) && isset($taskDesc["upload_meta"][$f['field']])){
+					$metaData[$f['field']]=$taskDesc["upload_meta"][$f['field']];
+				}else $metaData[$f['field']]=$f['default'];
+			}
+			
+			ksort($metaData);
+			$ret='<?xml version="1.0" encoding="UTF-8"?'.">\n<Metadata>\n";
+			$cpath="";
+			foreach($metaData as $k=>$v){
+				$pos=strrpos($k,"/");
+				$fieldName=$k;
+				if($pos!==false){
+					$path=substr($k,0,$pos);
+					$fieldName=substr($k,$pos+1);
+					if($path!=$cpath){
+						if(strlen($cpath)>0){
+							$arr=explode("/",$cpath);
+							for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
+						}
+						$cpath=$path;
+						$arr=explode("/",$cpath);
+						for($i=0;$i<count($arr);$i++)$ret.=str_repeat("    ",$i+1)."<${arr[$i]}>\n";
+					}
+					$arr=explode("/",$cpath);
+				}else{
+						if(strlen($cpath)>0){
+							$arr=explode("/",$cpath);
+							for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
+						}
+						$cpath="";
+						$arr=[];
+				}						
+				$ret.=str_repeat("    ",count($arr)+1)."<$fieldName>$v</$fieldName>\n";						
+			}
+			$ret.="</Metadata>\n";
+			file_put_contents($pathStandoffMetadata,$ret);
+		}
+	}
+
+	
     public function addUploadedFile($file,$data){
         global $DirectoryAnnotated;
         if($this->data===null || empty($this->data))return false;
@@ -112,10 +157,15 @@ class Corpus {
         $dir=$this->getFolderPath();
         if($dir===false)return [];
         $base_dir=$dir;
-       
+
         $dir_meta=$dir; 
+		$dir_standoff=$dir;
+		$dir_standoff.="/standoff";
+		@mkdir($dir_standoff);
+		$dir_files=$dir;
+		$dir_files.="/files";
         if($data['type']=="zip_text")$dir.="/zip_text";
-        else if($data['type']=="standoff")$dir.="/standoff";
+        else if($data['type']=="standoff" || $data['type']=="pdf")$dir.="/standoff";
         else if($data['type']=="goldann")$dir.="/gold_ann";
         else if($data['type']=="goldstandoff")$dir.="/gold_standoff";
         else if($data['type']=="annotated")$dir.="/".$DirectoryAnnotated;
@@ -127,16 +177,33 @@ class Corpus {
         
         $dpath=$dir."/".$data['name'];
         if(is_file($dpath)){
-            if($data['type']=="zip_text" || $data['type']=="zip_annotated" || $data['type']=="standoff")
+            if($data['type']=="zip_text" || $data['type']=="zip_annotated" || $data['type']=="standoff" || $data['type']=="pdf")
                 @unlink($dpath);
             else
                 return false;
         }
-        
+
         if(move_uploaded_file($file,$dpath)!==true)return false;
-        
-        if($data['type']=="text" || $data['type']=='csv'){
+
+        if($data['type']=="text" || $data['type']=='csv' || $data['type']=='pdf'){
+			if($data['type']=='pdf'){
+				$txtName=changeFileExtension($data['name'],"txt");
+				$txtFile="${dir_files}/$txtName";
+				
+				RELATE_pdf2text($dpath, $txtFile);
+				
+				$data['name']=$txtName;
+				$data['type']="text";
+				file_put_contents($base_dir."/changed_standoff.json",json_encode(["changed"=>time()]));
+			}
+			
             file_put_contents($dir_meta."/".$data['name'].".meta",json_encode($data));
+			
+			if(isset($data['meta'])){
+				$pathStandoffMetadata=$dir_standoff."/".changeFileExtension($data['name'],"xml");
+				$this->createStandoffMetadata(["upload_meta"=>$data['meta']],$pathStandoffMetadata);
+				file_put_contents($base_dir."/changed_standoff.json",json_encode(["changed"=>time()]));
+			}
 
             file_put_contents($base_dir."/changed_files.json",json_encode(["changed"=>time()]));
         }else if($data['type']=="annotated"){

@@ -68,4 +68,7 @@ require_once "${LIB_PATH}/ttlchunker.php";
 require_once "${LIB_PATH}/ner_legalner.php";
 require_once "${LIB_PATH}/punctuation.php";
 
+require_once "${LIB_PATH}/pdf2text.php";
+
+
 ?>

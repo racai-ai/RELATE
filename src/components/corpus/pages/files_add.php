@@ -41,7 +41,7 @@ $data['created_date']=strftime("%Y-%m-%d");
 
 if($data['type']=='csv'){
 		$data['delimiter']=str_replace('\t',"\t",$data['delimiter']);
-}else if($data['type']=='zip_text'){
+}else if($data['type']=='zip_text' || $data['type']=='text' || $data['type']=='pdf'){
     $meta=$corpus->getMetadataProfile();
     $data["meta"]=[];
     if(is_array($meta) && isset($meta["fields"])){

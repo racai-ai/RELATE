@@ -12,51 +12,6 @@ function runZip($pathIn,$pathOut,$fnameOut){
    
 }
 
-function createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata){
-            $meta=$corpus->getMetadataProfile();
-            if(is_array($meta) && isset($meta["fields"])){
-                $metaData=[];
-                foreach($meta["fields"] as $f){
-                    if($f["onupload"] && isset($taskDesc["upload_meta"]) && isset($taskDesc["upload_meta"][$f['field']])){
-                        $metaData[$f['field']]=$taskDesc["upload_meta"][$f['field']];
-                    }else $metaData[$f['field']]=$f['default'];
-                }
-                
-                ksort($metaData);
-                $ret='<?xml version="1.0" encoding="UTF-8"?'.">\n<Metadata>\n";
-				$cpath="";
-				foreach($metaData as $k=>$v){
-					$pos=strrpos($k,"/");
-					$fieldName=$k;
-					if($pos!==false){
-						$path=substr($k,0,$pos);
-						$fieldName=substr($k,$pos+1);
-						if($path!=$cpath){
-							if(strlen($cpath)>0){
-								$arr=explode("/",$cpath);
-								for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
-							}
-							$cpath=$path;
-							$arr=explode("/",$cpath);
-							for($i=0;$i<count($arr);$i++)$ret.=str_repeat("    ",$i+1)."<${arr[$i]}>\n";
-						}
-						$arr=explode("/",$cpath);
-					}else{
-							if(strlen($cpath)>0){
-								$arr=explode("/",$cpath);
-								for($i=count($arr)-1;$i>=0;$i--)$ret.=str_repeat("    ",$i+1)."</${arr[$i]}>\n";
-							}
-							$cpath="";
-							$arr=[];
-					}						
-					$ret.=str_repeat("    ",count($arr)+1)."<$fieldName>$v</$fieldName>\n";						
-				}
-				$ret.="</Metadata>\n";
-				file_put_contents($pathStandoffMetadata,$ret);
-            }
-
-}
-
 function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     
     @mkdir($pathOut);    
@@ -135,7 +90,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
                 @chgrp($fpathMeta,$settings->get("owner_group"));
             }
             
-			createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata);
+			$corpus->createStandoffMetadata($taskDesc,$pathStandoffMetadata);
 			@chown($pathStandoffMetadata,$settings->get("owner_user"));
 			@chgrp($pathStandoffMetadata,$settings->get("owner_group"));
             
@@ -155,15 +110,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
             @chgrp($fpathStandoff,$settings->get("owner_group"));
             
             // RUN PDF TO TEXT
-			$pathTxt=changeFileExtension($pathTxt,"txt");
-			if($settings->get("pdftotext.use_internal",true)){
-				$pdf=new \PdfToText($pathStandoff);
-				file_put_contents($pathTxt,$pdf->Text);
-			}else{
-				passthru("pdftotext -layout \"$pathStandoff\" \"$pathTxt\"");
-			}
-			@chown($pathTxt,$settings->get("owner_user"));
-			@chgrp($pathTxt,$settings->get("owner_group"));
+			echo RELATE_pdf2text($pathStandoff, $pathTxt);
             
             // WRITE META
             if(!is_file($pathMeta)){

@@ -75,6 +75,7 @@ $(document).ready(function () {
             , toolbar: toolbar
             , editable: false
             , selectionModel: { mode: 'single', type: 'row' }
+			, filterModel: { on: true, mode: "AND", header: true, type: "local" } 
             
             , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
             ,  wrap: false, hwrap: false
@@ -88,11 +89,11 @@ $(document).ready(function () {
         }
         obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
         obj.colModel = [
-            { title: "Name", dataType: "string", dataIndx: "name" },
-            { title: "Lang", dataType: "string", dataIndx: "lang" },
-            { title: "User", dataType: "string", dataIndx: "created_by" },
-            { title: "Description", dataType: "string", dataIndx: "desc"},
-            { title: "Creation Date", dataType: "string", dataIndx: "created_date" }
+            { title: "Name", dataType: "string", dataIndx: "name", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Lang", dataType: "string", dataIndx: "lang", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "User", dataType: "string", dataIndx: "created_by", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Description", dataType: "string", dataIndx: "desc", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }},
+            { title: "Creation Date", dataType: "string", dataIndx: "created_date", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } }
         ];
         obj.dataModel = {
             location: "remote",

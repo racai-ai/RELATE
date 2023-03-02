@@ -3,7 +3,7 @@
 "RegistrationEnabled":false,
 "TaskRunners":13,
 
-"pdftotext.use_internal":false,
+"pdftotext.type":"SYSTEM",
 
 "platform.default_page":"teprolin/complete",
 
