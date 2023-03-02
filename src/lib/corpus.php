@@ -164,6 +164,7 @@ class Corpus {
 		@mkdir($dir_standoff);
 		$dir_files=$dir;
 		$dir_files.="/files";
+		@mkdir($dir_files);
         if($data['type']=="zip_text")$dir.="/zip_text";
         else if($data['type']=="standoff" || $data['type']=="pdf")$dir.="/standoff";
         else if($data['type']=="goldann")$dir.="/gold_ann";
