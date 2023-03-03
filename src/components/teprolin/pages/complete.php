@@ -22,7 +22,18 @@ function getPageCSS(){
 function getPageJS(){
     $js=file_get_contents(realpath(dirname(__FILE__))."/teprolin_common.js");
     $js.=file_get_contents(realpath(dirname(__FILE__))."/complete.js");
+
+	$js=str_replace("{{BIBTEX}}",json_encode(["bib"=>file_get_contents(realpath(dirname(__FILE__))."/../bib/teprolin.bib")]),$js);
+	
     return $js;
 }
+
+function getPageAdditionalJS(){
+    return [
+		"extern/ORCID_bibtexParse.js",
+		"js/bibtex.js",
+	];
+}
+
 
 ?>

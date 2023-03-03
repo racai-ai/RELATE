@@ -23,3 +23,7 @@ function getExecAndOpts(){
 
     return {exec:exec,opts:opts};
 }
+
+var bib={{BIBTEX}};
+
+renderBib(bib["bib"], "bibtex");

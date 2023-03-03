@@ -5,7 +5,7 @@
 
 "pdftotext.type":"SYSTEM",
 
-"platform.default_page":"teprolin/complete",
+"platform.default_page":"platform/home",
 
 "dir.annotated":"basic_tagging",
 

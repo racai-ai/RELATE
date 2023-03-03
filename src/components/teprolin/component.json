@@ -2,16 +2,17 @@
 "order":10,
 
 "menu":[
-		{
-		 		"label":"TEPROLIN Service",
-		    "icon":"c-deep-purple-500 ti-comment-alt",
-		    "menu":[
-		        {"label":"Complete Flow", "path":"teprolin/complete"},
-		        {"label":"Custom Flow", "path":"teprolin/custom"},
-		        {"label":"Operations & Statistics", "path":"teprolin/stats"},
-		        {"label":"Developer Documentation", "path":"teprolin/doc_dev", "forceHTTP":true}
-		    ]
-		}
+	{
+		"label":"TEPROLIN Service",
+		"icon":"c-deep-purple-500 ti-comment-alt",
+		"path":"teprolin/complete",
+		"menu":[
+			{"label":"Complete Flow", "path":"teprolin/complete"},
+			{"label":"Custom Flow", "path":"teprolin/custom"},
+			{"label":"Operations & Statistics", "path":"teprolin/stats"},
+			{"label":"Developer Documentation", "path":"teprolin/doc_dev", "forceHTTP":true}
+		]
+	}
 ],
 
 "handlers":[

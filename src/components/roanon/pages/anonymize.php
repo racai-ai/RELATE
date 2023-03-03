@@ -15,7 +15,16 @@ function getPageCSS(){
 function getPageJS(){
     $js=file_get_contents(realpath(dirname(__FILE__))."/anonymize.js");
     
+	$js=str_replace("{{BIBTEX}}",json_encode(["bib"=>file_get_contents(realpath(dirname(__FILE__))."/../bib/anonymization.bib")]),$js);
+    
     return $js;
+}
+
+function getPageAdditionalJS(){
+    return [
+		"extern/ORCID_bibtexParse.js",
+		"js/bibtex.js",
+	];
 }
 
 ?>
