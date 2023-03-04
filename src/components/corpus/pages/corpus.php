@@ -1,5 +1,73 @@
 <?php
 
+function getMetadataNom($meta,$field,$data){
+	$nom=$field['nom'];
+	$level=0;
+	if(isset($field["level"]))$level=$field['level'];
+	
+	$parentValue="";
+	if($level>0){
+		$parentValue=$data[$field["parent"]];
+	}
+	
+	$ret=[];
+	for($i=0;$i<count($meta["nomenclature"][$nom]);$i++){
+		$current=explode("|",$meta["nomenclature"][$nom][$i]);
+		if($level==0 || $current[$level-1]==$parentValue)
+			$ret[$current[$level]]=true;
+	}
+	
+	return array_keys($ret);
+}
+
+$autocomplete_ids=[];
+$autocomplete_nom=[];
+
+function getMetadataUploadHTML($corpus){
+	global $autocomplete_ids,$autocomplete_nom;
+	
+    $meta=$corpus->getMetadataProfile();
+    $ret="";
+	$dataDef=[];
+	
+    if(is_array($meta) && isset($meta["fields"])){
+		foreach($meta["fields"] as $f){$dataDef[$f['field']]=$f['default'];}
+		
+        foreach($meta["fields"] as $f){
+            if($f["onupload"]){
+                $ret.="<tr><td>".htmlspecialchars($f['name'])."</td><td>";
+                
+                if($f['type']=="text"){
+                    $ret.="<input type=\"text\" name=\"${f['field']}\" value=\"${f['default']}\" size=\"40\"/>";
+				}else if($f['type']=="dropdown"){
+                    $ret.="<select name=\"${f['field']}\" onchange=\"metadataDropdownChanged(this);\">";
+					$nom=getMetadataNom($meta,$f,$dataDef);
+					foreach($nom as $nv){
+						$ret.="<option ".(($nv==$f['default'])?("selected=\"selected\""):("")).' value="'.htmlspecialchars($nv).'">'.htmlspecialchars($nv)."</option>";
+					}
+					$ret.="</select>";
+				}else if($f['type']=="autocomplete"){
+					$id='metadataUploadForm_'.$f['field'];
+					$autocomplete_ids[]=$id;
+					$autocomplete_nom[]=getMetadataNom($meta,$f,$dataDef);
+					$ret.='<div class="autocomplete-search-container">';
+					$ret.='<input type="text" name="'.$f['field'].'" id="'.$id.'" value="'.htmlspecialchars($f['default']).'"/>';
+					$ret.='<div class="autocomplete-suggestions">';
+					$ret.='<ul></ul>';
+					$ret.='</div>';
+					$ret.='</div>';
+					$ret.='</td><td>'.htmlspecialchars($f["description"])."</td></tr>";
+                }else{ $ret.="UNKNOWN[".$f['type']."]";}
+                
+                $ret.="</td><td>".
+                    ((empty($f['description']))?("&nbsp;"):(htmlspecialchars($f['description']))).
+                    "</td></tr>\n";
+            }
+        }
+    }
+    return $ret;
+}
+
 function corpus_generateClassificationHtml($classProfile, $base){
         $classHtml="";
         $classHtml.='<div style="border:1px solid black; margin-top:10px; padding-top:5px" id="'.$base.'_classification_div">';
@@ -71,6 +139,7 @@ function getPageContent(){
     $html=str_replace("{{CORPUS_LANG}}",$corpus->getData("lang",""),$html);
     $html=str_replace("{{RECORDER_NAME}}",$user->getProfileHTML("recorder_name",""),$html);
     $html=str_replace("{{LOADING}}",$loading,$html);
+    $html=str_replace("{{METADATA_UPLOAD}}",getMetadataUploadHTML($corpus),$html);
     $html=str_replace("{{hideaudiobutton}}",$hideaudiobutton,$html);
     $html=str_replace("{{hidegoldbutton}}",$hidegoldbutton,$html);
     $html=str_replace("{{hidebratbutton}}",$hidebratbutton,$html);
@@ -88,6 +157,7 @@ function getPageCSS(){
 
 function getPageJS(){
 		global $user,$modules;
+		global $autocomplete_ids,$autocomplete_nom;
 
     $corpora=new Corpora();
     $corpus=new Corpus($corpora,$_REQUEST['name']);
@@ -111,6 +181,9 @@ function getPageJS(){
     
     $last_viewed_file=$user->getProfile("last_viewed_file_".$_REQUEST['name'],"");
 
+    $meta=$corpus->getMetadataProfile();
+	$metaJS="{}";
+    if(is_array($meta) && isset($meta["fields"]))$metaJS=json_encode($meta);
 
     $js=file_get_contents(realpath(dirname(__FILE__))."/corpus.js");
     $js=str_replace("{{TASKS-BUTTONS}}",$modules->getTaskButtons($corpus),$js);
@@ -127,19 +200,26 @@ function getPageJS(){
     $js=str_replace("{{hidebratbutton}}",$hidebratbutton,$js);
     $js=str_replace("{{CLASSIFICATION_PROFILE}}",$classificationProfile,$js);
     $js=str_replace("{{LAST_VIEWED_FILE}}",$last_viewed_file,$js);
+    $js=str_replace("{{METADATA_SPEC}}",$metaJS,$js);
+    $js=str_replace("{{METADATA_UPLOAD_IDS}}",json_encode($autocomplete_ids),$js);
+    $js=str_replace("{{METADATA_UPLOAD_NOM}}",json_encode($autocomplete_nom),$js);
 
     return $js;
 }
 
 function getPageAdditionalCSS(){
-    return ["extern/pqgrid-2.4.1/pqgrid.min.css"];
+    return [
+		"extern/pqgrid-2.4.1/pqgrid.min.css",
+		"extern/autocomplete/autocomplete.css"
+	];
 }
 
 function getPageAdditionalJS(){
     return [
-				"extern/pqgrid-2.4.1/pqgrid.min.js",
-				"extern/web_audio_recorder/WebAudioRecorder.min.js"
-		];
+		"extern/pqgrid-2.4.1/pqgrid.min.js",
+		"extern/web_audio_recorder/WebAudioRecorder.min.js",
+		"extern/autocomplete/autocomplete.js"
+	];
 }
 
 ?>

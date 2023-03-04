@@ -291,3 +291,10 @@ function stopRecorder(){
 		recorderStream.getAudioTracks()[0].stop();
 		recorderWebAudioRecorder.finishRecording();
 }
+
+
+var bib={{BIBTEX}};
+
+renderBib(bib["bib"], "bibtex");
+
+

@@ -1,7 +1,7 @@
               <div class="masonry-item col-md-12">
                 <div class="bgc-white p-20 bd">
                   <h6 class="c-grey-900">Complete run</h6>
-                  <div class="mT-30" style="height:1100px;">
+                  <div class="mT-30" > <!-- style="height:1100px;" -->
                     <div style="display:block" id="input">
                     <form onsubmit="return false;">
                       <div class="form-group">
@@ -11,6 +11,11 @@
                       <button type="submit" class="btn btn-primary" onclick="sendText();">Submit</button>
                       <button type="submit" class="btn btn-secondary" onclick="demo();">DEMO</button>
                     </form>
+					
+					<p>A complete execution of the TEPROLIN service produces: lemmatization, part-of-speech tagging, dependency parsing, syllabification, phonetic transcription, chunking and named entity recognition.
+					For a customized processing flow use the <a href="index.php?path=teprolin/custom">Custom Flow</a> page.
+					</p>
+					
                     </div>
 
                     {{loading}}
@@ -21,3 +26,13 @@
                   </div>
                 </div>
               </div>
+
+
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd" style="margin-top:50px;">
+                  <h6 class="c-grey-900">Scientific Papers</h6>
+                  <div class="mT-30">
+
+<div id="bibtex" ></div>
+
+</div></div></div>

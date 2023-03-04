@@ -1,6 +1,7 @@
 <?php
-
 namespace Modules\zip;
+
+require_once "../lib/extern/pdf-to-text-2017-05-31/PdfToText.phpclass";
 
 function runZip($pathIn,$pathOut,$fnameOut){
     global $runnerFolder,$corpus,$settings,$taskDesc;
@@ -17,8 +18,11 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @chown($pathOut,$settings->get("owner_user"));
     @chgrp($pathOut,$settings->get("owner_group"));
     
-    passthru("unzip -j -o ".escapeshellarg($fnameIn)." -d ".escapeshellarg($pathOut));
-    passthru("chown -R ".$settings->get("owner_user").":".$settings->get("owner_group")." ".escapeshellarg($pathOut));
+	$tempOut=tempnam(".","zip");
+	@unlink($tempOut);
+	@mkdir($tempOut);
+    passthru("unzip -j -o ".escapeshellarg($fnameIn)." -d ".escapeshellarg($tempOut));
+    passthru("chown -R ".$settings->get("owner_user").":".$settings->get("owner_group")." ".escapeshellarg($tempOut));
    
     $dir_meta=$corpus->getFolderPath();
     $dir_meta.="/meta";
@@ -44,41 +48,89 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @chown($dir_audio,$settings->get("owner_user"));
     @chgrp($dir_audio,$settings->get("owner_group"));    
 
-    $dh = opendir($pathOut);
+    $dir_files=$corpus->getFolderPath();
+    $dir_files.="/files";
+    @mkdir($dir_files);
+    @chown($dir_files,$settings->get("owner_user"));
+    @chgrp($dir_files,$settings->get("owner_group"));    
+	
+	$pos=strrpos($fnameIn,"/");
+	$archiveName=$fnameIn;
+	if($pos!==false)$archiveName=substr($fnameIn,$pos+1);
+
+    $dh = opendir($tempOut);
+	if($dh!==false){
     while (($file = readdir($dh)) !== false) {
-        $pathFile=$pathOut."/".$file;
+        $pathFile=$tempOut."/".$file;
         if(!is_file($pathFile))continue;
         
         $pathMeta=$dir_meta."/".$file;
         $pathStandoff=$dir_standoff."/".$file;
         $pathAnnotated=$dir_annotated."/".$file;
         $pathAudio=$dir_audio."/".$file;
+		$pathTxt=$dir_files."/".$file;
+
+        $pathStandoffMetadata=$dir_standoff."/".changeFileExtension($file,"xml");
         
         if(endsWith(strtolower($file),".txt")){
+            @rename($pathFile,$pathTxt);
+            @chown($pathTxt,$settings->get("owner_user"));
+            @chgrp($pathTxt,$settings->get("owner_group"));
             if(!is_file($pathMeta)){
                 $fpathMeta=$dir_meta."/".$file.".meta";
                 file_put_contents($fpathMeta,json_encode([
                     'name' => $file,
                     'corpus' => $corpus->getData("name","unknown"),
                     'type' => 'text',
-                    'desc' => '',
+                    'desc' => "$archiveName",
                     'created_by' => $taskDesc['created_by'],
                     'created_date' => $taskDesc['created_date']
                 ]));
                 @chown($fpathMeta,$settings->get("owner_user"));
                 @chgrp($fpathMeta,$settings->get("owner_group"));
-                
             }
+            
+			$corpus->createStandoffMetadata($taskDesc,$pathStandoffMetadata);
+			@chown($pathStandoffMetadata,$settings->get("owner_user"));
+			@chgrp($pathStandoffMetadata,$settings->get("owner_group"));
+            
         }else if(endsWith(strtolower($file),".conllu") || endsWith(strtolower($file),".conllup")){
             @rename($pathFile,$pathAnnotated);
             @chown($pathAnnotated,$settings->get("owner_user"));
             @chgrp($pathAnnotated,$settings->get("owner_group"));
             
-        }else if(endsWith(strtolower($file),".wav") || endsWith(strtolower($file),".wav")){
+        }else if(endsWith(strtolower($file),".wav")){
             @rename($pathFile,$pathAudio);
             @chown($pathAudio,$settings->get("owner_user"));
             @chgrp($pathAudio,$settings->get("owner_group"));
 
+        }else if(endsWith(strtolower($file),".pdf")){
+            @rename($pathFile,$pathStandoff);
+            @chown($fpathStandoff,$settings->get("owner_user"));
+            @chgrp($fpathStandoff,$settings->get("owner_group"));
+            
+            // RUN PDF TO TEXT
+			echo RELATE_pdf2text($pathStandoff, $pathTxt);
+            
+            // WRITE META
+            if(!is_file($pathMeta)){
+                $fpathMeta=$dir_meta."/".changeFileExtension($file,"txt").".meta";
+                file_put_contents($fpathMeta,json_encode([
+                    'name' => changeFileExtension($file,"txt"),
+                    'corpus' => $corpus->getData("name","unknown"),
+                    'type' => 'text',
+                    'desc' => "$archiveName",
+                    'created_by' => $taskDesc['created_by'],
+                    'created_date' => $taskDesc['created_date']
+                ]));
+                @chown($fpathMeta,$settings->get("owner_user"));
+                @chgrp($fpathMeta,$settings->get("owner_group"));
+            }
+			
+			createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata);
+			@chown($pathStandoffMetadata,$settings->get("owner_user"));
+			@chgrp($pathStandoffMetadata,$settings->get("owner_group"));
+			
         }else{
             @rename($pathFile,$pathStandoff);
             @chown($fpathStandoff,$settings->get("owner_user"));
@@ -86,6 +138,11 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
         }
     }
     closedir($dh);
+	} // if dh!==false
+	else{
+		echo "Cannot open tempOut [$tempOut] directory\n";
+	}
+	rmdir($tempOut);
         
     file_put_contents($corpus->getFolderPath()."/changed_files.json",json_encode(["changed"=>time()]));            
     file_put_contents($corpus->getFolderPath()."/changed_standoff.json",json_encode(["changed"=>time()]));            

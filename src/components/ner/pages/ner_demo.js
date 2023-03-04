@@ -186,3 +186,8 @@ function runAnalysis(){
   //text = text.charAt(0).toUpperCase() + text.slice(1).trim() + ".";
   post("index.php?path=teprolin/complete",{"text":text},'POST');
 }
+
+var bib={{BIBTEX}};
+
+renderBib(bib["bib"], "bibtex");
+

@@ -41,6 +41,17 @@ $data['created_date']=strftime("%Y-%m-%d");
 
 if($data['type']=='csv'){
 		$data['delimiter']=str_replace('\t',"\t",$data['delimiter']);
+}else if($data['type']=='zip_text' || $data['type']=='text' || $data['type']=='pdf'){
+    $meta=$corpus->getMetadataProfile();
+    $data["meta"]=[];
+    if(is_array($meta) && isset($meta["fields"])){
+        foreach($meta["fields"] as $f){
+            if($f["onupload"]){
+                $data["meta"][$f["field"]]=isset($_REQUEST[$f["field"]])?($_REQUEST[$f["field"]]):"";
+            }
+        }
+    }
+
 }
 
 if($corpus->addUploadedFile($_FILES['file']['tmp_name'],$data)===false)addError("Error adding file");

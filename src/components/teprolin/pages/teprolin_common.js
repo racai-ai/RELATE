@@ -467,6 +467,9 @@ function showOutput(n,num){
     for(var i=1;i<=num;i++){
         if(i==n){
           document.getElementById("output"+i).setAttribute("style","display:block; height:100%; overflow:auto;");
+		  if(i==8){
+				document.getElementById("output"+i).setAttribute("style","display:block; height:350px; overflow:auto;");
+		  }			  
           document.getElementById("bOutput"+i).setAttribute("class","btn cur-p btn-success");
         }else{
           document.getElementById("output"+i).setAttribute("style","display:none");

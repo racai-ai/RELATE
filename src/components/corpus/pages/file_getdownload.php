@@ -5,6 +5,8 @@ global $DirectoryAnnotated,$user;
 if(!isset($_REQUEST['corpus']))die("Invalid call");
 if(!isset($_REQUEST['file']))die("Invalid call");
 
+$viewFile=false;
+if(isset($_REQUEST['view']) && $_REQUEST['view']=='Y')$viewFile=true;
 
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
@@ -184,8 +186,15 @@ if($basicTagging){
 }
 
     header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="'.basename($fpath).'"');
+	if(endsWith($fname,"pdf"))
+		header('Content-Type: application/pdf');
+	else
+		header('Content-Type: application/octet-stream');
+	
+	if($viewFile)
+		header('Content-Disposition: inline; filename="'.basename($fpath).'"');
+	else
+		header('Content-Disposition: attachment; filename="'.basename($fpath).'"');
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
     header('Pragma: public');

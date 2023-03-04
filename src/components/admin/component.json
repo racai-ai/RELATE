@@ -1,0 +1,23 @@
+{
+"order":1,
+
+"menu":[
+      {
+        "label":"Admin",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "rights":["admin"],
+        "path":"admin/users",
+        "menu":[
+            {"label":"Users", "path":"admin/users","rights":["admin"]}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"admin/users","script":"pages/users.php","rights":["admin"]},
+		{"path":"admin/users_get","script":"data/users_get.php","data":true,"rights":["admin"]},
+		{"path":"admin/users_add","script":"data/users_add.php","data":true,"rights":["admin"]}
+]
+
+}

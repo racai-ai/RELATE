@@ -5,6 +5,7 @@
 ],
 
 "handlers":[
+		{"path":"platform/home","script":"pages/home.php"},
 		{"path":"platform/login","script":"pages/login.php"},
 		{"path":"platform/register","script":"pages/register.php"},
 		{"path":"platform/logout","script":"pages/logout.php"},
