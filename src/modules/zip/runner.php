@@ -127,7 +127,7 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
                 @chgrp($fpathMeta,$settings->get("owner_group"));
             }
 			
-			createStandoffMetadata($corpus,$taskDesc,$pathStandoffMetadata);
+			$corpus->createStandoffMetadata($taskDesc,$pathStandoffMetadata);
 			@chown($pathStandoffMetadata,$settings->get("owner_user"));
 			@chgrp($pathStandoffMetadata,$settings->get("owner_group"));
 			
