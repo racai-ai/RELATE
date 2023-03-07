@@ -61,6 +61,8 @@ require_once "${LIB_PATH}/asr_moz_deepspeech.php";
 require_once "${LIB_PATH}/corpus.php";
 require_once "${LIB_PATH}/corpora.php";
 require_once "${LIB_PATH}/task.php";
+require_once "${LIB_PATH}/service.php";
+require_once "${LIB_PATH}/services.php";
 
 require_once "${LIB_PATH}/IATE_EUROVOC_Client.php";
 require_once "${LIB_PATH}/anonymization.php";
