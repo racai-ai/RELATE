@@ -153,7 +153,8 @@ window.addEventListener('load', () => {
         <!-- ### $App Screen Content ### -->
         <main class='main-content bgc-grey-100' style="min-height: calc(100vh - 61px);">
           <div id='mainContent' style="    min-height: calc(100vh - 151px);">
-            <div class="row gap-20 masonry pos-r" style="    min-height: calc(100vh - 151px);">
+            <!--<div class="row gap-20 masonry pos-r" style="    min-height: calc(100vh - 151px);">-->
+            <div >
               <div class="masonry-sizer col-md-6"></div>
 
               <?php echo getPageContent();?>
