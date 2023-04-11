@@ -2,3 +2,4 @@
 /src/scripts/*.lock
 /src/DB/users
 /src/DB/corpora
+/src/DB/repository
