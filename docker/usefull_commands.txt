@@ -1,0 +1,12 @@
+- check server logs
+
+Log files are set to stdout/stderr:
+    access.log -> /dev/stdout
+    error.log -> /dev/stderr
+    other_vhosts_access.log -> /dev/stdout
+
+docker logs RELATE
+
+- cleanup
+docker image prune
+
