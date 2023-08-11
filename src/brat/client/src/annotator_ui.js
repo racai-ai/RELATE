@@ -719,6 +719,7 @@ var AnnotatorUI = (function($, window, undefined) {
             hideFrame = 'entity';
           }
           spanForm.dialog('option', { title: 'Edit Annotation' });
+		  $('#span_form_okall').hide();		  
         } else {
           // new span; show everything that's available
           if ($('#event_types').find('input').length == 0) {
@@ -729,6 +730,7 @@ var AnnotatorUI = (function($, window, undefined) {
             hideFrame = 'none';
           }
           spanForm.dialog('option', { title: 'New Annotation' });
+		  $('#span_form_okall').show();		  
         }
         if (hideFrame == 'event') {
           $('#span_event_section').hide()
@@ -2105,7 +2107,7 @@ var AnnotatorUI = (function($, window, undefined) {
             spanBgColor = Util.adjustColorLightness(spanBgColor, spanBoxTextBgColorLighten);
             var $label = $('<label class="span_type_label"/>').
               attr('for', 'span_' + type.type).
-              text(name);
+              text((type.desc!==undefined)?(name+" - "+type.desc):(name));
             if (type.unused) {
               $input.attr({
                 disabled: 'disabled',
@@ -2595,6 +2597,12 @@ var AnnotatorUI = (function($, window, undefined) {
         
         dispatcher.post('showForm', [splitForm]);
       };
+	  
+	  var okAll = function(evt) {
+		  $.extend(spanOptions, {all:true});
+		  spanFormSubmit(evt); // spanFormSubmit(evt, $(evt.target)); ????
+		  
+	  };
 
       var addFragment = function() {
         dispatcher.post('hideForm');
@@ -2672,6 +2680,10 @@ var AnnotatorUI = (function($, window, undefined) {
               id: 'span_form_split',
               text: 'Split',
               click: splitSpan
+            }, {
+              id: 'span_form_okall',
+              text: 'ALL',
+              click: okAll
             }
           ],
           create: function(evt) {
@@ -2710,6 +2722,7 @@ var AnnotatorUI = (function($, window, undefined) {
       $('#span_form_reselect').attr('title', 'Re-select the text span that this annotation marks.');
       $('#span_form_delete').attr('title', 'Delete this annotation.');
       $('#span_form_split').attr('title', 'Split this annotation into multiple similar annotations, distributing its arguments.');
+      $('#span_form_okall').attr('title', 'Mark all occurrences of this entity.');
 
       var setTypeLock = function(val) {
         $('#span_form_lock').prop('checked', val).button('refresh');
