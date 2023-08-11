@@ -253,40 +253,73 @@ die();
 }
 
 if($a=="createSpan"){
-//collection
-//document
-//type
-//offsets => [[107,118]]
-//comment
-//attributes
-//normalizations
-$timings=[];
-$time_start = microtime(true); 
+	// Received data:
+	//collection
+	//document
+	//type
+	//offsets => [[107,118]] => (start, end+1)
+	//comment
+	//attributes
+	//normalizations
+	// all => this is a change compared to the original BRAT; should annotate all occurrences of this entity span
+	
+	$timings=[];
+	$time_start = microtime(true); 
     $cdata=loadData();
-$time_end = microtime(true);
-$timings["loadData"]=$time_end-$time_start;
+	$time_end = microtime(true);
+	$timings["loadData"]=$time_end-$time_start;
 
-$time_start = microtime(true); 
+	$time_start = microtime(true); 
     if(isset($_REQUEST['id']))$cdata['ann']->deleteById($_REQUEST['id']);
-$time_end = microtime(true);
-$timings["deleteById"]=$time_end-$time_start;
+	$time_end = microtime(true);
+	$timings["deleteById"]=$time_end-$time_start;
 
-$time_start = microtime(true);
+	$time_start = microtime(true);
     $comment=""; if(isset($_REQUEST['comment']))$comment=$_REQUEST['comment'];
-     
-    $newid=$cdata['ann']->addAnnotation($_REQUEST['type'],json_decode($_REQUEST['offsets']),$cdata['text'],$comment); 
-$time_end = microtime(true);
-$timings["addAnnotation"]=$time_end-$time_start;
+    if(isset($_REQUEST['all']) && $_REQUEST['all']==true){
+		$matches=[];
+		$offsets=json_decode($_REQUEST['offsets'],true);
+		$entitySpan=mb_substr($cdata['text'],$offsets[0][0],$offsets[0][1]-$offsets[0][0]);
+		
+		/*$current=0;
+		while(($pos=mb_stripos($cdata['text'],$entitySpan,$current))!=false){
+			var_dump($pos);
+			$current=$pos+strlen($entitySpan);
+		}*/
+		
+		/*mb_regex_encoding("UTF-8");		
+		mb_ereg_search_init($cdata['text'], "\b(".preg_quote($entitySpan).")\b");
+		$r = mb_ereg_search();
+		$r = mb_ereg_search_getregs();
+		do
+        {
+            var_dump($r[0]);
+			$p=mb_ereg_search_getpos();
+			var_dump($p);
+            $r = mb_ereg_search_regs();//get next result
+        }
+        while($r);*/
+		
+		$r=preg_match_all("/\b(".preg_quote($entitySpan).")\b/iu",$cdata['text'],$matches,PREG_OFFSET_CAPTURE);
+		for($i = 0; $i < $r; $i++) {
+			$pos=mb_strlen(substr($cdata['text'], 0, $matches[0][$i][1]));
+			$newid=$cdata['ann']->addAnnotation($_REQUEST['type'],[[$pos,$pos+mb_strlen($entitySpan)]],$cdata['text'],$comment); 
+		}
+	}else{
+		$newid=$cdata['ann']->addAnnotation($_REQUEST['type'],json_decode($_REQUEST['offsets']),$cdata['text'],$comment); 
+	}
+	$time_end = microtime(true);
+	$timings["addAnnotation"]=$time_end-$time_start;
 
-$time_start = microtime(true); 
+	$time_start = microtime(true); 
     $cdata['ann']->save();
-$time_end = microtime(true);
-$timings["save"]=$time_end-$time_start;
+	$time_end = microtime(true);
+	$timings["save"]=$time_end-$time_start;
 
-$time_start = microtime(true); 
+	$time_start = microtime(true); 
     $ann=getAnnotation($cdata);
-$time_end = microtime(true);
-$timings["getAnnotation"]=$time_end-$time_start;
+	$time_end = microtime(true);
+	$timings["getAnnotation"]=$time_end-$time_start;
 
     echo json_encode([
         "edited"=> [[$newid]], 
