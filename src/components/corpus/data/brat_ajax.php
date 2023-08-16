@@ -300,7 +300,7 @@ if($a=="createSpan"){
         }
         while($r);*/
 		
-		$r=preg_match_all("/\b(".preg_quote($entitySpan).")\b/iu",$cdata['text'],$matches,PREG_OFFSET_CAPTURE);
+		$r=preg_match_all("/\b(".preg_quote($entitySpan,'/').")\b/iu",$cdata['text'],$matches,PREG_OFFSET_CAPTURE);
 		for($i = 0; $i < $r; $i++) {
 			$pos=mb_strlen(substr($cdata['text'], 0, $matches[0][$i][1]));
 			$newid=$cdata['ann']->addAnnotation($_REQUEST['type'],[[$pos,$pos+mb_strlen($entitySpan)]],$cdata['text'],$comment); 
