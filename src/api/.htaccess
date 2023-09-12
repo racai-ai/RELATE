@@ -1,0 +1,13 @@
+RewriteEngine On
+
+#RewriteCond %{ENV:URI} ^$
+#RewriteRule ^(.*)$ - [ENV=URI:$1]
+
+#RewriteCond %{ENV:BASE} ^$
+#RewriteCond %{ENV:URI}::%{REQUEST_URI} ^(.*)::(.*?)\1$
+#RewriteRule ^ - [ENV=BASE:%2]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^(.*)$ %{ENV:BASE}../index.php?path=api&service=$1 [L,QSA]
+RewriteRule ^(.*)$ ../index.php?path=api&service=$1 [L,QSA]

@@ -1,0 +1,12 @@
+{
+"order":30,
+
+"menu":[
+],
+
+"handlers":[
+		{"path":"api","script":"data/api.php","data":true},
+		{"path":"services/test","script":"pages/test.php"}
+]
+
+}
