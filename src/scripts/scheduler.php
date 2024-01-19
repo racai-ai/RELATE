@@ -111,7 +111,7 @@ function scheduleAudioFolder($corpus,$task_name){
             }
 }
 
-function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false){
+function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false,$filterPrefix=false){
 
 		$folder_path=$corpus->getFolderPath()."/".$folder;
     $dh = opendir($folder_path);
@@ -122,6 +122,7 @@ function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false){
         if(!is_file($fpath))continue;
         
         if($ext!==false && !endsWith($fpath,$ext))continue;
+        if($filterPrefix!==false && startsWith($file,$filterPrefix))continue;
         
         scheduleFile($corpus,"$folder/$file",$task_name,$ftype);
     }
