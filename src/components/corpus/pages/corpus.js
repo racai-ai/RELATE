@@ -591,6 +591,13 @@ function closeFileViewerText(){
     window.location.hash=previousHash;
 }
 
+function closeFileViewerDocx(){
+    setAttribute("fileViewerDocx","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
 function closeFileViewerBRAT(){
     setAttribute("fileViewerBrat","style","display:none;");
     setAttribute("output","style","display:block;");
@@ -1124,6 +1131,39 @@ function viewFileText(file,showBrat=false){
     
 }
 
+function viewFileDocx(file,showBrat=false){
+    currentFileView=file;
+    last_viewed_file=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:block;");
+    setAttribute("fileViewerDocxDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+
+    setAttribute("inputFileViewerText","style","display:inline-block; width:100%") ;
+    
+		
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewerdocx:"+file+":"+previousHash;
+
+    JSZipUtils.getBinaryContent("index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file, function(err, data) {
+        if(err) {
+            alert("Error loading text");
+            setAttribute("loading","style","display:none;");
+            setAttribute("output","style","display:block;");
+            return ;
+            throw err; // or handle err
+        }
+
+         docx.renderAsync(data, document.getElementById("inputFileViewerDocx"));
+
+        setAttribute("loading","style","display:none;");
+        setAttribute("fileViewerDocx","style","display:block;");
+        document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";
+        
+    });
+    
+}
+
 function fileViewerText_saveFileClassification(){
     var data={};
     for(var i=0;i<classificationProfile.length;i++){
@@ -1510,6 +1550,8 @@ function initGridStandoff(){
                 if(ui.rowData.type=="csv"){
                     viewFileCSV("standoff/"+ui.rowData.name);
                     //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
+                }else if(ui.rowData.name.toLowerCase().endsWith(".docx")){
+                    viewFileDocx("standoff/"+ui.rowData.name);
                 }else{
                     viewFileText("standoff/"+ui.rowData.name);
                     //window.location.href="index.php?path=corpus/file_view&corpus={{CORPUS_NAME}}&file=standoff/"+ui.rowData.name;
@@ -2023,6 +2065,14 @@ function showBasedOnHash(hash){
         showBasedOnHash(from);
         var vbrat=false; if(from=="files")vbrat=true;
         viewFileText(file,vbrat);
+    }else if(hash.startsWith("fileviewerdocx")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        var vbrat=false; if(from=="files")vbrat=true;
+        viewFileDocx(file,vbrat);
     }else if(hash.startsWith("filevieweraudio")){
         var data=hash.split(":",3);
         var file=data[1];

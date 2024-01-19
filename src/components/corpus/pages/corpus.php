@@ -218,7 +218,10 @@ function getPageAdditionalJS(){
     return [
 		"extern/pqgrid-2.4.1/pqgrid.min.js",
 		"extern/web_audio_recorder/WebAudioRecorder.min.js",
-		"extern/autocomplete/autocomplete.js"
+		"extern/autocomplete/autocomplete.js",
+                "extern/jszip.min.js",
+                "extern/docx-preview.js",
+                "extern/jszip-utils.js",
 	];
 }
 
