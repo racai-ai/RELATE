@@ -1,0 +1,13 @@
+RewriteEngine On
+
+#RewriteCond %{ENV:URI} ^$
+#RewriteRule ^(.*)$ - [ENV=URI:$1]
+
+#RewriteCond %{ENV:BASE} ^$
+#RewriteCond %{ENV:URI}::%{REQUEST_URI} ^(.*)::(.*?)\1$
+#RewriteRule ^ - [ENV=BASE:%2]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^(.*)$ %{REQUEST_URI}/../index.php?path=repository/resource&res=$1 [R] #[L,QSA]
+RewriteRule ^(.*)$ redir.php?res=$1 [L] #,QSA]

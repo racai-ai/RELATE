@@ -1,0 +1,37 @@
+{
+	
+	"name":"ASR_WAV2VEC2",
+	
+	"standard_input":{
+		"audio":1,
+		"text":0,
+		"conllup":0
+	},
+	
+	"lang":["ro"],
+	"tasks":["ASR"],
+	
+	"execution":[
+		{
+			"type":"API",
+			"endpoints":["http://127.0.0.1:7004/transcribe"],
+			"method":"POST",
+			"headers":[],
+			"parameters":[
+				{
+					"name":"file",
+					"map":"input.audio",
+					"type":"file",
+					"filename":"file.wav"
+				}
+			],
+			"output_type":"json",
+			"output_map":[
+				{"key":"result.status","map":"output.status"},
+				{"key":"result.transcription","map":"output.text"}
+			]
+			
+		}
+	]
+	
+}

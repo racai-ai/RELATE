@@ -7,6 +7,8 @@
 
 "platform.default_page":"platform/home",
 
+"service.curl_verbose":true,
+
 "dir.annotated":"basic_tagging",
 
 "tools.StanfordCoreNLP.path":"/data/vasile/stanford-corenlp-full-2018-10-05",

@@ -1,0 +1,50 @@
+blockquote {
+    font-style:italic;
+}
+
+.filterAlign {
+    margin:0;
+    padding:0;
+    vertical-align:middle;
+    display:inline-block;
+}
+
+.resource {
+    border: solid gray 1px;
+}
+
+.resourceTitle{
+    background-color:gray;
+    color:white;
+    font-weight:bold;
+    padding:4px;
+    
+}
+
+.resourceSpace {
+    display:block;
+    height:10px;
+}
+
+.resourceTitle .resourceLink {
+    color:white;
+}
+
+.resourceDescription {
+    overflow-wrap: break-word;
+    //white-space: pre;
+}
+
+.resourceDescriptionPre {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.resourceItem {
+    margin:10px;
+    margin-top:6px;
+}
+
+.resourceItemContent {
+    margin-left:40px;
+}
