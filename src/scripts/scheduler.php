@@ -121,7 +121,15 @@ function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false,$filterPre
         $fpath="$folder_path/$file";
         if(!is_file($fpath))continue;
         
-        if($ext!==false && !endsWith($fpath,$ext))continue;
+        if($ext!==false){
+            if(is_array($ext)){
+                $found=false;
+                foreach($ext as $ec){
+                    if(endsWith($fpath,$ec)){$found=true; break;}
+                }
+                if(!$found)continue;
+            }else if(!endsWith($fpath,$ext))continue;
+        }
         if($filterPrefix!==false && startsWith($file,$filterPrefix))continue;
         
         scheduleFile($corpus,"$folder/$file",$task_name,$ftype);
