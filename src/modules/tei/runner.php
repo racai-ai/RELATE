@@ -65,7 +65,10 @@ function runnerCONLLUP2TEI($runner,$settings,$corpus,$taskDesc,$data,$contentIn,
     $content=$contentIn;
     $n=0;
     $p1=strpos($content,"</teiHeader>");
-    if($p1!==false)$content=substr($content,$p1);
+    if($p1!==false){
+        $cout.=substr($content,0,$p1);
+        $content=substr($content,$p1);
+    }
     while(true){
         $p1=strpos($content,"<p>");
         if($p1===false)break;
