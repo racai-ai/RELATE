@@ -70,5 +70,7 @@ require_once "${LIB_PATH}/punctuation.php";
 
 require_once "${LIB_PATH}/pdf2text.php";
 
+require_once "${LIB_PATH}/education.php";
+require_once "${LIB_PATH}/educationresource.php";
 
 ?>

@@ -1,0 +1,17 @@
+{
+"order":10000,
+
+"menu":[
+],
+
+"handlers":[
+		{"path":"platform_edu/home","script":"pages/home.php"},
+		{"path":"platform_edu/login","script":"pages/login.php"},
+		{"path":"platform_edu/register","script":"pages/register.php"},
+		{"path":"platform_edu/logout","script":"pages/logout.php"},
+		{"path":"platform_edu/change_password","script":"pages/change_password.php"},
+		{"path":"platform_edu/set_profile_values","script":"data/set_profile_values.php","data":true,"rights":["user"]}
+
+]
+
+}

@@ -1,0 +1,61 @@
+{
+"order":100,
+
+"menu":[
+      {
+        "label":"AI pentru Școli",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"edu/ai_scoli",
+        "menu":[
+            {"label":"Elevi", "path":"edu/ai_scoli_elevi"},
+            {"label":"Profesori", "path":"edu/ai_scoli_profesori"}
+        ]
+      },
+
+      {
+        "label":"AI pentru Licee",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"edu/ai_licee",
+        "menu":[
+            {"label":"Elevi", "path":"edu/ai_licee_elevi"},
+            {"label":"Profesori", "path":"edu/ai_licee_profesori"}
+        ]
+      },
+
+      {
+        "label":"Unelte ICIA",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"edu/unelte_icia",
+        "menu":[
+            {"label":"Toate", "path":"edu/unelte_icia"},
+            {"label":"RELATE", "path":"edu/unelte_icia_relate"},
+            {"label":"TEPROLIN", "path":"edu/unelte_icia_teprolin"}
+        ]
+      },
+
+      {
+        "label":"Proiecte",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"edu/proiecte",
+        "menu":[
+            {"label":"Proiecte ICIA", "path":"edu/proiecte"}
+        ]
+      }
+],
+
+"handlers":[
+		{"path":"edu/ai_scoli","script":"pages/ai_scoli.php"},
+		{"path":"edu/ai_scoli_elevi","script":"pages/ai_scoli_elevi.php"},
+		{"path":"edu/ai_scoli_profesori","script":"pages/ai_scoli_profesori.php"},
+		{"path":"edu/ai_licee","script":"pages/ai_licee.php"},
+		{"path":"edu/ai_licee_elevi","script":"pages/ai_licee_elevi.php"},
+		{"path":"edu/ai_licee_profesori","script":"pages/ai_licee_profesori.php"},
+		{"path":"edu/unelte_icia","script":"pages/unelte_icia.php"},
+		{"path":"edu/unelte_icia_relate","script":"pages/unelte_icia_relate.php"},
+		{"path":"edu/unelte_icia_teprolin","script":"pages/unelte_icia_teprolin.php"},
+		{"path":"edu/proiecte","script":"pages/proiecte.php"},
+		{"path":"edu/resursa","script":"pages/resource.php"},
+		{"path":"edu/get_file","script":"data/get_file.php", "data":true}
+]
+
+}
