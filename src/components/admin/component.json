@@ -8,7 +8,9 @@
         "rights":["admin"],
         "path":"admin/users",
         "menu":[
-            {"label":"Users", "path":"admin/users","rights":["admin"]}
+            {"label":"Users", "path":"admin/users","rights":["admin"]},
+            {"label":"Logs", "path":"admin/logs","rights":["admin"]},
+            {"label":"System Info", "path":"admin/info","rights":["admin"]}
         ]
       }
 
@@ -17,7 +19,14 @@
 "handlers":[
 		{"path":"admin/users","script":"pages/users.php","rights":["admin"]},
 		{"path":"admin/users_get","script":"data/users_get.php","data":true,"rights":["admin"]},
-		{"path":"admin/users_add","script":"data/users_add.php","data":true,"rights":["admin"]}
+		{"path":"admin/users_add","script":"data/users_add.php","data":true,"rights":["admin"]},
+
+		{"path":"admin/logs","script":"pages/logs.php","rights":["admin"]},
+		{"path":"admin/logs_get","script":"data/logs_get.php","data":true,"rights":["admin"]},
+
+		{"path":"admin/info","script":"pages/info.php","rights":["admin"]},
+		{"path":"admin/info_get","script":"data/info_get.php","data":true,"rights":["admin"]}
+
 ]
 
 }

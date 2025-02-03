@@ -13,15 +13,19 @@
 
                     <div style="display:block" id="output">
                         <div style="height: 40px;">
-                        <button type="button" id="bOutput1"  class="btn cur-p btn-success"   onclick="showOutput(1,9,'files');">Files</button>
-                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,9,'standoff');">Standoff</button>
-                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,9,'tasks');">Tasks</button>
-                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,9,'basictagging');">Annotated</button>
-                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,9,'statistics');">Statistics</button>
-                        <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,9,'archives');">Archives</button>
-                        <button type="button" id="bOutput7"  class="btn cur-p btn-secondary" onclick="showOutput(7,9,'audio');" style="{{hideaudiobutton}}">Audio</button>
-                        <button type="button" id="bOutput8"  class="btn cur-p btn-secondary" onclick="showOutput(8,9,'goldstandoff');" style="{{hidegoldbutton}}">Gold Standoff</button>
-                        <button type="button" id="bOutput9"  class="btn cur-p btn-secondary" onclick="showOutput(9,9,'goldann');" style="{{hidegoldbutton}}">Gold Annotated</button>
+                        <button type="button" id="bOutput1"  class="btn cur-p btn-success"    onclick="showOutput(1,13,'files');">Files</button>
+                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary"  onclick="showOutput(2,13,'standoff');">Standoff</button>
+                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary"  onclick="showOutput(3,13,'tasks');">Tasks</button>
+                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary"  onclick="showOutput(4,13,'basictagging');">Annotated</button>
+                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary"  onclick="showOutput(5,13,'statistics');">Statistics</button>
+                        <button type="button" id="bOutput6"  class="btn cur-p btn-secondary"  onclick="showOutput(6,13,'archives');">Archives</button>
+                        <button type="button" id="bOutput7"  class="btn cur-p btn-secondary"  onclick="showOutput(7,13,'audio');" style="{{hideaudiobutton}}">Audio</button>
+                        <button type="button" id="bOutput8"  class="btn cur-p btn-secondary"  onclick="showOutput(8,13,'image');" style="{{hideimagebutton}}">Images</button>
+                        <button type="button" id="bOutput9"  class="btn cur-p btn-secondary"  onclick="showOutput(9,13,'video');" style="{{hidevideobutton}}">Videos</button>
+                        <button type="button" id="bOutput10"  class="btn cur-p btn-secondary" onclick="showOutput(10,13,'goldstandoff');" style="{{hidegoldbutton}}">Gold Standoff</button>
+                        <button type="button" id="bOutput11"  class="btn cur-p btn-secondary" onclick="showOutput(11,13,'goldann');" style="{{hidegoldbutton}}">Gold Annotated</button>
+                        <button type="button" id="bOutput12"  class="btn cur-p btn-secondary" onclick="showOutput(12,13,'properties');" style="{{hidepropertiesbutton}}">Properties</button>
+                        <button type="button" id="bOutput13"  class="btn cur-p btn-secondary" onclick="showOutput(13,13,'rights');" style="{{hiderightsbutton}}">Rights</button>
                         </div>
                         <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
                         
@@ -174,14 +178,25 @@
 
                         <!-- Audio -->
                         <div style="display:none" id="output7">
-                        				<div style="margin:0 0 20px 30px">
+                        		<div style="margin:0 0 20px 30px">
                         				<button type="button" id="bRecorder" class="btn cur-p btn-danger" onclick="recorderClick();">Recorder</button>
                                 </div>
                                 <div id="gridAudio" style="margin:auto;"></div>
                         </div>
 
-                        <!-- Gold Standoff -->
+                        <!-- Image -->
                         <div style="display:none" id="output8">
+                                <div id="gridImage" style="margin:auto;"></div>
+                        </div>
+                        
+                        <!-- Video -->
+                        <div style="display:none" id="output9">
+                                <div id="gridVideo" style="margin:auto;"></div>
+                        </div>
+
+
+                        <!-- Gold Standoff -->
+                        <div style="display:none" id="output10">
                                 <div id="gridGoldStandoff" style="margin:auto;"></div>
 
                                 <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
@@ -202,7 +217,7 @@
                         </div>
 
                         <!-- Gold Annotations -->
-                        <div style="display:none" id="output9">
+                        <div style="display:none" id="output11">
                                 <div id="gridGoldAnn" style="margin:auto;"></div>
 
                                 <p>Double click on any file to view its contents. On some browsers, if double click does not work, a refresh usually solves the issue.</p>
@@ -221,6 +236,92 @@
                                 </div>                                      
                         </div>
                         
+                        <!-- PROPERTIES -->
+                        <div style="display:none" id="output12">
+                            <form id="corpusPropertiesForm" method="POST" enctype="multipart/form-data" action="index.php">
+                                <input type="hidden" name="path" value="corpus/set_properties">
+                                <input type="hidden" name="corpus" value="{{CORPUS_NAME}}">
+                                
+                                <table align="center">
+                                <tbody>
+                                <tr>
+                                    <td><label for="proplang">Language:</label></td>
+                                    <td><select name="proplang" id="proplang">{{proplanguages}}</select></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="propdesc">Description:</label></td>
+                                    <td><textarea name="propdesc" id="propdesc" rows="4" cols="50">{{propdesc}}</textarea></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophasaudio">Audio:</label></td>
+                                    <td><input type="checkbox" name="prophasaudio" id="prophasaudio" value="yes" {{prophasaudio}}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophasimage">Images:</label></td>
+                                    <td><input type="checkbox" name="prophasimage" id="prophasimage" value="yes" {{prophasimage}}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophasvideo">Video:</label></td>
+                                    <td><input type="checkbox" name="prophasvideo" id="prophasvideo" value="yes" {{prophasvideo}}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophasgold">Gold Annotations:</label></td>
+                                    <td><input type="checkbox" name="prophasgold" id="prophasgold" value="yes" {{prophasgold}}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophasbrat">BRAT Profiles:</label></td>
+                                    <td><input type="checkbox" name="prophasbrat" id="prophasbrat" value="yes" {{prophasbrat}}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophasclassification">Classification Profiles:</label></td>
+                                    <td><input type="checkbox" name="prophasclassification" id="prophasclassification" value="yes" {{prophasclassification}}/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="prophascorrected">Corrected Text:</label></td>
+                                    <td><input type="checkbox" name="prophascorrected" id="prophascorrected" value="yes" {{prophascorrected}}/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:center">
+                                        <input type="submit" name="submit" value="SAVE"/>
+                                    </td>
+                                </tr>
+                                </tbody></table>
+                                
+                            </form>
+                        </div>
+                        
+                        <!-- Rights -->
+                        <div style="display:none" id="output13">
+                                <div id="gridRights" style="margin:auto;"></div>
+
+                                <div id="popup-dialog-crud-rights" style="display:none;">
+                                <form id="crud-form-rights" method="POST" enctype="multipart/form-data" action="index.php" onsubmit="return false;">
+                                    <table align="center"><tbody>
+                                        <tr><td><label for="username_pattern">Username Pattern:</label></td>
+                                            <td><input type="text" name="username_pattern" id="username_pattern" size="50"></td>
+                                        </tr>
+                                        <tr><td><label for="rights">Rights:</label></td>
+                                            <td><select name="rights">
+                                                <option value="admin">Admin</option>
+                                                <option value="readwrite">Read and Write</option>
+                                                <option value="read">Read only</option>
+                                            </select>
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2">
+                                        The username pattern is a regular expression. A complete username means an exact match. 
+                                        ".*" means everyone. 
+                                        ".*@racai[.]ro" means everyone with an email address in the racai.ro domain.
+                                        Don't enter the quotes. 
+                                        The pattern will be applied as preg_match("/^&lt;PATTERN&gt;$/i"). The "i" indicates case-insensitive match.
+                                        </td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                        </div>
+                        
+                        
+                        
                         </div> <!-- End Output Area -->
                         
                         <div id="popupIFrameDiv" style="display:none; background-color:white;">
@@ -229,6 +330,9 @@
                         </div>
                         
                     </div>                    
+                    
+                    
+                    
 <!-- AICI SE TERMINA ZONA DE BUTOANE -->
 
                     <!-- AUDIO FILE VIEW -->
@@ -236,14 +340,73 @@
                       <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerAudio();">Back</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioDownload" onclick="">Download</button>
                       <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioDelete" onclick="fileViewerAudioDelete();">Delete</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioPrev" onclick="">PREVIOUS</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioNext" onclick="">NEXT</button>
                       
-                      <div class="mT-30">
+                      {{classification_html_filevieweraudio}}
+
+                      <div class="mT-30" style="vertical-align:top; display:flex; min-width: 700px;">
                       
-                      	<p id="fileViewerAudioFilename">&nbsp;</p>
-                      	
-												<audio controls="controls" id="inputFileViewerAudio">
-														<source id="inputFileViewerAudioSource" src="" type="audio/wav">
-	    									</audio>                      
+                        <audio controls="controls" id="inputFileViewerAudio">
+                            <source id="inputFileViewerAudioSource" src="" type="audio/wav">
+                        </audio>  
+
+                        <div id="inputFileViewerAudioText" style="display: inline-block; vertical-align:top; flex-grow:1; min-width:300px; padding-left:5px;">
+                            <textarea id="textFileViewerAudio" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                            <button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioSaveText" onclick="fileViewerAudio_saveText()" style="display:none;">SAVE</button>
+							<button type="button" class="btn cur-p btn-secondary" id="fileViewerAudioUndoText" onclick="fileViewerAudio_revertText()" style="display:none;">Revert</button>
+                        </div>
+                        
+                      </div>
+                    
+                    </div>
+
+                    <!-- IMAGE FILE VIEW -->
+                    <div style="display:none" id="fileViewerImage">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerImage();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerImageDownload" onclick="">Download</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerImagePrev" onclick="">PREVIOUS</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerImageNext" onclick="">NEXT</button>
+                      <!--<button type="button" class="btn cur-p btn-secondary" id="fileViewerImageDelete" onclick="fileViewerImageDelete();">Delete</button>-->
+                      
+                      {{classification_html_fileviewerimage}}
+
+                      
+                      <div class="mT-30" style="vertical-align:top; display:flex; min-width: 700px;">
+						<img id="inputFileViewerImage" src="" 
+                            style="max-width:400px; max-height:400px; display:inline-block;vertical-align:top;-o-object-fit: contain; object-fit: contain;" 
+                        />
+                        <div id="inputFileViewerImageText" style="display: inline-block; vertical-align:top; flex-grow:1; min-width:300px; padding-left:5px;">
+                            <textarea id="textFileViewerImage" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                            <button type="button" class="btn cur-p btn-secondary" id="fileViewerImageSaveText" onclick="fileViewerImage_saveText()" style="display:none;">SAVE</button>
+							<button type="button" class="btn cur-p btn-secondary" id="fileViewerImageUndoText" onclick="fileViewerImage_revertText()" style="display:none;">Revert</button>
+                        </div>
+                        
+                      </div>
+                    
+                    </div>
+
+                    <!-- VIDEO FILE VIEW -->
+                    <div style="display:none" id="fileViewerVideo">
+                      <button type="button" class="btn cur-p btn-secondary" onclick="closeFileViewerVideo();">Back</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerVideoDownload" onclick="">Download</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerVideoPrev" onclick="">PREVIOUS</button>
+                      <button type="button" class="btn cur-p btn-secondary" id="fileViewerVideoNext" onclick="">NEXT</button>
+                      <!--<button type="button" class="btn cur-p btn-secondary" id="fileViewerVideoDelete" onclick="fileViewerVideoDelete();">Delete</button>-->
+
+                      {{classification_html_fileviewervideo}}
+                      
+                      <div class="mT-30" style="vertical-align:top; display:flex; min-width: 700px;">
+                        <video controls="controls" id="inputFileViewerVideo">
+                            <source id="inputFileViewerVideoSource" src="" type="video/mp4">
+                        </video>    
+
+                        <div id="inputFileViewerVideoText" style="display: inline-block; vertical-align:top; flex-grow:1; min-width:300px; padding-left:5px;">
+                            <textarea id="textFileViewerVideo" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+                            <button type="button" class="btn cur-p btn-secondary" id="fileViewerVideoSaveText" onclick="fileViewerVideo_saveText()" style="display:none;">SAVE</button>
+							<button type="button" class="btn cur-p btn-secondary" id="fileViewerVideoUndoText" onclick="fileViewerVideo_revertText()" style="display:none;">Revert</button>
+                        </div>
+                        
                       </div>
                     
                     </div>

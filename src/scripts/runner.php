@@ -17,6 +17,12 @@ $runner=new Runner($trun,$runnerFolder);
 $settings=new Settings();
 $settings->load();
 
+$additionalPath=$settings->get("path","");
+if(is_string($additionalPath) && strlen($additionalPath)>0){
+    putenv("PATH=$additionalPath");
+}
+
+
 $modules=new Modules();
 $modules->load();
 
@@ -45,9 +51,13 @@ while (($file = readdir($dh)) !== false) {
     if($corpus->loadData()){            
         $taskDesc=json_decode(file_get_contents($corpus->getFolderPath()."/tasks/old/".$tdata['task']),true);
         if($taskDesc['status']!='RUNNING'){
+            $taskLock=LOCK_ON_FILE($corpus->getFolderPath()."/tasks/old/".$tdata['task'].".lock");
+            
             $taskDesc['status']='RUNNING';
             $taskDesc['date_RUNNING']=date("Y-m-d H:i:s.u")." ".microtime(true);
             storeFile($corpus->getFolderPath()."/tasks/old/".$tdata['task'],json_encode($taskDesc));
+            
+            UNLOCK_SINGLE_FILE($taskLock);
         }
         
         while(!feof($fp)){

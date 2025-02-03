@@ -15,6 +15,7 @@ $content=$_REQUEST['content'];
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("read"))die("Invalid corpus");
 
 file_put_contents($corpus->getFilePathStandoff($meta),$content);
 

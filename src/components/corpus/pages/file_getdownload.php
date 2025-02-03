@@ -11,6 +11,7 @@ if(isset($_REQUEST['view']) && $_REQUEST['view']=='Y')$viewFile=true;
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("read"))die("Invalid corpus");
 
 $fname=$_REQUEST['file'];
 $basicTagging=false;
@@ -70,6 +71,16 @@ if(startsWith($fname,"zip_audio/")){
     $zip_audio=true;
     $fname=substr($fname,strlen("zip_audio/"));
 }
+$zip_image=false;
+if(startsWith($fname,"zip_image/")){
+    $zip_image=true;
+    $fname=substr($fname,strlen("zip_image/"));
+}
+$zip_video=false;
+if(startsWith($fname,"zip_video/")){
+    $zip_video=true;
+    $fname=substr($fname,strlen("zip_video/"));
+}
 
 
 $marcell_out=false;
@@ -88,6 +99,16 @@ if(startsWith($fname,"audio/")){
     $audio=true;
     $fname=substr($fname,strlen("audio/"));
 }
+$image=false;
+if(startsWith($fname,"image/")){
+    $image=true;
+    $fname=substr($fname,strlen("image/"));
+}
+$video=false;
+if(startsWith($fname,"video/")){
+    $video=true;
+    $fname=substr($fname,strlen("video/"));
+}
 
 $zip_bt=false;
 if(startsWith($fname,"zip_$DirectoryAnnotated/")){
@@ -95,7 +116,12 @@ if(startsWith($fname,"zip_$DirectoryAnnotated/")){
     $fname=substr($fname,strlen("zip_$DirectoryAnnotated/"));
 }
 
-if(!$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$curlicat_out && !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff && !$zip_audio){
+if( 
+    !$statistics && !$zip_text && !$zip_bt && !$basicTagging && !$standoff && !$marcell_out && !$curlicat_out && 
+    !$audio && !$goldann && !$goldstandoff && !$zip_standoff && !$zip_gold_ann && !$zip_gold_standoff && !$zip_audio &&
+    !$image && !$video && !$zip_image && !$zip_video
+){
+        
     $meta=$corpus->getFileMeta($fname);
     if($meta===false)die("Invalid file");
 }
@@ -139,6 +165,16 @@ if($basicTagging){
         $dir.="/zip_audio";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
+}else if($zip_image){
+        $dir=$corpus->getFolderPath();
+        $dir.="/zip_image";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+}else if($zip_video){
+        $dir=$corpus->getFolderPath();
+        $dir.="/zip_video";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
 
 }else if($zip_bt){
         $dir=$corpus->getFolderPath();
@@ -162,6 +198,29 @@ if($basicTagging){
         $dir.="/audio";
         $fpath=$dir."/$fname";
         if(!is_file($fpath))die("Invalid file");
+        
+        $user->setProfile("last_viewed_audio_".$_REQUEST['corpus'],$fname);
+        $user->saveProfile();
+        
+        
+}else if($image){
+        $dir=$corpus->getFolderPath();
+        $dir.="/image";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+        
+        $user->setProfile("last_viewed_image_".$_REQUEST['corpus'],$fname);
+        $user->saveProfile();
+        
+}else if($video){
+        $dir=$corpus->getFolderPath();
+        $dir.="/video";
+        $fpath=$dir."/$fname";
+        if(!is_file($fpath))die("Invalid file");
+        
+        $user->setProfile("last_viewed_video_".$_REQUEST['corpus'],$fname);
+        $user->saveProfile();
+        
 
 }else if($goldann){
         $dir=$corpus->getFolderPath();

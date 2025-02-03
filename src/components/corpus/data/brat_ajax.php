@@ -12,6 +12,7 @@ if($a=="getCollectionInformation"){
       $corpora=new Corpora();
       $corpus=new Corpus($corpora,$cname);
       if(!$corpus->loadData())die("Invalid corpus");
+      if(!$corpus->hasRights("read"))die("Invalid corpus");
 
       $fname=$corpus->getFolderPath()."/standoff/brat_profile.json";
       
@@ -74,6 +75,8 @@ function loadData(){
         $corpora=new Corpora();
         $corpus=new Corpus($corpora,$cname);
         if(!$corpus->loadData())die("Invalid corpus");
+        if(!$corpus->hasRights("read"))die("Invalid corpus");
+
         $meta=$corpus->getFileMeta($fname);
         if($meta===false)die("Invalid file");
         $dir=$corpus->getFolderPath();
@@ -223,6 +226,8 @@ if($a=="deleteSpan"){
 $timings=[];
 $time_start = microtime(true); 
     $cdata=loadData();
+    if(!$cdata['corpus']->hasRights("readwrite"))die("Invalid corpus");
+
 $time_end = microtime(true);
 $timings["loadData"]=$time_end-$time_start;
 
@@ -266,6 +271,8 @@ if($a=="createSpan"){
 	$timings=[];
 	$time_start = microtime(true); 
     $cdata=loadData();
+    if(!$cdata['corpus']->hasRights("readwrite"))die("Invalid corpus");
+
 	$time_end = microtime(true);
 	$timings["loadData"]=$time_end-$time_start;
 

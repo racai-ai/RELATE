@@ -48,6 +48,18 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
     @chown($dir_audio,$settings->get("owner_user"));
     @chgrp($dir_audio,$settings->get("owner_group"));    
 
+    $dir_image=$corpus->getFolderPath();
+    $dir_image.="/image";
+    @mkdir($dir_image);
+    @chown($dir_image,$settings->get("owner_user"));
+    @chgrp($dir_image,$settings->get("owner_group"));    
+
+    $dir_video=$corpus->getFolderPath();
+    $dir_video.="/video";
+    @mkdir($dir_video);
+    @chown($dir_video,$settings->get("owner_user"));
+    @chgrp($dir_video,$settings->get("owner_group"));    
+
     $dir_files=$corpus->getFolderPath();
     $dir_files.="/files";
     @mkdir($dir_files);
@@ -68,6 +80,8 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
         $pathStandoff=$dir_standoff."/".$file;
         $pathAnnotated=$dir_annotated."/".$file;
         $pathAudio=$dir_audio."/".$file;
+        $pathImage=$dir_image."/".$file;
+        $pathVideo=$dir_video."/".$file;
 		$pathTxt=$dir_files."/".$file;
 
         $pathStandoffMetadata=$dir_standoff."/".changeFileExtension($file,"xml");
@@ -99,10 +113,20 @@ function runUnzip($fnameIn,$pathOut,$settings,$corpus,$taskDesc){
             @chown($pathAnnotated,$settings->get("owner_user"));
             @chgrp($pathAnnotated,$settings->get("owner_group"));
             
-        }else if(endsWith(strtolower($file),".wav")){
+        }else if(endsWithAny(strtolower($file),[".wav",".mp3"])){
             @rename($pathFile,$pathAudio);
             @chown($pathAudio,$settings->get("owner_user"));
             @chgrp($pathAudio,$settings->get("owner_group"));
+
+        }else if(endsWithAny(strtolower($file),[".jpg",".jpeg",".png",".jfif",".webp"])){
+            @rename($pathFile,$pathImage);
+            @chown($pathImage,$settings->get("owner_user"));
+            @chgrp($pathImage,$settings->get("owner_group"));
+
+        }else if(endsWithAny(strtolower($file),[".mp4",".avi",".wmv"])){
+            @rename($pathFile,$pathVideo);
+            @chown($pathVideo,$settings->get("owner_user"));
+            @chgrp($pathVideo,$settings->get("owner_group"));
 
         }else if(endsWith(strtolower($file),".pdf")){
             @rename($pathFile,$pathStandoff);

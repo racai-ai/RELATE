@@ -1,0 +1,37 @@
+<div class="masonry-item col-md-12">
+<div class="bgc-white p-20 bd">
+  <h6 class="c-grey-900">Logs</h6>
+  <div class="mT-30">
+  
+   {{LOADING}}
+    
+<!-- AICI INCEPE ZONA DE BUTOANE -->
+
+
+    <div style="display:block" id="output">
+        <div style="height: 40px;">
+        <button type="button" id="bOutput1"  class="btn cur-p btn-success"    onclick="showInfo(1,'phpinfo');">PHP</button>
+        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary"    onclick="showInfo(2,'diskinfo');">Disks</button>
+        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary"    onclick="showInfo(3,'cpuinfo');">CPU</button>
+        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary"    onclick="showInfo(4,'meminfo');">MEM</button>
+        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary"    onclick="showInfo(5,'devinfo');">Devices</button>
+        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary"    onclick="showInfo(5,'netinfo');">Network</button>
+        </div>
+        <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
+        
+        <div id="output1" style="display:none;">
+            <textarea id="infoFileViewer" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+        </div>                                
+
+        <div id="output2" style="display:block; height:100%; overflow:auto;">
+            <iframe id="infoFrameViewer" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></iframe>
+        </div>                                
+
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+

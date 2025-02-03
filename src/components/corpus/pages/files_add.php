@@ -35,6 +35,7 @@ if(strlen(trim($data['name']))==0)$data['name']=basename($_FILES["file"]["name"]
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$data['corpus']);
 if(!$corpus->loadData())addError("Invalid corpus");
+if(!$corpus->hasRights("readwrite"))addError("Invalid corpus");
 
 $data['created_by']=$user->getUsername();
 $data['created_date']=strftime("%Y-%m-%d");

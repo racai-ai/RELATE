@@ -5,10 +5,13 @@ global $DirectoryAnnotated;
 if(!isset($_REQUEST['corpus']))die("Invalid call");
 if(!isset($_REQUEST['file']))die("Invalid call");
 
+$useHeader=false;
+if(isset($_REQUEST['useHeader']) && intval($_REQUEST['useHeader']==1))$useHeader=true;
 
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("read"))die("Invalid corpus");
 
 $fname=$_REQUEST['file'];
 $basicTagging=false;
@@ -154,8 +157,14 @@ if($basicTagging || $goldann){
     $fp=fopen($fpath,"r");
     $data=fgetcsv($fp);
     fclose($fp);
-    for($i=1;$i<=count($data);$i++){
-        $columns[]=["name"=>"C${i}","type"=>"string"];
+    if($useHeader){
+        for($i=0;$i<count($data);$i++){
+            $columns[]=["name"=>$data[$i],"type"=>"string"];
+        }
+    }else{
+        for($i=1;$i<=count($data);$i++){
+            $columns[]=["name"=>"C${i}","type"=>"string"];
+        }
     }
     
 }

@@ -1,0 +1,30 @@
+<div class="masonry-item col-md-12">
+<div class="bgc-white p-20 bd">
+  <h6 class="c-grey-900">Logs</h6>
+  <div class="mT-30">
+  
+   {{LOADING}}
+    
+<!-- AICI INCEPE ZONA DE BUTOANE -->
+
+
+    <div style="display:block" id="output">
+        <div style="height: 40px;">
+        <button type="button" id="bOutput1"  class="btn cur-p btn-success"    onclick="showLog(1,'scheduler');">Scheduler</button>
+        {{RUNNER_BUTTONS}}
+        </div>
+        <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
+        
+        <!-- Files -->
+        <div id="output1" style="display:block; height:100%; overflow:auto;">
+            <textarea id="logFileViewer" style="width:100%; font-family: Consolas,monaco,monospace; white-space: nowrap; height:400px;"></textarea>                    
+        </div>                                
+
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+

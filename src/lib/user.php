@@ -31,13 +31,13 @@ class User {
     }
     
     public function initFromHeaders(){
-	$headers=getallheaders();
-	
-	if(!isset($headers['Username']) || !isset($headers['Password']))return false;
-	
-	$un=$headers['Username'];
-	$pass=$headers['Password'];
-	return $this->doLoginInternal($un,$pass);
+        $headers=getallheaders();
+        
+        if(!isset($headers['Username']) || !isset($headers['Password']))return false;
+        
+        $un=$headers['Username'];
+        $pass=$headers['Password'];
+        return $this->doLoginInternal($un,$pass);
     }
     
     public function isValidUsernameString($un){
@@ -89,6 +89,12 @@ class User {
         $this->username=$un;
 
         return true;
+    }
+    
+    public function hasRights($rights){
+        $r=$rights;
+        if(!is_array($rights))$r=[$rights];
+        return $this->hasAccess($r);
     }
     
     public function hasAccess($rights){

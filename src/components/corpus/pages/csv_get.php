@@ -7,6 +7,7 @@ if(!isset($_REQUEST['file']))die("Invalid call");
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("read"))die("Invalid corpus");
 
 $fname=$_REQUEST['file'];
 $basicTagging=false;

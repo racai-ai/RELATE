@@ -7,6 +7,11 @@ LOCK_ON_FILE("${LIB_PATH}/../scripts/scheduler.lock");
 $settings=new Settings();
 $settings->load();
 
+$additionalPath=$settings->get("path","");
+if(is_string($additionalPath) && strlen($additionalPath)>0){
+    putenv("PATH=$additionalPath");
+}
+
 $modules=new Modules();
 $modules->load();
 
@@ -101,19 +106,46 @@ function scheduleFilesFolder($corpus,$task_name){
 }
 
 function scheduleAudioFolder($corpus,$task_name){
-            foreach($corpus->getAudio() as $fdata){
-                    scheduleFile(
-                    		$corpus,
-                        "audio/".$fdata['name'],
-                        $task_name,
-                        "audio"
-                    );
-            }
+    if(!$corpus->hasAudio())return ;
+    foreach($corpus->getAudio() as $fdata){
+        scheduleFile(
+            $corpus,
+            "audio/".$fdata['name'],
+            $task_name,
+            "audio"
+        );
+    }
 }
+
+function scheduleImageFolder($corpus,$task_name){
+    if(!$corpus->hasImage())return ;
+    foreach($corpus->getImage() as $fdata){
+        scheduleFile(
+            $corpus,
+            "image/".$fdata['name'],
+            $task_name,
+            "image"
+        );
+    }
+}
+
+function scheduleVideoFolder($corpus,$task_name){
+    if(!$corpus->hasVideo())return ;
+    foreach($corpus->getVideo() as $fdata){
+        scheduleFile(
+            $corpus,
+            "video/".$fdata['name'],
+            $task_name,
+            "video"
+        );
+    }
+}
+
 
 function scheduleFolder($corpus, $folder,$task_name,$ftype,$ext=false,$filterPrefix=false){
 
-		$folder_path=$corpus->getFolderPath()."/".$folder;
+    $folder_path=$corpus->getFolderPath()."/".$folder;
+    if(!is_dir($folder_path))return false;
     $dh = opendir($folder_path);
     if($dh===false)return false;
     
