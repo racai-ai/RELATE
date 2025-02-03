@@ -36,7 +36,9 @@
 		{"path":"corpus/task_getallbycorpus","script":"pages/task_getallbycorpus.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/task_add","script":"pages/task_add.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/archives_get","script":"pages/archives_get.php","data":true,"rights":["corpus"]},
-		{"path":"corpus/audio_get","script":"pages/audio_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/audio_get","script":"data/audio_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/image_get","script":"data/image_get.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/video_get","script":"data/video_get.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/data/add","script":"data/add_file.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getcolumns","script":"data/file_getcolumns.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getclassification","script":"data/file_getclassification.php","data":true,"rights":["corpus"]},
@@ -45,12 +47,18 @@
 		{"path":"corpus/file_savecontent","script":"data/file_savecontent.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getnext","script":"data/file_getnext.php","data":true,"rights":["corpus"]},
 		{"path":"corpus/file_getprev","script":"data/file_getprev.php","data":true,"rights":["corpus"]},
+		{"path":"corpus/set_properties","script":"data/set_properties.php", "data":true, "rights":["corpus"]},
 
 		{"path":"corpus/brat_ajax","script":"data/brat_ajax.php", "data":true, "rights":["corpus"]},
 		{"path":"corpus/savegold","script":"data/savegold.php", "data":true, "rights":["corpus"]},
 
 		{"path":"recorder/get_data","script":"data/recorder/get_data.php","data":true,"rights":["corpus"]},
-		{"path":"recorder/upload","script":"data/recorder/upload.php","data":true,"rights":["corpus"]}
+		{"path":"recorder/upload","script":"data/recorder/upload.php","data":true,"rights":["corpus"]},
+
+		{"path":"corpus/rights_get","script":"data/rights_get.php", "data":true, "rights":["corpus"]},
+		{"path":"corpus/rights_add","script":"data/rights_add.php", "data":true, "rights":["corpus"]},
+		{"path":"corpus/rights_delete","script":"data/rights_delete.php", "data":true, "rights":["corpus"]},
+		{"path":"corpus/rights_edit","script":"data/rights_edit.php", "data":true, "rights":["corpus"]}
 
 ]
 

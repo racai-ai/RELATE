@@ -21,7 +21,7 @@ class Corpus {
         if($name===false)
             $un=$this->name;
         else $un=$name;
-        return strlen($un)>3 && preg_match("/[^-_a-zA-Z0-9ăîâșțĂÎÂȘȚ@(). ]/",$un)===0 && $un[0]!=' ' && $un[strlen($un)-1]!=' ' && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;    
+        return strlen($un)>3 && preg_match("/[^-_#a-zA-Z0-9ăîâșțĂÎÂȘȚ@(). ]/",$un)===0 && $un[0]!=' ' && $un[strlen($un)-1]!=' ' && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;    
     }
     
     public function loadData(){
@@ -43,6 +43,16 @@ class Corpus {
 	public function hasAudio(){
 			if(!isset($this->data['audio']))return false;
 			return $this->data['audio'];
+	}
+
+	public function hasImage(){
+			if(!isset($this->data['image']))return false;
+			return $this->data['image'];
+	}
+
+	public function hasVideo(){
+			if(!isset($this->data['video']))return false;
+			return $this->data['video'];
 	}
 
 	public function hasBratProfiles(){
@@ -559,8 +569,8 @@ class Corpus {
         return $archives;    
     
     }
-
-    public function getAudio(){
+    
+    private function internalGetFileList($subfolders){
         global $DirectoryAnnotated;
         if($this->data===null || empty($this->data))return [];
 
@@ -570,9 +580,8 @@ class Corpus {
 
         $audio=[];
         
-        $dirs=[
-            "${base_dir}/audio",
-        ];
+        $dirs=[];
+        foreach($subfolders as $sf)$dirs[]="${base_dir}/${sf}";
         
         foreach($dirs as $dir){
             if(is_dir($dir)){
@@ -610,6 +619,16 @@ class Corpus {
         return $audio;    
     
     }
+    
+    public function getAudio(){
+        return $this->internalGetFileList(["audio"]);
+    }    
+    public function getImage(){
+        return $this->internalGetFileList(["image"]);
+    }    
+    public function getVideo(){
+        return $this->internalGetFileList(["video"]);
+    }    
     
     public function getAudioCurrent($uname){
 				$data=$this->getAudio();
@@ -731,7 +750,7 @@ class Corpus {
         $dh = opendir($dir);
         if($dh===false)return [];
         
-        $stat=[];
+        $stat=["tok"=>0,"sent"=>0,"documents"=>0];
         $wordform=[];
         $wordformdf=[];
         $lemma=[];
@@ -743,6 +762,28 @@ class Corpus {
         $eurovocIdsdf=[];
         $eurovocMts=[];
         $eurovocMtsdf=[];
+        $textCSV=[];
+        $conllupCSV=[];
+        
+        /*** IMAGES ***/
+        $imageStat=[];
+        $imageSizes=[];
+        $imageWidths=[];
+        $imageHeights=[];
+        $imageChannels=[];
+        $imageBits=[];
+        $imageMimes=[];
+        $imageCSV=[];
+        
+        /*** AUDIO ***/
+        $audioStat=[];
+        $audioChannels=[];
+        $audioBits=[];
+        $audioCodec=[];
+        $audioSampleRate=[];
+        $audioMime=[];
+        $audioCSV=[];
+        
         while (($file = readdir($dh)) !== false) {
             $dpath="$dir/$file";
             if(!is_file($dpath))continue;
@@ -771,6 +812,45 @@ class Corpus {
                 $this->mergeStatistics($dpath,$eurovocMts);
             }else if(startsWith($file,"eurovocmtsdf_")){
                 $this->mergeStatistics($dpath,$eurovocMtsdf);
+            }else if(startsWith($file,"text.list_")){
+                $textCSV[]=$dpath;
+            }else if(startsWith($file,"conllup.list_")){
+                $conllupCSV[]=$dpath;
+                
+            /**** IMAGES ***/
+            }else if(startsWith($file,"image.stat_")){
+                $this->mergeStatistics($dpath,$imageStat);
+            }else if(startsWith($file,"image.sizes_")){
+                $this->mergeStatistics($dpath,$imageSizes);
+            }else if(startsWith($file,"image.widths_")){
+                $this->mergeStatistics($dpath,$imageWidths);
+            }else if(startsWith($file,"image.heights_")){
+                $this->mergeStatistics($dpath,$imageHeights);
+            }else if(startsWith($file,"image.channels_")){
+                $this->mergeStatistics($dpath,$imageChannels);
+            }else if(startsWith($file,"image.bits_")){
+                $this->mergeStatistics($dpath,$imageBits);
+            }else if(startsWith($file,"image.mimes_")){
+                $this->mergeStatistics($dpath,$imageMimes);
+            }else if(startsWith($file,"image.list_")){
+                $imageCSV[]=$dpath;
+
+            /**** AUDIO ***/
+            }else if(startsWith($file,"audio.stat_")){
+                $this->mergeStatistics($dpath,$audioStat);
+            }else if(startsWith($file,"audio.channels_")){
+                $this->mergeStatistics($dpath,$audioChannels);
+            }else if(startsWith($file,"audio.bits_")){
+                $this->mergeStatistics($dpath,$audioBits);
+            }else if(startsWith($file,"audio.codec_")){
+                $this->mergeStatistics($dpath,$audioCodec);
+            }else if(startsWith($file,"audio.samplerate_")){
+                $this->mergeStatistics($dpath,$audioSampleRate);
+            }else if(startsWith($file,"audio.mime_")){
+                $this->mergeStatistics($dpath,$audioMime);
+            }else if(startsWith($file,"audio.list_")){
+                $audioCSV[]=$dpath;
+
             }
         }
         closedir($dh);
@@ -786,15 +866,21 @@ class Corpus {
         $stat['Basic.Unique Tokens']=count($wordform);
         $stat['Basic.Unique Lemma']=count($lemma);
         
-        $stat['Basic.Number of IATE terms']=$stat['IATE']; unset($stat['IATE']);
-        $stat['Basic.Unique IATE terms']=count($iateTerms);
+        if(isset($stat['IATE'])){
+            $stat['Basic.Number of IATE terms']=$stat['IATE']; unset($stat['IATE']);
+            $stat['Basic.Unique IATE terms']=count($iateTerms);
+        }
 
-        $stat['Basic.Number of EUROVOC IDs']=$stat['EUROVOCID']; unset($stat['EUROVOCID']);
-        $stat['Basic.Unique EUROVOC IDs']=count($eurovocIds);
+        if(isset($stat['EUROVOCID'])){
+            $stat['Basic.Number of EUROVOC IDs']=$stat['EUROVOCID']; unset($stat['EUROVOCID']);
+            $stat['Basic.Unique EUROVOC IDs']=count($eurovocIds);
+        }
         
-        $stat['Basic.Number of EUROVOC MTs']=$stat['EUROVOCMT']; unset($stat['EUROVOCMT']);
-        $stat['Basic.Unique EUROVOC MTs']=count($eurovocMts);
-
+        if(isset($stat['EUROVOCMT'])){
+            $stat['Basic.Number of EUROVOC MTs']=$stat['EUROVOCMT']; unset($stat['EUROVOCMT']);
+            $stat['Basic.Unique EUROVOC MTs']=count($eurovocMts);
+        }
+        
         $once=0;
         $twice=0;
         $three=0;
@@ -829,6 +915,68 @@ class Corpus {
         }
         
         $stat['Entropy.Romanian letters']=$h;
+        
+        sort($textCSV);
+        file_put_contents($base_dir."/statistics/text_list.csv","file,size,lines,words,chars,all_uppercase,all_lowercase\n");
+        foreach($textCSV as $csv){
+            file_put_contents($base_dir."/statistics/text_list.csv",file_get_contents($csv),FILE_APPEND);
+        }
+        
+        sort($conllupCSV);
+        file_put_contents($base_dir."/statistics/conllup_list.csv",
+            "file,sentences,tokens,unique_word_forms,unique_lemmas,".
+            implode(",",["ADJ","ADP","ADV","AUX","CCONJ","DET","INTJ","NOUN","NUM","PART","PRON","PROPN","PUNCT","SCONJ","SYM","VERB","X"]).
+            ",ne_tokens,ne_start_tokens\n");
+        foreach($conllupCSV as $csv){
+            file_put_contents($base_dir."/statistics/conllup_list.csv",file_get_contents($csv),FILE_APPEND);
+        }
+        
+        /**** IMAGES ****/
+        if(count($imageStat)>0){
+            $stat=array_merge($stat, $imageStat);
+            $minW=-1; $maxW=-1;$minH=-1;$maxH=-1;
+            foreach($imageWidths as $k=>$v){
+                $stat["image.width.$k"]=$v;
+                if($minW==-1 || $minW>$k)$minW=$k;
+                if($maxW==-1 || $maxW<$k)$maxW=$k;
+            }
+            $stat["image.min_width"]=$minW;
+            $stat["image.max_width"]=$maxW;
+            foreach($imageHeights as $k=>$v){
+                $stat["image.height.$k"]=$v;
+                if($minH==-1 || $minH>$k)$minH=$k;
+                if($maxH==-1 || $maxH<$k)$maxH=$k;
+            }
+            $stat["image.min_height"]=$minH;
+            $stat["image.max_height"]=$maxH;
+            foreach($imageSizes as $k=>$v)$stat["image.size.$k"]=$v;
+            foreach($imageChannels as $k=>$v)$stat["image.channels.$k"]=$v;
+            foreach($imageBits as $k=>$v)$stat["image.bits.$k"]=$v;
+            foreach($imageMimes as $k=>$v)$stat["image.mime.$k"]=$v;
+            sort($imageCSV);
+            file_put_contents($base_dir."/statistics/image_list.csv","file,width,height,mime,channels,bits,filesize\n");
+            foreach($imageCSV as $csv){
+                file_put_contents($base_dir."/statistics/image_list.csv",file_get_contents($csv),FILE_APPEND);
+            }
+        }
+        
+        /**** AUDIO ****/
+        if(count($audioStat)>0){
+            $audioStat['audio.duration_formatted']=getTimeStrFromMS(round($audioStat['audio.duration_seconds']*1000));
+            $audioStat['audio.duration_seconds']=sprintf("%0.2f",$audioStat['audio.duration_seconds']);
+            $stat=array_merge($stat, $audioStat);
+            foreach($audioChannels as $k=>$v)$stat["audio.channels.$k"]=$v;
+            foreach($audioBits as $k=>$v)$stat["audio.bits_per_sample.$k"]=$v;
+            foreach($audioCodec as $k=>$v)$stat["audio.codec.$k"]=$v;
+            foreach($audioSampleRate as $k=>$v)$stat["audio.sample_rate.$k"]=$v;
+            foreach($audioMime as $k=>$v)$stat["audio.mime.$k"]=$v;
+
+            sort($audioCSV);
+            file_put_contents($base_dir."/statistics/audio_list.csv","file,duration_seconds,duration_formatted,channels,bits_per_sample,codec,sample_rate,mime,filesize\n");
+            foreach($audioCSV as $csv){
+                file_put_contents($base_dir."/statistics/audio_list.csv",file_get_contents($csv),FILE_APPEND);
+            }
+        }
 
         ksort($stat);
 
@@ -911,7 +1059,7 @@ class Corpus {
         return fopen($fpath,$mode);
     }
     
-    public function getFilePath($name,$internalDir){
+    public function getFilePath($name,$internalDir,$checkExisting=true,$returnMetaPath=false){
         if(!$this->isValidName($name))return false;
 
         $dir=$this->getFolderPath();
@@ -921,8 +1069,11 @@ class Corpus {
         if(!is_dir($dir))return false;
         
         $fpath=$dir."/$name";
-        if(!is_file($fpath))return false;
-        return $fpath;
+        if($checkExisting && !is_file($fpath))return false;
+        if(!$returnMetaPath)return $fpath;
+        
+        $mpath=$this->getFolderPath()."/meta/${name}.meta";
+        return ["file"=>$fpath, "meta"=>$mpath];
     }
 
     public function getFilePathBasicTagging($name){ global $DirectoryAnnotated; return $this->getFilePath($name,$DirectoryAnnotated);}
@@ -963,6 +1114,78 @@ class Corpus {
         
         return json_decode(file_get_contents($fpath),true);
     
+    }
+    
+    public function getRights(){
+        if(!isset($this->data['rights']) || !is_array($this->data['rights']))return [];
+        return $this->data['rights'];
+    }
+    
+    public function addRights($pattern, $rights, $user){
+        $username="";
+        if($user!==false)$username=$user->getUsername();
+        if(!isset($this->data['rights']) || !is_array($this->data['rights']))$this->data['rights']=[];
+        $this->data['rights'][]=[
+            "pattern" => $pattern,
+            "rights" => $rights,
+            "added_by" => $username,
+            "date" => date("Y-m-d")
+        ];
+    }
+
+    public function editRights($old_pattern, $old_rights, $pattern, $rights, $user){
+        $username="";
+        if($user!==false)$username=$user->getUsername();
+        if(!isset($this->data['rights']) || !is_array($this->data['rights']))$this->data['rights']=[];
+        foreach($this->data['rights'] as $k=>$r){
+            if($r['pattern']==$old_pattern && $r['rights']==$old_rights){
+                $this->data['rights'][$k]=[
+                    "pattern" => $pattern,
+                    "rights" => $rights,
+                    "added_by" => $username,
+                    "date" => date("Y-m-d")
+                ];
+                break;
+            }
+        }
+    }
+
+    public function deleteRights($old_pattern, $old_rights, $user){
+        if(!isset($this->data['rights']) || !is_array($this->data['rights']))$this->data['rights']=[];
+        
+        $ndata=[];
+        foreach($this->data['rights'] as $k=>$r){
+            if($r['pattern']!=$old_pattern || $r['rights']!=$old_rights){
+                $ndata[]=$r;
+            }
+        }
+        $this->data['rights']=$ndata;
+    }
+    
+    public function hasRights($rights, $checkuser=false){
+        global $user;
+        if($checkuser===false)$checkuser=$user;
+
+        if(!isset($this->data['rights']) || !is_array($this->data['rights'])){return true;}
+        
+        if($this->data['created_by']==$checkuser->getUsername()){return true;}
+        
+        if($checkuser->hasRights("admin")){return true;}
+                
+        $levels=["read"=>1, "readwrite"=>2, "admin"=>3];
+        if(!isset($levels[$rights]))return false;
+        
+        foreach($this->data['rights'] as $r){
+            if(
+                isset($levels[$r['rights']]) && 
+                $levels[$r['rights']]>=$levels[$rights] && 
+                @preg_match("/^${r['pattern']}\$/i",$checkuser->getUsername())
+            ){
+                return true;
+            }
+        }
+        
+        return false;
     }
 
 }

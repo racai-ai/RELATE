@@ -1,13 +1,16 @@
 {
 
 "RegistrationEnabled":false,
-"TaskRunners":13,
+"TaskRunners":2,
+
+"path":"C:\\cygwin64\\bin;c:\\windows\\system32",
 
 "pdftotext.type":"SYSTEM",
 
 "platform.default_page":"platform/home",
 
 "dir.annotated":"basic_tagging",
+"dir.files":"files",
 
 "tools.StanfordCoreNLP.path":"/data/vasile/stanford-corenlp-full-2018-10-05",
 "tools.wc.path":"/usr/bin/wc",

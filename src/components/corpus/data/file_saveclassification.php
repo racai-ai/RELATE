@@ -11,6 +11,7 @@ $data=json_decode($_REQUEST['data'],true);
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("readwrite"))die("Invalid corpus");
 
 $dir=$corpus->getFolderPath()."/standoff/";
 @mkdir($dir);

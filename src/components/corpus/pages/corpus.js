@@ -6,12 +6,42 @@ setInterval(function(){
 
 // Show SAVE button in metadata editor when text changed
 setInterval(function(){
-	var current=document.getElementById('textFileViewerMeta').value;
-	if(current!=currentFileText){
-		setAttribute("fileViewerMetaSaveText","style","display:inline;");
-		setAttribute("fileViewerMetaUndoText","style","display:inline;");
-	}
+    if(getAttribute("fileViewerAudio","style").indexOf("block")>0){
+        var current=document.getElementById('textFileViewerAudio').value;
+        if(current!=currentFileText){
+            setAttribute("fileViewerAudioSaveText","style","display:inline;");
+            setAttribute("fileViewerAudioUndoText","style","display:inline;");
+        }
+    }else if(getAttribute("fileViewerImage","style").indexOf("block")>0){
+        var current=document.getElementById('textFileViewerImage').value;
+        if(current!=currentFileText){
+            setAttribute("fileViewerImageSaveText","style","display:inline;");
+            setAttribute("fileViewerImageUndoText","style","display:inline;");
+        }
+    }else if(getAttribute("fileViewerVideo","style").indexOf("block")>0){
+        var current=document.getElementById('textFileViewerVideo').value;
+        if(current!=currentFileText){
+            setAttribute("fileViewerVideoSaveText","style","display:inline;");
+            setAttribute("fileViewerVideoUndoText","style","display:inline;");
+        }
+    }else if(getAttribute("fileViewerMeta","style").indexOf("block")>0){
+        var current=document.getElementById('textFileViewerMeta').value;
+        if(current!=currentFileText){
+            setAttribute("fileViewerMetaSaveText","style","display:inline;");
+            setAttribute("fileViewerMetaUndoText","style","display:inline;");
+        }
+    }
 },500);
+
+// Refresh tasks
+setInterval(function(){
+    if(getAttribute("output3","style").indexOf("block")>0){
+        $gridTasks.pqGrid('refreshDataAndView');
+    }
+},10000);
+        
+
+var viewerjsImage=false;
 
 function convertSize(s){
     if(s.length==0)return 0;
@@ -36,10 +66,17 @@ function sizeSort(rowData1,rowData2,dataIndx){
 var corpus_lang="{{CORPUS_LANG}}";
 var recorder_name="{{RECORDER_NAME}}";
 var hasAudio={{HAS_AUDIO}};
+var hasImage={{HAS_IMAGE}};
+var hasVideo={{HAS_VIDEO}};
+var hasRights={{HAS_RIGHTS}};
+var hasProperties={{HAS_PROPERTIES}};
 var hasGold={{HAS_GOLD}};
 var hasClassification={{HAS_CLASSIFICATION}};
 var classificationProfile={{CLASSIFICATION_PROFILE}};
 var last_viewed_file="{{LAST_VIEWED_FILE}}";
+var last_viewed_image="{{LAST_VIEWED_IMAGE}}";
+var last_viewed_audio="{{LAST_VIEWED_AUDIO}}";
+var last_viewed_video="{{LAST_VIEWED_VIDEO}}";
 var hasCorrected={{HAS_CORRECTED}};
 
 var $fileViewerCSVgrid=false;
@@ -93,6 +130,14 @@ function setAttribute(obj,attr,value){
     if(ob!=null)
         ob.setAttribute(attr,value);
 }
+
+function getAttribute(obj,attr){
+    var ob=document.getElementById(obj);
+    if(ob!=null)
+        return ob.getAttribute(attr);
+    return "";
+}
+
 
 function showOutput(n,num, hash){
     for(var i=1;i<=num;i++){
@@ -176,6 +221,18 @@ function gridAddPDF(){
 function gridLastFileTXT(){
     if(last_viewed_file=="")alert("There is no record of the last file you accessed!");
     else viewFileText(last_viewed_file,true);
+} 
+function gridLastFileImage(){
+    if(last_viewed_image=="")alert("There is no record of the last file you accessed!");
+    else viewFileImage(last_viewed_image,true);
+} 
+function gridLastFileAudio(){
+    if(last_viewed_audio=="")alert("There is no record of the last file you accessed!");
+    else viewFileAudio(last_viewed_audio,true);
+} 
+function gridLastFileVideo(){
+    if(last_viewed_video=="")alert("There is no record of the last file you accessed!");
+    else viewFileVideo(last_viewed_video,true);
 } 
 
 
@@ -307,62 +364,75 @@ function gridAddTask(htmlId,title){
 }
 
 function openStatsIATE(){
-    viewFileCSV("statistics/list_iate_terms.csv","csv2");
+    viewFileCSV("statistics/list_iate_terms.csv");
 }
 
 function openStatsIATEDF(){
-    viewFileCSV("statistics/list_iate_termsdf.csv","csv2");
+    viewFileCSV("statistics/list_iate_termsdf.csv");
 }
 
 function openStatsEurovocId(){
-    viewFileCSV("statistics/list_eurovoc_ids.csv","csv2");
+    viewFileCSV("statistics/list_eurovoc_ids.csv");
 }
 
 function openStatsEurovocIdDF(){
-    viewFileCSV("statistics/list_eurovoc_idsdf.csv","csv2");
+    viewFileCSV("statistics/list_eurovoc_idsdf.csv");
 }
 
 function openStatsEurovocMt(){
-    viewFileCSV("statistics/list_eurovoc_mt.csv","csv2");
+    viewFileCSV("statistics/list_eurovoc_mt.csv");
 }
 
 function openStatsEurovocMtDF(){
-    viewFileCSV("statistics/list_eurovoc_mtdf.csv","csv2");
+    viewFileCSV("statistics/list_eurovoc_mtdf.csv");
 }
 
 function openStatsWordForm(){
-    viewFileCSV("statistics/list_wordform.csv","csv2");
-    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_wordform.csv";
+    viewFileCSV("statistics/list_wordform.csv");
 }
 
 function openStatsLemma(){
-    viewFileCSV("statistics/list_lemma.csv","csv2");
-    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_lemma.csv";
+    viewFileCSV("statistics/list_lemma.csv");
 }
 
 function openStatsWordFormDF(){
-    viewFileCSV("statistics/list_wordformdf.csv","csv2");
-    ///window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_wordformdf.csv";
+    viewFileCSV("statistics/list_wordformdf.csv");
 }
 
 function openStatsLetters(){
-    viewFileCSV("statistics/list_letters.csv","csv2");
-    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_letters.csv";
+    viewFileCSV("statistics/list_letters.csv");
 }
 
 function openStatsLemmaUPOS(){
-    viewFileCSV("statistics/list_lemma_upos.csv","csv2");
-    //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=csv2&file=statistics/list_lemma_upos.csv";
+    viewFileCSV("statistics/list_lemma_upos.csv");
 }
 
+function openStatsTextData(){
+    viewFileCSV("statistics/text_list.csv",1);
+}
 
-var $grid=false;
+function openStatsConllupData(){
+    viewFileCSV("statistics/conllup_list.csv",1);
+}
+
+function openStatsImageData(){
+    viewFileCSV("statistics/image_list.csv",1);
+}
+
+function openStatsAudioData(){
+    viewFileCSV("statistics/audio_list.csv",1);
+}
+
+var $gridFiles=false;
 var $gridStandoff=false;
 var $gridTasks=false;
 var $gridBasicTagging=false;
 var $gridStatistics=false;
 var $gridArchives=false;
 var $gridAudio=false;
+var $gridImage=false;
+var $gridVideo=false;
+var $gridRights=false;
 
 var previousHash="";
 
@@ -826,6 +896,8 @@ function fileViewerMeta_saveText(){
 
 		setAttribute("loading","style","display:none;");
 		setAttribute("fileViewerMeta","style","display:block;");
+        
+        $gridFiles.pqGrid('refreshDataAndView');
 	},function(){
 		alert("ERROR SAVING FILE");
 		setAttribute("loading","style","display:none;");
@@ -1008,6 +1080,38 @@ function viewNextFile(file){
     });
 }
 
+function viewNextImage(file){
+    loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileImage("image/"+data.next,true);
+        }else{
+            alert("No additional file found! Maybe end of corpus ?");
+        }
+    });
+}
+function viewNextAudio(file){
+    loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileAudio("image/"+data.next,true);
+        }else{
+            alert("No additional file found! Maybe end of corpus ?");
+        }
+    });
+}
+function viewNextVideo(file){
+    loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileVideo("image/"+data.next,true);
+        }else{
+            alert("No additional file found! Maybe end of corpus ?");
+        }
+    });
+}
+
+
 function viewNextFileMeta(file){
     loadData("path=corpus/file_getnext&corpus={{CORPUS_NAME}}&current="+file,function(data){
         data=JSON.parse(data);
@@ -1036,6 +1140,36 @@ function viewPrevFile(file){
         data=JSON.parse(data);
         if(data.status=="OK"){
             viewFileText(data.prev,true);
+        }else{
+            alert("No additional file found! Maybe first file ?");
+        }
+    });
+}
+function viewPrevImage(file){
+    loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileImage("image/"+data.prev,true);
+        }else{
+            alert("No additional file found! Maybe first file ?");
+        }
+    });
+}
+function viewPrevAudio(file){
+    loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileAudio("image/"+data.prev,true);
+        }else{
+            alert("No additional file found! Maybe first file ?");
+        }
+    });
+}
+function viewPrevVideo(file){
+    loadData("path=corpus/file_getprev&corpus={{CORPUS_NAME}}&current="+file,function(data){
+        data=JSON.parse(data);
+        if(data.status=="OK"){
+            viewFileVideo("image/"+data.prev,true);
         }else{
             alert("No additional file found! Maybe first file ?");
         }
@@ -1193,6 +1327,152 @@ function fileViewerBrat_saveFileClassification(){
 }
 
 
+function fileViewerAudio_saveFileClassification(){
+    var data={};
+    for(var i=0;i<classificationProfile.length;i++){
+        var key=classificationProfile[i].variable;
+        var value=document.getElementById('fileViewerAudio_classification_'+key).value;
+        data[key]=value;
+    }
+
+
+    var cf=currentFileView;
+    if(cf.startsWith("audio/"))cf=cf.substring(6);
+
+    loadData("path=corpus/file_saveclassification&corpus={{CORPUS_NAME}}&file="+cf+"&data="+encodeURIComponent(JSON.stringify(data)),function(d){
+    });    
+    
+}
+
+function fileViewerImage_saveFileClassification(){
+    var data={};
+    for(var i=0;i<classificationProfile.length;i++){
+        var key=classificationProfile[i].variable;
+        var value=document.getElementById('fileViewerImage_classification_'+key).value;
+        data[key]=value;
+    }
+
+
+    var cf=currentFileView;
+    if(cf.startsWith("image/"))cf=cf.substring(6);
+
+    loadData("path=corpus/file_saveclassification&corpus={{CORPUS_NAME}}&file="+cf+"&data="+encodeURIComponent(JSON.stringify(data)),function(d){
+    });    
+    
+}
+
+function fileViewerVideo_saveFileClassification(){
+    var data={};
+    for(var i=0;i<classificationProfile.length;i++){
+        var key=classificationProfile[i].variable;
+        var value=document.getElementById('fileViewerVideo_classification_'+key).value;
+        data[key]=value;
+    }
+
+    var cf=currentFileView;
+    if(cf.startsWith("video/"))cf=cf.substring(6);
+
+    loadData("path=corpus/file_saveclassification&corpus={{CORPUS_NAME}}&file="+cf+"&data="+encodeURIComponent(JSON.stringify(data)),function(d){
+    });    
+    
+}
+
+function fileViewerAudio_saveText(){
+	setAttribute("fileViewerAudio","style","display:none;");
+	setAttribute("loading","style","display:block;");
+
+	var data = new FormData();
+	data.append('path', 'corpus/file_savecontent');
+	data.append('corpus','{{CORPUS_NAME}}');
+	data.append('file',changeFileExtension(currentFileView.substring(6),"txt"));
+	data.append('content', document.getElementById('textFileViewerAudio').value);				    
+	loadData(data,function(d){
+        currentFileText=document.getElementById('textFileViewerAudio').value;
+		setAttribute("fileViewerAudioSaveText","style","display:none;");
+		setAttribute("fileViewerAudioUndoText","style","display:none;");
+
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerAudio","style","display:block;");
+        
+        $gridFiles.pqGrid('refreshDataAndView');
+	},function(){
+		alert("ERROR SAVING FILE");
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerAudio","style","display:block;");
+	});
+						
+}
+ 
+function fileViewerAudio_revertText(){
+	document.getElementById('textFileViewerAudio').value=currentFileText;
+	setAttribute("fileViewerAudioSaveText","style","display:none;");
+	setAttribute("fileViewerAudioUndoText","style","display:none;");
+}
+
+function fileViewerImage_saveText(){
+	setAttribute("fileViewerImage","style","display:none;");
+	setAttribute("loading","style","display:block;");
+
+	var data = new FormData();
+	data.append('path', 'corpus/file_savecontent');
+	data.append('corpus','{{CORPUS_NAME}}');
+	data.append('file',changeFileExtension(currentFileView.substring(6),"txt"));
+	data.append('content', document.getElementById('textFileViewerImage').value);				    
+	loadData(data,function(d){
+        currentFileText=document.getElementById('textFileViewerImage').value;
+		setAttribute("fileViewerImageSaveText","style","display:none;");
+		setAttribute("fileViewerImageUndoText","style","display:none;");
+
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerImage","style","display:block;");
+        
+        $gridFiles.pqGrid('refreshDataAndView');
+	},function(){
+		alert("ERROR SAVING FILE");
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerImage","style","display:block;");
+	});
+						
+}
+ 
+function fileViewerImage_revertText(){
+	document.getElementById('textFileViewerImage').value=currentFileText;
+	setAttribute("fileViewerImageSaveText","style","display:none;");
+	setAttribute("fileViewerImageUndoText","style","display:none;");
+}
+
+function fileViewerVideo_saveText(){
+	setAttribute("fileViewerVideo","style","display:none;");
+	setAttribute("loading","style","display:block;");
+
+	var data = new FormData();
+	data.append('path', 'corpus/file_savecontent');
+	data.append('corpus','{{CORPUS_NAME}}');
+	data.append('file',changeFileExtension(currentFileView.substring(6),"txt"));
+	data.append('content', document.getElementById('textFileViewerVideo').value);				    
+	loadData(data,function(d){
+        currentFileText=document.getElementById('textFileViewerVideo').value;
+		setAttribute("fileViewerVideoSaveText","style","display:none;");
+		setAttribute("fileViewerVideoUndoText","style","display:none;");
+
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerVideo","style","display:block;");
+	        
+        $gridFiles.pqGrid('refreshDataAndView');
+    },function(){
+		alert("ERROR SAVING FILE");
+		setAttribute("loading","style","display:none;");
+		setAttribute("fileViewerVideo","style","display:block;");
+	});
+						
+}
+ 
+function fileViewerVideo_revertText(){
+	document.getElementById('textFileViewerVideo').value=currentFileText;
+	setAttribute("fileViewerVideoSaveText","style","display:none;");
+	setAttribute("fileViewerVideoUndoText","style","display:none;");
+}
+
 function closeFileViewerAudio(){
     setAttribute("fileViewerAudio","style","display:none;");
     setAttribute("output","style","display:block;");
@@ -1202,30 +1482,153 @@ function closeFileViewerAudio(){
 
 function viewFileAudio(file){
     currentFileView=file;
+    last_viewed_audio=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:none;");
     setAttribute("fileViewerAudio","style","display:block;");
     setAttribute("fileViewerAudioDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
     setAttribute("inputFileViewerAudioSource","src","index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file);
+    setAttribute("fileViewerAudioNext","onclick","viewNextAudio('"+file+"');");
+    setAttribute("fileViewerAudioPrev","onclick","viewPrevAudio('"+file+"');");
 
-    document.getElementById('fileViewerAudioFilename').innerText=file;
-    
+    document.getElementById("corpusfilename").innerHTML="File: <b>"+file.substring(6)+"</b>";            
 
-		var audio=document.getElementById("inputFileViewerAudio");
-		audio.load();
+	var audio=document.getElementById("inputFileViewerAudio");
+	audio.load();
 
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
     window.location.hash="#filevieweraudio:"+file+":"+previousHash;
 
+    loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
+        if(data=="Invalid file")data="";
+        document.getElementById('textFileViewerAudio').value=data;
+		currentFileText=document.getElementById('textFileViewerAudio').value;
+    },function(){
+        alert("Error loading text file");
+    });
+
 }
 
 function fileViewerAudioDelete(){
-		if(!confirm("Delete file ["+currentFileView+"] ?"))return ;
+    if(!confirm("Delete file ["+currentFileView+"] ?"))return ;
 		
     loadData("path=corpus/file_delete&corpus={{CORPUS_NAME}}&file="+currentFileView,function(data){
     		$gridAudio.pqGrid('refreshDataAndView');
 				closeFileViewerAudio();
+    },function(){
+        alert("Error deleting file");
+    });
+		
+		
+}
+
+
+
+function closeFileViewerImage(){
+    setAttribute("fileViewerImage","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
+function viewFileImage(file){
+    currentFileView=file;
+    last_viewed_image=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:none;");
+    setAttribute("fileViewerImage","style","display:block;");
+    setAttribute("fileViewerImageDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+    setAttribute("inputFileViewerImage","src","index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file);
+    setAttribute("fileViewerImageNext","onclick","viewNextImage('"+file+"');");
+    setAttribute("fileViewerImagePrev","onclick","viewPrevImage('"+file+"');");
+
+    document.getElementById("corpusfilename").innerHTML="File: <b>"+file.substring(6)+"</b>";            
+    
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewerimage:"+file+":"+previousHash;
+
+    if(viewerjsImage===false){
+        viewerjsImage=new Viewer(document.getElementById('inputFileViewerImage'), {
+          inline: false,
+          toolbar: {
+            zoomIn: 4,
+            zoomOut: 4,
+            oneToOne: 4,
+            reset: 4,
+          },  
+          viewed() {
+            viewer.zoomTo(1);
+          },
+        });
+    }        
+
+
+    loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
+        if(data=="Invalid file")data="";
+        document.getElementById('textFileViewerImage').value=data;
+		currentFileText=document.getElementById('textFileViewerImage').value;
+    },function(){
+        alert("Error loading text file");
+    });
+}
+
+function fileViewerImageDelete(){
+		if(!confirm("Delete file ["+currentFileView+"] ?"))return ;
+		
+    loadData("path=corpus/file_delete&corpus={{CORPUS_NAME}}&file="+currentFileView,function(data){
+    		$gridImage.pqGrid('refreshDataAndView');
+				closeFileViewerImage();
+    },function(){
+        alert("Error deleting file");
+    });
+}
+
+
+function closeFileViewerVideo(){
+    setAttribute("fileViewerVideo","style","display:none;");
+    setAttribute("output","style","display:block;");
+    document.getElementById("corpusfilename").innerHTML="";
+    window.location.hash=previousHash;
+}
+
+function viewFileVideo(file){
+    currentFileView=file;
+    last_file_video=file;
+    setAttribute("output","style","display:none;");
+    setAttribute("loading","style","display:none;");
+    setAttribute("fileViewerVideo","style","display:block;");
+    setAttribute("fileViewerVideoDownload","onclick","window.location='index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file+"';");
+    setAttribute("inputFileViewerVideoSource","src","index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+file);
+    setAttribute("fileViewerVideoNext","onclick","viewNextVideo('"+file+"');");
+    setAttribute("fileViewerVideoPrev","onclick","viewPrevVideo('"+file+"');");
+
+    document.getElementById("corpusfilename").innerHTML="File: <b>"+file.substring(6)+"</b>";            
+
+    var video=document.getElementById("inputFileViewerVideo");
+    video.load();
+
+    var h=window.location.hash;
+    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
+    window.location.hash="#fileviewervideo:"+file+":"+previousHash;
+
+    loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
+        if(data=="Invalid file")data="";
+        document.getElementById('textFileViewerVideo').value=data;
+		currentFileText=document.getElementById('textFileViewerVideo').value;
+    },function(){
+        alert("Error loading text file");
+    });
+
+}
+
+function fileViewerVideoDelete(){
+    if(!confirm("Delete file ["+currentFileView+"] ?"))return ;
+		
+    loadData("path=corpus/file_delete&corpus={{CORPUS_NAME}}&file="+currentFileView,function(data){
+    		$gridVideo.pqGrid('refreshDataAndView');
+				closeFileViewerVideo();
     },function(){
         alert("Error deleting file");
     });
@@ -1328,7 +1731,9 @@ function closeFileViewerCSV(){
     setAttribute("fileViewerCSVgrid","class","");
 }
 
-function viewFileCSV(file,type){
+function viewFileCSV(file,useHeader){
+    if(arguments.length==1)useHeader=0;
+    
     currentFileView=file;
     setAttribute("output","style","display:none;");
     setAttribute("loading","style","display:block;");
@@ -1375,39 +1780,8 @@ function viewFileCSV(file,type){
             return { data: dataJSON };
         }
     };
-
-    /*if(type==="conllu"){
-        obj.colModel = [
-                { title: "ID", dataType: "string", dataIndx: "0" },
-                { title: "Form", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "Lemma", dataType: "string", dataIndx: "2", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "UPOS", dataType: "string", dataIndx: "3", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "XPOS", dataType: "string", dataIndx: "4", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "Feats", dataType: "string", dataIndx: "5", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "Head", dataType: "string", dataIndx: "6", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "Deprel", dataType: "string", dataIndx: "7", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "Deps", dataType: "string", dataIndx: "8", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "Misc", dataType: "string", dataIndx: "9", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "NER", dataType: "string", dataIndx: "10", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "NP", dataType: "string", dataIndx: "11", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "IATE", dataType: "string", dataIndx: "12", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-                { title: "EUROVOC", dataType: "string", dataIndx: "13", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  }
-            ];
-    }else if(type==="csv2"){
-        obj.colModel = [
-            { title: "0", dataType: "string", dataIndx: "0", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-            { title: "1", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-        ];
-
-    }else{
-        obj.colModel = [
-            { title: "C0", dataType: "string", dataIndx: "0", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-            { title: "C1", dataType: "string", dataIndx: "1", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  },
-            { title: "C2", dataType: "string", dataIndx: "2", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] }  }
-        ];
-    }*/
         
-    loadData("path=corpus/file_getcolumns&corpus={{CORPUS_NAME}}&file="+file,function(dataColumns){
+    loadData("path=corpus/file_getcolumns&corpus={{CORPUS_NAME}}&file="+file+"&useHeader="+useHeader,function(dataColumns){
         try{
             dataColumns=JSON.parse(dataColumns);
         }catch(ex){
@@ -1501,7 +1875,7 @@ function initGridFiles(){
             }
         };
         
-        $grid = $("#grid").pqGrid(obj);
+        $gridFiles = $("#grid").pqGrid(obj);
 
           $("#popup-dialog-crud-csv").dialog({ width: 600, modal: true,
             open: function () { $(".ui-dialog").position({ of: "#grid" }); },
@@ -1799,8 +2173,7 @@ function initGridBasicTagging(){
             ,  wrap: false, hwrap: false
             
             , rowDblClick: function( event, ui ) {
-                viewFileCSV("basictagging/"+ui.rowData.name,"conllu");
-                //window.location.href="index.php?path=corpus/csv_view&corpus={{CORPUS_NAME}}&type=conllu&file=basictagging/"+ui.rowData.name;
+                viewFileCSV("basictagging/"+ui.rowData.name);
             }            
         };
         function formatCurrency(ui) {
@@ -1893,17 +2266,21 @@ function destroyClickedElement(event)
 function initGridStatistics(){
         var toolbar = { items: [
                 { type: 'button', label: 'Download Stats', listeners: [{ click: downloadStats}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View WordForm Stats', listeners: [{ click: openStatsWordForm}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View Lemma Stats', listeners: [{ click: openStatsLemma}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View WordForm Doc Freq', listeners: [{ click: openStatsWordFormDF}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View Letters Stats', listeners: [{ click: openStatsLetters}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View Lemma UPOS Stats', listeners: [{ click: openStatsLemmaUPOS}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View IATE Stats', listeners: [{ click: openStatsIATE}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View IATE Doc Freq', listeners: [{ click: openStatsIATEDF}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View EUROVOC ID Stats', listeners: [{ click: openStatsEurovocId}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View EUROVOC ID Doc Freq', listeners: [{ click: openStatsEurovocIdDF}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View EUROVOC MT Stats', listeners: [{ click: openStatsEurovocMt}], icon: 'ui-icon-plus' },
-                { type: 'button', label: 'View EUROVOC MT Doc Freq', listeners: [{ click: openStatsEurovocMtDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'WordForm Stats', listeners: [{ click: openStatsWordForm}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Lemma Stats', listeners: [{ click: openStatsLemma}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'WordForm Doc Freq', listeners: [{ click: openStatsWordFormDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Letters Stats', listeners: [{ click: openStatsLetters}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Lemma UPOS Stats', listeners: [{ click: openStatsLemmaUPOS}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'IATE Stats', listeners: [{ click: openStatsIATE}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'IATE Doc Freq', listeners: [{ click: openStatsIATEDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'EUROVOC ID Stats', listeners: [{ click: openStatsEurovocId}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'EUROVOC ID Doc Freq', listeners: [{ click: openStatsEurovocIdDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'EUROVOC MT Stats', listeners: [{ click: openStatsEurovocMt}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'EUROVOC MT Doc Freq', listeners: [{ click: openStatsEurovocMtDF}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Text Data', listeners: [{ click: openStatsTextData}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Annotated Data', listeners: [{ click: openStatsConllupData}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Image Data', listeners: [{ click: openStatsImageData}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Audio Data', listeners: [{ click: openStatsAudioData}], icon: 'ui-icon-plus' },
                 
          ]};
 
@@ -2001,7 +2378,9 @@ function initGridArchives(){
 function initGridAudio(){
 			if(!hasAudio)return ;
 
-        var toolbar = { };
+        var toolbar = { items:[
+            { type: 'button', label: 'Access Last File', listeners: [{ click: gridLastFileAudio}], icon: 'ui-icon-plus' },
+        ]};
 
         var obj = {
             width: "99%"
@@ -2048,15 +2427,278 @@ function initGridAudio(){
         $gridAudio = $("#gridAudio").pqGrid(obj);
 }
 
+
+function initGridImage(){
+        if(!hasImage)return ;
+
+        var toolbar = { items:[
+            { type: 'button', label: 'Access Last File', listeners: [{ click: gridLastFileImage}], icon: 'ui-icon-plus' },
+        ]};
+
+        var obj = {
+            width: "99%"
+            , height: 400
+            , resizable: true
+            , title: "Images"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                //window.location.href="index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+ui.rowData.fname;
+                viewFileImage(ui.rowData.fname);
+            }           
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "File", dataType: "string", dataIndx: "fname", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Size", dataType: "string", dataIndx: "size" }
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            //sortIndx: "name",
+            //sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/image_get&corpus={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridImage = $("#gridImage").pqGrid(obj);
+}
+
+
+function initGridVideo(){
+        if(!hasVideo)return ;
+
+        var toolbar = { items:[
+            { type: 'button', label: 'Access Last File', listeners: [{ click: gridLastFileVideo}], icon: 'ui-icon-plus' },
+        ]};
+
+        var obj = {
+            width: "99%"
+            , height: 400
+            , resizable: true
+            , title: "Video"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                //window.location.href="index.php?path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+ui.rowData.fname;
+                viewFileVideo(ui.rowData.fname);
+            }           
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "File", dataType: "string", dataIndx: "fname", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Size", dataType: "string", dataIndx: "size" }
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            //sortIndx: "name",
+            //sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/video_get&corpus={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridVideo = $("#gridVideo").pqGrid(obj);
+}
+
+
+function gridRights_add(){
+    var $frm = $("form#crud-form-rights");
+    $frm.find("input").val("");
+
+    $("#popup-dialog-crud-rights").dialog({ title: "Add access control entry", buttons: {
+        Add: function () {
+            var pattern=$frm.find("input[name='username_pattern']").val();
+            var rights=$frm.find("select[name='rights']").val();
+            if(pattern.length<1 || rights.length<1){alert("Invalid data"); return;}
+            
+            var data = new FormData();
+            data.append('path', 'corpus/rights_add');
+            data.append('corpus','{{CORPUS_NAME}}');
+            data.append('pattern', pattern);
+            data.append('rights', rights);
+            var dia=$(this);
+            loadData(data,function(d){
+                $gridRights.pqGrid('refreshDataAndView');
+                dia.dialog("close");
+            }, function(){ alert("Error setting new rights"); });
+        },
+        Cancel: function () {
+            $(this).dialog("close");
+        }
+    }
+    });
+    $("#popup-dialog-crud-rights").dialog("open");
+}    
+
+function gridRights_edit(){
+    var $frm = $("form#crud-form-rights");
+    $frm.find("input").val("");
+
+	var data=$gridRights.pqGrid("selection", {type:'row', method:'getSelection'});
+	if(data===undefined || data[0]===undefined){alert("Select an access control entry to edit");return ;}
+	data=data[0].rowData;;
+
+	$frm.find("input[name='username_pattern']").val(data['pattern']);
+	$frm.find("select[name='rights']").val(data['rights']);
+
+    var old_pattern=data['pattern'];
+    var old_rights=data['rights'];
+
+    $("#popup-dialog-crud-rights").dialog({ title: "Edit access control entry", buttons: {
+        Add: function () {
+            var pattern=$frm.find("input[name='username_pattern']").val();
+            var rights=$frm.find("select[name='rights']").val();
+            if(pattern.length<1 || rights.length<1){alert("Invalid data"); return;}
+            
+            var data = new FormData();
+            data.append('path', 'corpus/rights_edit');
+            data.append('corpus','{{CORPUS_NAME}}');
+            data.append('pattern', pattern);
+            data.append('rights', rights);
+            data.append('old_pattern', old_pattern);
+            data.append('old_rights', old_rights);
+            var dia=$(this);
+            loadData(data,function(d){
+                $gridRights.pqGrid('refreshDataAndView');
+                dia.dialog("close");
+            }, function(){ alert("Error setting new rights"); });
+        },
+        Cancel: function () {
+            $(this).dialog("close");
+        }
+    }
+    });
+    $("#popup-dialog-crud-rights").dialog("open");
+}    
+
+function gridRights_delete(){
+	var data=$gridRights.pqGrid("selection", {type:'row', method:'getSelection'});
+	if(data===undefined || data[0]===undefined){alert("Select an access control entry to delete");return ;}
+	data=data[0].rowData;
+    var old_pattern=data['pattern'];
+    var old_rights=data['rights'];
+    
+    if(!confirm("Delete entry ["+data['pattern']+"] ==> ["+data['rights']+"] ?"))return ;
+    var data = new FormData();
+    data.append('path', 'corpus/rights_delete');
+    data.append('corpus','{{CORPUS_NAME}}');
+    data.append('old_pattern', old_pattern);
+    data.append('old_rights', old_rights);
+		
+    loadData(data,function(d){
+        $gridRights.pqGrid('refreshDataAndView');
+    },function(){
+        alert("Error deleting access control entry");
+    });
+}
+
+function initGridRights(){
+        if(!hasRights)return ;
+
+        var toolbar = { items:[
+            { type: 'button', label: 'Add', listeners: [{ click: gridRights_add}], icon: 'ui-icon-plus' },
+            { type: 'button', label: 'Edit', listeners: [{ click: gridRights_edit}], icon: 'ui-icon-edit' },
+            { type: 'button', label: 'Delete', listeners: [{ click: gridRights_delete}], icon: 'ui-icon-minus' },
+        ]};
+
+        var obj = {
+            width: "99%"
+            , height: 400
+            , resizable: true
+            , title: "Access control"
+            , showBottom: false
+            , editModel: {clicksToEdit: 2}
+            , scrollModel: { autoFit: true }
+            , toolbar: toolbar
+            , editable: false
+            , selectionModel: { mode: 'single', type: 'row' }
+            , filterModel: { on: true, mode: "AND", header: true, type: "local" } 
+            
+            , pageModel: { type: "local", rPP: 20, strRpp: "{0}", strDisplay: "{0} to {1} of {2}" }
+            ,  wrap: false, hwrap: false
+            
+            , rowDblClick: function( event, ui ) {
+                //viewFileVideo(ui.rowData.fname);
+                gridRights_edit();
+            }           
+        };
+        function formatCurrency(ui) {
+            return ((ui.cellData < 0) ? "-" : "") + "$" + $.paramquery.formatCurrency(ui.cellData);
+        }
+        obj.columnTemplate = { minWidth: '10%', maxWidth: '80%' };
+        obj.colModel = [
+            { title: "Username Pattern", dataType: "string", dataIndx: "pattern", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+            { title: "Rights", dataType: "string", dataIndx: "rights", filter: { type: 'textbox', condition: 'contain', listeners: ['keyup'] } },
+        ];
+        obj.dataModel = {
+            location: "remote",
+            sorting: "local",
+            //sortIndx: "name",
+            //sortDir: "down",
+            dataType:"json",
+            method:"GET",
+            url:"index.php?path=corpus/rights_get&corpus={{CORPUS_NAME}}",
+            getData: function (dataJSON) {
+                return { data: dataJSON };
+            }
+        };
+        
+        $gridRights = $("#gridRights").pqGrid(obj);
+        
+        $("#popup-dialog-crud-rights").dialog({ width: 600, modal: true,
+            open: function () { $(".ui-dialog").position({ of: "#gridRights" }); },
+            autoOpen: false
+        });
+        
+}
+
+
 function showBasedOnHash(hash){
-    if(hash=="standoff")showOutput(2,9);      
-    else if(hash=="tasks")showOutput(3,9);      
-    else if(hash=="basictagging")showOutput(4,9);      
-    else if(hash=="statistics")showOutput(5,9);      
-    else if(hash=="archives")showOutput(6,9);      
-    else if(hash=="audio" && hasAudio)showOutput(7,9);      
-    else if(hash=="goldann" && hasGold)showOutput(9,9);      
-    else if(hash=="goldstandoff" && hasGold)showOutput(8,9);      
+    if(hash=="standoff")showOutput(2,13);
+    else if(hash=="tasks")showOutput(3,13);
+    else if(hash=="basictagging")showOutput(4,13);
+    else if(hash=="statistics")showOutput(5,13);
+    else if(hash=="archives")showOutput(6,13);
+    else if(hash=="audio" && hasAudio)showOutput(7,13);
+    else if(hash=="image" && hasImage)showOutput(8,13);
+    else if(hash=="video" && hasVideo)showOutput(9,13);
+    else if(hash=="goldstandoff" && hasGold)showOutput(10,13);
+    else if(hash=="goldann" && hasGold)showOutput(11,13);
+    else if(hash=="properties" && hasProperties)showOutput(12,13);
+    else if(hash=="rights" && hasRights)showOutput(13,13);
     else if(hash.startsWith("fileviewertext")){
         var data=hash.split(":",3);
         var file=data[1];
@@ -2064,7 +2706,7 @@ function showBasedOnHash(hash){
         window.location.hash="#"+from;
         showBasedOnHash(from);
         var vbrat=false; if(from=="files")vbrat=true;
-        viewFileText(file,vbrat);
+        viewFileText(decodeURI(file),vbrat);
     }else if(hash.startsWith("fileviewerdocx")){
         var data=hash.split(":",3);
         var file=data[1];
@@ -2072,35 +2714,49 @@ function showBasedOnHash(hash){
         window.location.hash="#"+from;
         showBasedOnHash(from);
         var vbrat=false; if(from=="files")vbrat=true;
-        viewFileDocx(file,vbrat);
+        viewFileDocx(decodeURI(file),vbrat);
     }else if(hash.startsWith("filevieweraudio")){
         var data=hash.split(":",3);
         var file=data[1];
         var from=data[2];
         window.location.hash="#"+from;
         showBasedOnHash(from);
-        viewFileAudio(file);
+        viewFileAudio(decodeURI(file));
+    }else if(hash.startsWith("fileviewerimage")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        viewFileImage(decodeURI(file));
+    }else if(hash.startsWith("fileviewervideo")){
+        var data=hash.split(":",3);
+        var file=data[1];
+        var from=data[2];
+        window.location.hash="#"+from;
+        showBasedOnHash(from);
+        viewFileVideo(decodeURI(file));
     }else if(hash.startsWith("fileviewercsv")){
         var data=hash.split(":",3);
         var file=data[1];
         var from=data[2];
         window.location.hash="#"+from;
         showBasedOnHash(from);
-        viewFileCSV(file);
+        viewFileCSV(decodeURI(file));
     }else if(hash.startsWith("fileviewerbrat")){
         var data=hash.split(":",3);
         var file=data[1];
         var from=data[2];
         window.location.hash="#"+from;
         showBasedOnHash(from);
-        viewFileBrat(file);
+        viewFileBrat(decodeURI(file));
     }else if(hash.startsWith("fileviewermeta")){
         var data=hash.split(":",3);
         var file=data[1];
         var from=data[2];
         window.location.hash="#"+from;
         showBasedOnHash(from);
-        editFileMetadata(file);
+        editFileMetadata(decodeURI(file));
     }else if(hash.startsWith("recorder")){
         var data=hash.split(":",3);
         var from=data[1];
@@ -2118,8 +2774,11 @@ $(document).ready(function () {
     initGridStatistics(); 
     initGridArchives(); 
     initGridAudio(); 
+    initGridImage(); 
+    initGridVideo(); 
     initGridGoldAnn(); 
     initGridGoldStandoff(); 
+    initGridRights(); 
 	
 	for(var i=0;i<metadataUploadAutocomplete_ids.length;i++){
 		var el=document.getElementById(metadataUploadAutocomplete_ids[i]);
@@ -2131,4 +2790,5 @@ $(document).ready(function () {
     var h = window.location.hash.substr(1);
     
     showBasedOnHash(h);
+        
 });

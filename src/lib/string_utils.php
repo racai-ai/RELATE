@@ -24,3 +24,14 @@ function endsWith($haystack, $needle)
     return (substr($haystack, -$length) === $needle);
 }
 
+function endsWithAny($haystack, $needle)
+{
+    if(is_string($needle))return endsWith($haystack, $needle);
+    
+    if(is_array($needle)){
+        foreach($needle as $n)if(endsWith($haystack, $n))return true;
+    }
+
+    return false;
+}
+

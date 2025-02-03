@@ -6,6 +6,11 @@ require_once "securimage/securimage.php";
 $settings=new Settings();
 $settings->load();
 
+$additionalPath=$settings->get("path","");
+if(is_string($additionalPath) && strlen($additionalPath)>0){
+    putenv("PATH=$additionalPath");
+}
+
 $modules=new Modules();
 $modules->load();
 

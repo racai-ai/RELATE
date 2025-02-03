@@ -16,6 +16,8 @@ function gridAdd(){
                         lang:$frm.find("select[name='lang']").val(),
                         desc:$frm.find("textarea[name='desc']").val(),
                         hasaudio:$frm.find("input[name='hasaudio']").is(":checked")?("yes"):("no"),
+                        hasimage:$frm.find("input[name='hasimage']").is(":checked")?("yes"):("no"),
+                        hasvideo:$frm.find("input[name='hasvideo']").is(":checked")?("yes"):("no"),
                         hasgold:$frm.find("input[name='hasgold']").is(":checked")?("yes"):("no"),
                         hasbrat:$frm.find("input[name='hasbrat']").is(":checked")?("yes"):("no"),
                         hasclassification:$frm.find("input[name='hasclassification']").is(":checked")?("yes"):("no"),

@@ -17,6 +17,18 @@ function formatNumberAsString($num){
     return $s;
 }
 
+function getTimeStrFromMS($tstr){
+    $t=floatval(str_replace(",",".","$tstr"));
+    $total_sec=intval($t/1000);
+    $ms=intval($t-$total_sec*1000);
+    $s=$total_sec%60;
+    $total_m=intval($total_sec/60);
+    $m=$total_m%60;
+    $h=intval($total_m/60);
+    return sprintf("%02d:%02d:%02d.%03d",$h,$m,$s,$ms);
+}
+
+
 /*echo formatNumberAsString("0")."\n";
 echo formatNumberAsString("10")."\n";
 echo formatNumberAsString("100")."\n";

@@ -25,6 +25,7 @@ $modules->setTaskDefaults($data['type'],$data);
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$data['corpus']);
 if(!$corpus->loadData())addError("Invalid corpus");
+if(!$corpus->hasRights("readwrite"))addError("Invalid corpus");
 
 $tasks=new Task($corpus);
 

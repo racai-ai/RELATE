@@ -29,8 +29,10 @@ class Corpora {
             if(!is_file($fdata))continue;
 
             $c=new Corpus($this,$file);
-            if($c->loadData()){            
-                $corpora[]=$c->getAllData();
+            if($c->loadData()){
+                if($c->hasRights("read")){
+                    $corpora[]=$c->getAllData();
+                }
             }
         }
         closedir($dh);

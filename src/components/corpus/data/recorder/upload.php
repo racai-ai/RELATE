@@ -5,6 +5,7 @@ if(!isset($_REQUEST['corpus']) || !isset($_FILES['blob']))die("Invalid call");
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$_REQUEST['corpus']);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("readwrite"))die("Invalid corpus");
 
 $rname=$user->getProfile("recorder_name","UNKNOWN");
 

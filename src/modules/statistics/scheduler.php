@@ -10,6 +10,9 @@ function schedule($settings,$corpus,$task_name,$tdata){
         
       scheduleFilesFolder($corpus,$task_name);
       scheduleFolder($corpus,$settings->get("dir.annotated")."/",$task_name,"conllu");
+      scheduleAudioFolder($corpus,$task_name);
+      scheduleImageFolder($corpus,$task_name);
+      scheduleVideoFolder($corpus,$task_name);
 }
 
 ?>

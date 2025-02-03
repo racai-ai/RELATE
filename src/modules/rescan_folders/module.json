@@ -1,0 +1,19 @@
+{
+
+"order":200,
+
+"languages":["*"],
+
+"tasks":[
+    {
+				"name":"Rescan Folders",
+				"type":"rescan_folders",
+				"description":"Rescan corpus folders. Useful if there were changes performed outside of the web interface. It may be required to run a Statistics task afterwards.",
+				"scheduler":"scheduler.php:Modules\\rescan_folders\\schedule",
+				"runner":"runner.php:Modules\\rescan_folders\\runner",
+   				"additionalData":[
+				]
+		}
+]
+
+}

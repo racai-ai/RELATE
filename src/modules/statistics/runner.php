@@ -2,6 +2,8 @@
 
 namespace Modules\statistics;
 
+require_once "../lib/extern/getid3/getid3.php";
+
 function saveStat($fname,$newStat,$corpus,$trun){
     
     $fstat=$corpus->getFolderPath()."/statistics/${fname}_${trun}.json";
@@ -15,6 +17,15 @@ function saveStat($fname,$newStat,$corpus,$trun){
     
     storeFile($fstat,json_encode($stat));
 }
+
+function saveCSV($fname,$newStat,$corpus,$trun){
+    
+    $fstat=$corpus->getFolderPath()."/statistics/${fname}_".sprintf("%03d",$trun).".csv";
+    $fout=fopen($fstat,"a");
+    fputcsv($fout,$newStat);
+    fclose($fout);
+}
+
 
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
 
@@ -44,6 +55,29 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         $fsize=0;
         if($contentIn===false)$fsize=filesize($fnameIn);else $fsize=strlen($contentIn);
         saveStat("stat",["lines"=>intval($lines),"words"=>intval($words),"chars"=>intval($chars),"bytes"=>$fsize],$corpus,$trun);
+        
+        if($ftype=='text'){
+            if($contentIn===false)$contentIn=file_get_contents($data['fpath']);
+            $fTextUppercase="No";
+            $t1=mb_strtoupper($contentIn);
+            if($t1==$contentIn)$fTextUppercase="Yes";
+
+            $fTextLowercase="No";
+            $t1=mb_strtolower($contentIn);
+            if($t1==$contentIn)$fTextLowercase="Yes";            
+            
+            $textData=[
+                basename($data['fpath']),
+                $fsize,
+                intval($lines),
+                intval($words),
+                $chars,
+                $fTextUppercase,
+                $fTextLowercase,
+            ];
+            saveCSV("text.list",$textData,$corpus,$trun);
+        }
+
     }else if($ftype=='conllu'){
         $stat=["tok"=>0,"sent"=>0,"documents"=>1];
         $wordForm=[];
@@ -153,8 +187,6 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
             
         }
         
-        
-        
         saveStat("stat",$stat,$corpus,$trun);
         saveStat("wordform",$wordForm,$corpus,$trun);
         foreach($wordForm as $w=>$v)$wordForm[$w]=1;
@@ -174,6 +206,94 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         saveStat("eurovocmts",$allEurovocMts,$corpus,$trun);
         foreach($allEurovocMts as $w=>$v)$allEurovocMts[$w]=1;
         saveStat("eurovocmtsdf",$allEurovocMts,$corpus,$trun);
+        
+        $conllupData=[
+            basename($data['fpath']),
+            $stat['sent'],
+            $stat['tok'],
+            count($wordForm),
+            count($lemma),
+        ];
+        foreach(["ADJ","ADP","ADV","AUX","CCONJ","DET","INTJ","NOUN","NUM","PART","PRON","PROPN","PUNCT","SCONJ","SYM","VERB","X"] as $pos){
+            $n=0; if(isset($stat["UPOS.${pos}"]))$n=$stat["UPOS.${pos}"];
+            $conllupData[]=$n;
+        }
+        $totalNER=0;
+        foreach($stat as $k=>$v)if(startsWith($k,"NER."))$totalNER++;
+        $conllupData[]=$totalNER;
+        $totalNER=0;
+        foreach($stat as $k=>$v)if(startsWith($k,"NER.B-"))$totalNER++;
+        $conllupData[]=$totalNER;
+        
+        saveCSV("conllup.list",$conllupData,$corpus,$trun);
+        
+    }else if($ftype=="image"){
+        $stat=["image.number"=>1,"image.bytes"=>filesize($data['fpath'])];
+        $imageSizes=[];
+        $imageWidths=[];
+        $imageHeights=[];
+        $imageChannels=[];
+        $imageBits=[];
+        $imageMimes=[];
+        $imageData=[];
+        
+        $img=getimagesize($data['fpath']);
+        if(!isset($img["channels"]))$img["channels"]=3;
+        $imageWidths[$img[0]]=1;
+        $imageHeights[$img[1]]=1;
+        $imageChannels[$img['channels']]=1;
+        $imageBits[$img['bits']]=1;
+        $imageSizes[$img[0]."x".$img[1]]=1;
+        $imageMimes[$img['mime']]=1;
+        
+        saveStat("image.stat",$stat,$corpus,$trun);
+        saveStat("image.widths",$imageWidths,$corpus,$trun);
+        saveStat("image.heights",$imageHeights,$corpus,$trun);
+        saveStat("image.channels",$imageChannels,$corpus,$trun);
+        saveStat("image.bits",$imageBits,$corpus,$trun);
+        saveStat("image.mimes",$imageMimes,$corpus,$trun);
+        saveStat("image.sizes",$imageSizes,$corpus,$trun);
+        
+        $imageData=[basename($data['fpath']),$img[0],$img[1],$img['mime'],$img['channels'],$img['bits'],$stat['image.bytes']];
+        saveCSV("image.list",$imageData,$corpus,$trun);
+        
+    }else if($ftype=="audio"){
+        $stat=["audio.number"=>1,"audio.bytes"=>filesize($data['fpath'])];
+        $audioChannels=[];
+        $audioBits=[];
+        $audioCodec=[];
+        $audioSampleRate=[];
+        $audioMime=[];
+        
+        $getID3=new \getID3();
+        $info=$getID3->analyze($data['fpath']);
+        $stat['audio.duration_seconds']=$info['playtime_seconds'];
+        
+        $audioChannels[$info['audio']['channels']]=1;
+        $audioBits[$info['audio']['bits_per_sample']]=1;
+        $audioCodec[$info['audio']['codec']]=1;
+        $audioSampleRate[$info['audio']['sample_rate']]=1;
+        $audioMime[$info['mime_type']]=1;
+        
+        saveStat("audio.stat",$stat,$corpus,$trun);
+        saveStat("audio.channels",$audioChannels,$corpus,$trun);
+        saveStat("audio.bits",$audioBits,$corpus,$trun);
+        saveStat("audio.codec",$audioCodec,$corpus,$trun);
+        saveStat("audio.samplerate",$audioSampleRate,$corpus,$trun);
+        saveStat("audio.mime",$audioMime,$corpus,$trun);
+        
+        $audioData=[
+            basename($data['fpath']),
+            sprintf("%0.2f",$info['playtime_seconds']),
+            getTimeStrFromMS(round($info['playtime_seconds']*1000)),
+            $info['audio']['channels'],
+            $info['audio']['bits_per_sample'],
+            $info['audio']['codec'],
+            $info['audio']['sample_rate'],
+            $info['mime_type'],
+            $stat['audio.bytes']
+        ];
+        saveCSV("audio.list",$audioData,$corpus,$trun);
     }
     
     storeFile($corpus->getFolderPath()."/changed_statistics.json",json_encode(["changed"=>time()]));            

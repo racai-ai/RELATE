@@ -9,6 +9,7 @@ $fname=$_REQUEST['file'];
 $corpora=new Corpora();
 $corpus=new Corpus($corpora,$cname);
 if(!$corpus->loadData())die("Invalid corpus");
+if(!$corpus->hasRights("readwrite"))die("Invalid corpus");
 
 $meta=$corpus->getFileMeta($fname);
 if($meta===false)die("Invalid file");
