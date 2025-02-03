@@ -1164,7 +1164,10 @@ class Corpus {
     
     public function hasRights($rights, $checkuser=false){
         global $user;
-        if($checkuser===false)$checkuser=$user;
+        if($checkuser===false){
+            if(!isset($user) || $user===NULL)return true;
+            $checkuser=$user;
+        }
 
         if(!isset($this->data['rights']) || !is_array($this->data['rights'])){return true;}
         
