@@ -1188,6 +1188,53 @@ function viewPrevFileMeta(file){
 }
 
 
+function loadClassification(file){
+        if(hasClassification){
+        
+          var frm=document.getElementById('fileViewerText_classification_form');
+          if(frm!==undefined)frm.reset();
+          frm=document.getElementById('fileViewerBrat_classification_form');
+          if(frm!==undefined)frm.reset();
+          frm=document.getElementById('fileViewerAudio_classification_form');
+          if(frm!==undefined)frm.reset();
+          frm=document.getElementById('fileViewerImage_classification_form');
+          if(frm!==undefined)frm.reset();
+          frm=document.getElementById('fileViewerVideo_classification_form');
+          if(frm!==undefined)frm.reset();
+        
+          loadData("path=corpus/file_getclassification&corpus={{CORPUS_NAME}}&file="+file,function(data){
+                data=JSON.parse(data);
+                console.log(data);
+                if(data.status=="OK"){
+                    for(var i=0;i<classificationProfile.length;i++){
+                        var key=classificationProfile[i].variable;
+                        var value=false;
+                        if(data['data'][key]!==undefined)value=data['data'][key];
+                        if(value!==false){
+                            var el=false;
+                            el=document.getElementById('fileViewerText_classification_'+key);
+                            if(el!==undefined)el.value=value;
+                            
+                            el=document.getElementById('fileViewerBrat_classification_'+key);
+                            if(el!==undefined)el.value=value;
+
+                            el=document.getElementById('fileViewerAudio_classification_'+key);
+                            if(el!==undefined)el.value=value;
+
+                            el=document.getElementById('fileViewerImage_classification_'+key);
+                            if(el!==undefined)el.value=value;
+
+                            el=document.getElementById('fileViewerVideo_classification_'+key);
+                            if(el!==undefined)el.value=value;
+                        }
+                    }
+                
+                }
+          });
+        }
+    
+}    
+
 function viewFileText(file,showBrat=false){
     currentFileView=file;
     last_viewed_file=file;
@@ -1219,30 +1266,8 @@ function viewFileText(file,showBrat=false){
         setAttribute("loading","style","display:none;");
         setAttribute("fileViewerText","style","display:block;");
         document.getElementById("corpusfilename").innerHTML="File: <b>"+file+"</b>";
-        if(hasClassification && showBrat){
-        
-          var frm=document.getElementById('fileViewerText_classification_form');
-          if(frm!==undefined)frm.reset();
-          frm=document.getElementById('fileViewerBrat_classification_form');
-          if(frm!==undefined)frm.reset();
-        
-          loadData("path=corpus/file_getclassification&corpus={{CORPUS_NAME}}&file="+file,function(data){
-                data=JSON.parse(data);
-                console.log(data);
-                if(data.status=="OK"){
-                    for(var i=0;i<classificationProfile.length;i++){
-                        var key=classificationProfile[i].variable;
-                        var value=false;
-                        if(data['data'][key]!==undefined)value=data['data'][key];
-                        if(value!==false){
-                            document.getElementById('fileViewerText_classification_'+key).value=value;
-                            document.getElementById('fileViewerBrat_classification_'+key).value=value;
-                        }
-                    }
-                
-                }
-          });
-        }
+
+        loadClassification(file);
         
         console.log("hasCorrected=");console.log(hasCorrected);
         
@@ -1500,6 +1525,8 @@ function viewFileAudio(file){
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
     window.location.hash="#filevieweraudio:"+file+":"+previousHash;
 
+    loadClassification(changeFileExtension(file.substring(6),"txt"));
+
     loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
         if(data=="Invalid file")data="";
         document.getElementById('textFileViewerAudio').value=data;
@@ -1564,6 +1591,7 @@ function viewFileImage(file){
         });
     }        
 
+    loadClassification(changeFileExtension(file.substring(6),"txt"));
 
     loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
         if(data=="Invalid file")data="";
@@ -1612,6 +1640,8 @@ function viewFileVideo(file){
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
     window.location.hash="#fileviewervideo:"+file+":"+previousHash;
+
+    loadClassification(changeFileExtension(file.substring(6),"txt"));
 
     loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
         if(data=="Invalid file")data="";
@@ -1680,30 +1710,8 @@ function viewFileBrat(file){
     setAttribute("loading","style","display:none;");
     setAttribute("fileViewerBrat","style","display:block; height:100%;");
 
-    if(hasClassification){
-          var frm=document.getElementById('fileViewerText_classification_form');
-          if(frm!==undefined)frm.reset();
-          frm=document.getElementById('fileViewerBrat_classification_form');
-          if(frm!==undefined)frm.reset();
-        
-          loadData("path=corpus/file_getclassification&corpus={{CORPUS_NAME}}&file="+file,function(data){
-                data=JSON.parse(data);
-                console.log(data);
-                if(data.status=="OK"){
-                    for(var i=0;i<classificationProfile.length;i++){
-                        var key=classificationProfile[i].variable;
-                        var value=false;
-                        if(data['data'][key]!==undefined)value=data['data'][key];
-                        if(value!==false){
-                            document.getElementById('fileViewerText_classification_'+key).value=value;
-                            document.getElementById('fileViewerBrat_classification_'+key).value=value;
-                        }
-                    }
-                
-                }
-          });
-    }
-    
+    loadClassification(file);
+
     console.log("hasCorrected=");console.log(hasCorrected);
     
     if(hasCorrected){
