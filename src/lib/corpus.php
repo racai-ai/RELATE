@@ -752,6 +752,8 @@ class Corpus {
         
         $stat=["tok"=>0,"sent"=>0,"documents"=>0];
         $wordform=[];
+        $wordFirstLow=[];
+        $wordFirstUpper=[];
         $wordformdf=[];
         $lemma=[];
         $charsArr=[];
@@ -792,6 +794,10 @@ class Corpus {
                 $this->mergeStatistics($dpath,$stat);
             }else if(startsWith($file,"wordform_")){
                 $this->mergeStatistics($dpath,$wordform);
+            }else if(startsWith($file,"wordfirstlower_")){
+                $this->mergeStatistics($dpath,$wordFirstLow);
+            }else if(startsWith($file,"wordfirstupper_")){
+                $this->mergeStatistics($dpath,$wordFirstUpper);
             }else if(startsWith($file,"wordformdf_")){
                 $this->mergeStatistics($dpath,$wordformdf);
             }else if(startsWith($file,"lemma_upos_")){
@@ -985,6 +991,16 @@ class Corpus {
         arsort($wordform);
         $fp=fopen($base_dir."/statistics/list_wordform.csv","w");
         foreach($wordform as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($wordFirstLow);
+        $fp=fopen($base_dir."/statistics/list_wordfirstlower.csv","w");
+        foreach($wordFirstLow as $k=>$v)fputcsv($fp,[$k,$v]);
+        fclose($fp);
+
+        arsort($wordFirstUpper);
+        $fp=fopen($base_dir."/statistics/list_wordfirstupper.csv","w");
+        foreach($wordFirstUpper as $k=>$v)fputcsv($fp,[$k,$v]);
         fclose($fp);
 
         arsort($wordformdf);

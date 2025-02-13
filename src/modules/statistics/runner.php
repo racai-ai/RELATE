@@ -81,6 +81,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     }else if($ftype=='conllu'){
         $stat=["tok"=>0,"sent"=>0,"documents"=>1];
         $wordForm=[];
+        $wordFormLowFirst=[];
+        $wordFormUpperFirst=[];
         $lemma=[];
         $lemmaUPOS=[];
         $allIateTerms=[];
@@ -98,6 +100,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
             $iateTerms=[];
             $eurovocIds=[];
             $eurovocMts=[];
+            $firstTok=true;
             foreach($sentence->getTokenIterator() as $k_tok=>$token){
                 $stat['tok']++;  
                 
@@ -124,6 +127,23 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
                 }
                 if($eurovocmt!==false && $eurovocmt!=="_"){
                     foreach(explode(";",$eurovocmt) as $term)$eurovocMts[$term]=true;
+                }
+                
+                $formLowercase=mb_strtolower($form);
+                
+                if($firstTok)$firstTok=false;
+                else{
+                    $fc=mb_substr($form,0,1);
+                    $fcl=mb_substr($formLowercase,0,1);
+                    
+                    if($fcl==$fc){
+                        if(!isset($wordFormLowFirst[$formLowercase]))$wordFormLowFirst[$formLowercase]=1;
+                        else $wordFormLowFirst[$formLowercase]++;
+                    }
+                    if(mb_strtoupper($fc)==$fc){
+                        if(!isset($wordFormUpperFirst[$formLowercase]))$wordFormUpperFirst[$formLowercase]=1;
+                        else $wordFormUpperFirst[$formLowercase]++;
+                    }
                 }
                 
                 //list($id,$form,$lem,$upos,$xpos,$feats,$head,$deprel,$deps,$misc,$ner,$rest)=explode("\t",$line,12);
@@ -191,6 +211,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
         saveStat("wordform",$wordForm,$corpus,$trun);
         foreach($wordForm as $w=>$v)$wordForm[$w]=1;
         saveStat("wordformdf",$wordForm,$corpus,$trun);
+        saveStat("wordfirstlower",$wordFormLowFirst,$corpus,$trun);
+        saveStat("wordfirstupper",$wordFormUpperFirst,$corpus,$trun);
         saveStat("lemma",$lemma,$corpus,$trun);
         saveStat("chars",$charsArr,$corpus,$trun);
         saveStat("lemma_upos",$lemmaUPOS,$corpus,$trun);
