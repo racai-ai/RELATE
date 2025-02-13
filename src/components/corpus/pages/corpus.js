@@ -391,6 +391,14 @@ function openStatsWordForm(){
     viewFileCSV("statistics/list_wordform.csv");
 }
 
+function openStatsWordFirstLower(){
+    viewFileCSV("statistics/list_wordfirstlower.csv");
+}
+
+function openStatsWordFirstUpper(){
+    viewFileCSV("statistics/list_wordfirstupper.csv");
+}
+
 function openStatsLemma(){
     viewFileCSV("statistics/list_lemma.csv");
 }
@@ -2275,6 +2283,8 @@ function initGridStatistics(){
         var toolbar = { items: [
                 { type: 'button', label: 'Download Stats', listeners: [{ click: downloadStats}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'WordForm Stats', listeners: [{ click: openStatsWordForm}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Words First Upper', listeners: [{ click: openStatsWordFirstUpper}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Words First Lower', listeners: [{ click: openStatsWordFirstLower}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Lemma Stats', listeners: [{ click: openStatsLemma}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'WordForm Doc Freq', listeners: [{ click: openStatsWordFormDF}], icon: 'ui-icon-plus' },
                 { type: 'button', label: 'Letters Stats', listeners: [{ click: openStatsLetters}], icon: 'ui-icon-plus' },
