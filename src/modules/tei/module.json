@@ -1,0 +1,24 @@
+{
+
+"order":200,
+
+"languages":["*"],
+
+"tasks":[
+    {
+				"name":"TEI to Text",
+				"type":"tei_to_text",
+				"scheduler":"scheduler.php:Modules\\tei\\scheduleTEI2Text",
+				"runner":"runner.php:Modules\\tei\\runnerTEI2Text"
+	},
+
+    {
+				"name":"CONLLUP to TEI",
+				"type":"conllup_to_tei",
+				"scheduler":"scheduler.php:Modules\\tei\\scheduleCONLLUP2TEI",
+				"runner":"runner.php:Modules\\tei\\runnerCONLLUP2TEI"
+	}
+		
+]
+
+}
