@@ -73,4 +73,7 @@ require_once "${LIB_PATH}/pdf2text.php";
 require_once "${LIB_PATH}/education.php";
 require_once "${LIB_PATH}/educationresource.php";
 
+require_once "${LIB_PATH}/repository.php";
+require_once "${LIB_PATH}/repositoryresource.php";
+
 ?>
