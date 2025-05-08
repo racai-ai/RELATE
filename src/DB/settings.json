@@ -9,6 +9,8 @@
 
 "platform.default_page":"platform/home",
 
+"service.curl_verbose":true,
+
 "dir.annotated":"basic_tagging",
 "dir.files":"files",
 
