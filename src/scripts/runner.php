@@ -137,13 +137,18 @@ function runTask($runner,$data){
 
     /***** CONLLU *****/
     }else if($data['ftype']=='conllu'){
-    		$contentIn=file_get_contents($data['fpath']);
-				$modules->runTask($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut);
+    	$contentIn=file_get_contents($data['fpath']);
+		$modules->runTask($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut);
 
     /***** TEXT *****/
     }else if($data['ftype']=='text'){
-    		$contentIn=file_get_contents($data['fpath']);
-				$modules->runTask($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut);
+    	$contentIn=file_get_contents($data['fpath']);
+		$modules->runTask($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut);
+
+    /***** TEXT *****/
+    }else if($data['ftype']=='tei'){
+    	$contentIn=file_get_contents($data['fpath']);
+		$modules->runTask($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut);
 
     }else{
 			$modules->runTask($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut);
