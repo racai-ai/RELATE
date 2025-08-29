@@ -1,0 +1,63 @@
+{
+"order":100,
+
+"menu":[
+      {
+        "label":"Projects",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"projects/list",
+        "menu":[
+            {"label":"Project List", "path":"projects/list"},
+            {"label":"Persons", "path":"projects/persons_list"},
+            {"label":"Holidays", "path":"projects/holidays"}
+        ]
+        
+      }
+
+],
+
+"handlers":[
+		{"path":"projects/list","script":"pages/list.php"},
+		{"path":"projects/project","script":"pages/project.php"},
+		{"path":"projects/persons_list","script":"pages/persons_list.php"},
+		{"path":"projects/person","script":"pages/person.php"},
+		{"path":"projects/holidays","script":"pages/holidays.php"},
+        
+		{"path":"projects/holidays_get","script":"data/holidays_get.php", "data":true},
+		{"path":"projects/holidays_add","script":"data/holidays_add.php", "data":true},
+
+		{"path":"projects/persons_list_get","script":"data/persons_list_get.php", "data":true},
+		{"path":"projects/persons_list_add","script":"data/persons_list_add.php", "data":true},
+		{"path":"projects/person_unavailability_get","script":"data/person_unavailability_get.php", "data":true},
+		{"path":"projects/person_unavailability_add","script":"data/person_unavailability_add.php", "data":true},
+
+
+		{"path":"projects/get_list","script":"data/get_list.php", "data":true},
+		{"path":"projects/list_add","script":"data/list_add.php", "data":true},
+
+		{"path":"projects/project_rights_add","script":"data/project_rights_add.php", "data":true},
+		{"path":"projects/project_rights_edit","script":"data/project_rights_edit.php", "data":true},
+		{"path":"projects/project_rights_delete","script":"data/project_rights_delete.php", "data":true},
+		{"path":"projects/project_rights_get","script":"data/project_rights_get.php", "data":true},
+
+
+		{"path":"projects/project_team_add","script":"data/project_team_add.php", "data":true},
+		{"path":"projects/project_team_get","script":"data/project_team_get.php", "data":true},
+        
+		{"path":"projects/project_work_add","script":"data/project_work_add.php", "data":true},
+		{"path":"projects/project_work_get","script":"data/project_work_get.php", "data":true},
+		{"path":"projects/project_work_editmonth","script":"data/project_work_editmonth.php", "data":true},
+		{"path":"projects/project_work_syncmonth","script":"data/project_work_syncmonth.php", "data":true},
+
+		{"path":"projects/project_workitems_add","script":"data/project_workitems_add.php", "data":true},
+		{"path":"projects/project_workitems_get","script":"data/project_workitems_get.php", "data":true},
+
+		{"path":"projects/project_reports_add","script":"data/project_reports_add.php", "data":true},
+		{"path":"projects/project_reports_get","script":"data/project_reports_get.php", "data":true},
+		{"path":"projects/project_reports_generate","script":"data/project_reports_generate.php", "data":true},
+		{"path":"projects/project_reports_generated_get","script":"data/project_reports_generated_get.php", "data":true},
+		{"path":"projects/project_reports_generated_file","script":"data/project_reports_generated_file.php", "data":true}
+
+]
+
+}
