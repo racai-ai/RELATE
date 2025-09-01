@@ -160,30 +160,40 @@ function getOverallMaxDailyHours(person){
 
 function updateTotalsSummary(){
     var monthTotalHours=0;
-    var monthTotalCost=0;
+    var monthTotalPrjHours=0;
+    var monthTotalPrjCost=0;
     members.forEach(function(mem){
         monthTotalHours+=parseInt(document.getElementById("total#"+mem['name']).innerText);
-        monthTotalCost+=parseInt(document.getElementById("totalcost#"+mem['name']).innerText);
+        monthTotalPrjHours+=parseInt(document.getElementById("totalprj#"+mem['name']).innerText);
+        monthTotalPrjCost+=parseInt(document.getElementById("totalprjcost#"+mem['name']).innerText);
     });
     document.getElementById("total#month").innerText=monthTotalHours;
-    document.getElementById("totalcost#month").innerText=monthTotalCost;
+    document.getElementById("totalprj#month").innerText=monthTotalPrjHours;
+    document.getElementById("totalprjcost#month").innerText=monthTotalPrjCost;
     
 }
 
 function updateTotals(person){
     var allErrors="";
     var allTotal=0;
+    var allTotalPrj=0;
+    var allTotalOther=0;
    
     for(var d=1;d<=31;d++){
         ret=updateTotalsDay(person,d);
         allErrors+=ret["error"];
         allTotal+=ret["total"];
+        allTotalPrj+=ret["totalPrj"];
+        allTotalOther+=ret["totalOther"];
     }
     
     var allCost=allTotal * getProjectHourCost(person);
+    var allCostPrj=allTotalPrj * getProjectHourCost(person);
+    var allCostOther=allTotalOther * getProjectHourCost(person);
     document.getElementById("errormessages#"+person).innerText=allErrors;
     document.getElementById("total#"+person).innerText=allTotal;
-    document.getElementById("totalcost#"+person).innerText=allCost;
+    document.getElementById("totalprj#"+person).innerText=allTotalPrj;
+    document.getElementById("totalprjcost#"+person).innerText=allCostPrj;
     
     updateTotalsSummary();
 }
@@ -233,7 +243,7 @@ function updateTotalsDay(person, day){
         removeClass("total#"+person+"#"+day,"error");
     }
      
-    return {error:error, total:total};
+    return {error:error, total:total, totalPrj:totalPrj, totalOther:totalOther};
 }
 
 function saveData(){
@@ -381,8 +391,9 @@ foreach($prj->getTeamMembers() as $per){
         if($tm['name']==$pname)$member=$tm;
     }
     $totalCost=$totalHours*$member['hour_cost'];
-    echo "<p class=\"totals\">Total hours: <span id=\"total#$pname\">$totalHours</span></p>";
-    echo "<p class=\"totals\">Total cost: <span id=\"totalcost#$pname\">$totalCost</span></p>";
+    echo "<p class=\"totals\">Total Project Hours: <span id=\"totalprj#$pname\">$totalHours</span></p>";
+    echo "<p class=\"totals\">Total Hours: <span id=\"total#$pname\">$totalHours</span></p>";
+    echo "<p class=\"totals\">Total Project Cost: <span id=\"totalprjcost#$pname\">$totalCost</span></p>";
     $monthTotalHours+=$totalHours;
     $monthTotalCost+=$totalCost;
     
@@ -395,8 +406,9 @@ foreach($prj->getTeamMembers() as $per){
 
 echo "<div class=\"summary\">";
 echo "<p class=\"person\">Month Summary  <input type=\"button\" onclick=\"saveData();\" name=\"save\" value=\"Save\"/></p>";
-echo "<p class=\"totals\">Total hours: <span id=\"total#month\">$monthTotalHours</span></p>";
-echo "<p class=\"totals\">Total cost: <span id=\"totalcost#month\">$monthTotalCost</span></p>";
+echo "<p class=\"totals\">Total Project Hours: <span id=\"totalprj#month\">$monthTotalHours</span></p>";
+echo "<p class=\"totals\">Total Hours: <span id=\"total#month\">$monthTotalHours</span></p>";
+echo "<p class=\"totals\">Total Project Cost: <span id=\"totalprjcost#month\">$monthTotalCost</span></p>";
 echo "</div>\n";
 
 ?>
