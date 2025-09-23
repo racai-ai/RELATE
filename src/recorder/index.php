@@ -9,6 +9,7 @@
 <input type="hidden" name="name" value="recorder_corpus"/>
 
 <label for="fuser">Nume:</label><input type="text" id="fuser" name="fuser" value="" style="width:200px;"/>
+<input type="submit" name="go" value="START"/>
 </form>
 
 </body>
