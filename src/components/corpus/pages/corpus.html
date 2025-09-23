@@ -1,9 +1,11 @@
 
               <div class="masonry-item col-md-12">
                 <div class="bgc-white p-20 bd">
-                  <h6 class="c-grey-900">Corpus: <b>{{CORPUS_NAME_HTML}}</b> &nbsp;&nbsp; <div style="display:inline" id="corpusfilename"></div> &nbsp;&nbsp;
+                
+                  <h6 class="c-grey-900" style="display:none">Corpus: <b>{{CORPUS_NAME_HTML}}</b> &nbsp;&nbsp; <div style="display:inline" id="corpusfilename"></div> &nbsp;&nbsp;
                   <button type="button" class="btn cur-p btn-secondary" onclick="window.location='index.php?path=corpus/list'">View Corpora</button>
                   </h6>
+                  
                   <div class="mT-30" style="height:1100px;">
 
                    {{LOADING}}
@@ -510,7 +512,7 @@
                     
                     <!-- AUDIO RECORDER -->
                     <div style="display:none" id="recorderView">
-                      <button type="button" class="btn cur-p btn-secondary" onclick="closeRecorder();">Back</button>
+                      <!-- <button type="button" class="btn cur-p btn-secondary" onclick="closeRecorder();">Back</button> -->
                       Recording as: [<div id="divRecorderName" style="display:inline">{{RECORDER_NAME}}</div>]
                       <div class="mT-30">
 

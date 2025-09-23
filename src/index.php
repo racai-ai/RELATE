@@ -36,6 +36,22 @@ if(!$user->isLoggedIn() && isset($_REQUEST['path']) &&
     $user->initFromHeaders();
 }
 
+if(!$user->isLoggedIn() && isset($_REQUEST['fuser']) && $user->isValidUsernameString($_REQUEST['fuser'])){
+    $fuser=$_REQUEST['fuser'];
+    if(!$user->loadUser($fuser)){
+        $data=[
+            "username"=>$fuser,
+            "password"=>"dummy",
+            "name"=>$fuser,
+        ];
+        $user->create($data);
+        $user->loadUser($fuser);
+        $user->setRights(["corpus"]);
+        $user->setProfile("recorder_name",$fuser);
+        $user->writeProfile();
+    }
+}
+
 if(isset($_REQUEST['path']) && isset($HANDLERS[$_REQUEST['path']]) && $user->hasAccess($HANDLERS[$_REQUEST['path']]['rights']))
     $PLATFORM['path']=$_REQUEST['path'];
 

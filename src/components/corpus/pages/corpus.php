@@ -161,6 +161,7 @@ function getPageContent(){
     $html=str_replace("{{TASK-DIALOG}}",$modules_task_dialog,$html);
     
     $html=str_replace("{{CORPUS_NAME_HTML}}",htmlspecialchars($_REQUEST['name']),$html);
+    $html=str_replace("{{FUSER}}",(isset($_REQUEST['fuser']))?$_REQUEST['fuser']:"",$html);
     $html=str_replace("{{CORPUS_NAME}}",$_REQUEST['name'],$html);
     $html=str_replace("{{CORPUS_LANG}}",$corpus->getData("lang",""),$html);
     $html=str_replace("{{RECORDER_NAME}}",$user->getProfileHTML("recorder_name",""),$html);
@@ -252,6 +253,7 @@ function getPageJS(){
     $js=str_replace("{{TASKS-INIT}}",$modules->getTaskInit($corpus),$js);
 
     $js=str_replace("{{CORPUS_NAME}}",$_REQUEST['name'],$js);
+    $js=str_replace("{{FUSER}}",(isset($_REQUEST['fuser']))?$_REQUEST['fuser']:"",$js);
     $js=str_replace("{{CORPUS_LANG}}",$corpus->getData("lang",""),$js);
     $js=str_replace("{{RECORDER_NAME}}",$user->getProfileJS("recorder_name",""),$js);
     $js=str_replace("{{HAS_AUDIO}}",$hasAudio,$js);

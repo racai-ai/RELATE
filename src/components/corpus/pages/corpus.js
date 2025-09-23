@@ -485,7 +485,7 @@ function recorderClick(){
 }
 
 function recorderShow(){
-			 loadData("path=recorder/get_data&corpus={{CORPUS_NAME}}",function(data){
+			 loadData("path=recorder/get_data&corpus={{CORPUS_NAME}}&fuser={{FUSER}}",function(data){
 			 			console.log(data);
 			 			data=JSON.parse(data);
 			 			if(data["status"]==="OK"){
@@ -571,6 +571,7 @@ function startRecorder(){
 						var data = new FormData();
 						data.append('path', 'recorder/upload');
 						data.append('corpus','{{CORPUS_NAME}}');
+						data.append('fuser','{{FUSER}}');
 						data.append('blob', blob);				    
 				    loadData(data,function(d){
 				    		console.log("Uploaded");

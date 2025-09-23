@@ -41,7 +41,8 @@ class User {
     }
     
     public function isValidUsernameString($un){
-        return strlen($un)>2 && preg_match("/[^a-z0-9@.-]/",$un)===0 && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;
+        $un=mb_strtolower($un);
+        return strlen($un)>2 && preg_match("/[^a-z ăîâșț0-9@.-]/",$un)===0 && $un[0]!='.' && $un[0]!='-' && $un[0]!='@' && strlen($un)<200;
     }
     
     public function getUserPath($un,$create){
