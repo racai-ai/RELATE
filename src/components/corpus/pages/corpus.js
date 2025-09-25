@@ -551,7 +551,7 @@ function startRecorder(){
 			 /* use the stream */
 			 var input = audioContext.createMediaStreamSource(stream);
 			 //stop the input from playing back through the speakers 
-			 input.connect(audioContext.destination) //get the encoding 
+			 //input.connect(audioContext.destination) //get the encoding 
 			 var recorder = new WebAudioRecorder(input, {
 			     workerDir: "extern/web_audio_recorder/",
 			     encoding: "wav",
@@ -565,6 +565,7 @@ function startRecorder(){
 			     }
 			 });
 			 
+             
 				recorder.onComplete = function(recorder, blob) {
 				    console.log("Encoding complete");
 				    
