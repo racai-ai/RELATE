@@ -72,6 +72,20 @@ foreach($witems as $wi){
     $repl["{{WI.${wi}.TOTALHOURS}}"]=$totalWIp;
 }
 
+// Add OTHER
+$repl["{{WI.OTHER.DESCRIPTION}}"]="";
+$repl["{{WI..DESCRIPTION}}"]="";
+$wi="";
+$totalWIp=0;
+for($i=1;$i<=31;$i++){
+    $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):("0");
+    $repl["{{WI.${wi}.${i}}}"]=$wiwork;
+    $repl["{{WI.OTHER.${i}}}"]=$wiwork;
+    $totalWIp+=intval($wiwork);
+}
+$repl["{{WI.${wi}.TOTALHOURS}}"]=$totalWIp;
+$repl["{{WI.OTHER.TOTALHOURS}}"]=$totalWIp;
+
 // All persons
 foreach($members as $mname=>$member){
     foreach($witems as $wi){
@@ -84,6 +98,21 @@ foreach($members as $mname=>$member){
         }
         $repl["{{WI.${wi}.$mname.TOTALHOURS}}"]=$totalWIp;
     }
+    
+    // Add OTHER
+    $wi="";
+    $repl["{{WI.${wi}.$mname.DESCRIPTION}}"]="";
+    $repl["{{WI.OTHER.$mname.DESCRIPTION}}"]="";
+    $totalWIp=0;
+    for($i=1;$i<=31;$i++){
+        $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):("0");
+        $repl["{{WI.${wi}.$mname.${i}}}"]=$wiwork;
+        $repl["{{WI.OTHER.$mname.${i}}}"]=$wiwork;
+        $totalWIp+=intval($wiwork);
+    }
+    $repl["{{WI.${wi}.$mname.TOTALHOURS}}"]=$totalWIp;
+    $repl["{{WI.OTHER.$mname.TOTALHOURS}}"]=$totalWIp;
+    
 }
 
 $rpath=$prj->getFolderPath()."/reports/".$rep['name'];
