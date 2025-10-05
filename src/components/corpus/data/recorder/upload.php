@@ -8,10 +8,13 @@ if(!$corpus->loadData())die("Invalid corpus");
 if(!$corpus->hasRights("readwrite"))die("Invalid corpus");
 
 $rname=$user->getProfile("recorder_name","UNKNOWN");
-
 $data=$corpus->getAudioDataNext($rname);
-$current=$data['current'];
-if($current<0)die("Invalid current file");
+
+if(isset($_REQUEST['current']))$current=intval($_REQUEST['current'])-1;
+else{
+    $current=$data['current'];
+}
+if($current<0 || $current>intval($data['total']))die("Invalid current file");
 
 $fname=$rname."_".$current.".wav";
 $path=$corpus->getFolderPath()."/audio/";

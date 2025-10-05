@@ -530,6 +530,11 @@
 															<button type="button" id="bStopRecorder" class="btn cur-p btn-danger" onclick="stopRecorder();">STOP</button>
 													</div>
 													
+													<div id="divRecorderPlayback" style="text-align:center; padding:10px; display:none">
+                                                        <audio id="recorderPlayback" controls style="vertical-align:middle"></audio>
+                                                        <button type="button" id="bNextRecorder" class="btn cur-p btn-danger" style="width:100px; text-align:center" onclick="nextRecorder();">NEXT</button>
+                                                    </div>
+                                                    
 													<div id="divRecorderDone" style="display:none">
 															Congratulations! You recorded everything!
 													</div>

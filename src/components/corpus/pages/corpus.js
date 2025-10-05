@@ -493,6 +493,7 @@ function recorderShow(){
 							    if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
 							    window.location.hash="#recorder:"+previousHash;
 							    
+                                recorderCurrent=data["current"];
 							    document.getElementById("recorderSentence").innerText=data["sentence"];
 							    document.getElementById("recorderCurrent").innerText=data["current"];
 							    document.getElementById("recorderTotal").innerText=data["total"];
@@ -535,6 +536,25 @@ function closeRecorder(){
 var recorderStream=false;
 var recorderWebAudioRecorder=false;
 
+var nextRecorderSentence=false;
+var nextRecorderCurrent=false;
+var nextRecorderTotal=false;
+var recorderCurrent=-1;
+
+function nextRecorder(){
+    document.getElementById("divRecorderPlayback").style="text-align:center; padding:10px; display:none";
+    
+    document.getElementById("recorderSentence").innerText=nextRecorderSentence;
+    document.getElementById("recorderCurrent").innerText=nextRecorderCurrent;
+    document.getElementById("recorderTotal").innerText=nextRecorderTotal;
+    recorderCurrent=nextRecorderCurrent;
+    
+    if(nextRecorderCurrent>nextRecorderTotal || nextRecorderCurrent<0){
+            setAttribute("divRecorderDone","style","display:block; text-align:center");
+            setAttribute("divRecorderControls","style","display:none;");
+        }
+}    
+
 function startRecorder(){
 
 		navigator.mediaDevices.getUserMedia({audio:true,video:false}).then(function(stream) {
@@ -573,7 +593,8 @@ function startRecorder(){
 						data.append('path', 'recorder/upload');
 						data.append('corpus','{{CORPUS_NAME}}');
 						data.append('fuser','{{FUSER}}');
-						data.append('blob', blob);				    
+						data.append('blob', blob);	
+                        data.append('current',recorderCurrent);
 				    loadData(data,function(d){
 				    		console.log("Uploaded");
 				    		console.log(d);
@@ -581,14 +602,11 @@ function startRecorder(){
 				    		try{
 						    		var data=JSON.parse(d);
 						    		if(data["status"]==="OK"){
-									    document.getElementById("recorderSentence").innerText=data["sentence"];
-									    document.getElementById("recorderCurrent").innerText=data["current"];
-									    document.getElementById("recorderTotal").innerText=data["total"];
-									    
-									    if(data['current']>data['total'] || data['current']<0){
-									    		setAttribute("divRecorderDone","style","display:block; text-align:center");
-									    		setAttribute("divRecorderControls","style","display:none;");
-											}
+                                            nextRecorderSentence=data["sentence"];
+                                            nextRecorderCurrent=data["current"];
+                                            nextRecorderTotal=data["total"];
+                                            document.getElementById("divRecorderPlayback").style="text-align:center; padding:10px";
+                                            document.getElementById("recorderPlayback").src=URL.createObjectURL(blob);
 						    				
 										}else{
 												alert("Error uploading file");
