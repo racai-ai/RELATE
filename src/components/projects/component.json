@@ -58,6 +58,7 @@
 		{"path":"projects/project_reports_add","script":"data/project_reports_add.php", "data":true,"rights":["projects"]},
 		{"path":"projects/project_reports_get","script":"data/project_reports_get.php", "data":true,"rights":["projects"]},
 		{"path":"projects/project_reports_generate","script":"data/project_reports_generate.php", "data":true,"rights":["projects"]},
+		{"path":"projects/project_reports_generate_period","script":"data/project_reports_generate_period.php", "data":true,"rights":["projects"]},
 		{"path":"projects/project_reports_generated_get","script":"data/project_reports_generated_get.php", "data":true,"rights":["projects"]},
 		{"path":"projects/project_reports_generated_file","script":"data/project_reports_generated_file.php", "data":true,"rights":["projects"]},
 
