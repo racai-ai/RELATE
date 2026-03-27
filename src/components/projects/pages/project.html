@@ -1,0 +1,222 @@
+
+              <div class="masonry-item col-md-12">
+                <div class="bgc-white p-20 bd">
+                  <h6 class="c-grey-900">Corpus: <b>{{PROJECT_NAME_HTML}}</b> &nbsp;&nbsp; <div style="display:inline" id="corpusfilename"></div> &nbsp;&nbsp;
+                  <button type="button" class="btn cur-p btn-secondary" onclick="window.location='index.php?path=projects/list'">View Projects</button>
+                  </h6>
+                  <div class="mT-30" style="height:1100px;">
+
+                   {{LOADING}}
+                    
+<!-- AICI INCEPE ZONA DE BUTOANE -->
+
+
+                    <div style="display:block" id="output">
+                        <div style="height: 40px;">
+                        <button type="button" id="bOutput1"  class="btn cur-p btn-success"   onclick="showOutput(1,8,'project');">Project</button>
+                        <button type="button" id="bOutput2"  class="btn cur-p btn-secondary" onclick="showOutput(2,8,'team');" >Team</button>
+                        <button type="button" id="bOutput8"  class="btn cur-p btn-secondary" onclick="showOutput(8,8,'workitems');" >Work Items</button>
+                        <button type="button" id="bOutput6"  class="btn cur-p btn-secondary" onclick="showOutput(6,8,'reports');" >Reports</button>
+                        <button type="button" id="bOutput3"  class="btn cur-p btn-secondary" onclick="showOutput(3,8,'work');" >Work</button>
+                        <button type="button" id="bOutput7"  class="btn cur-p btn-secondary" onclick="showOutput(7,8,'reportsgen');" >Generated Reports</button>
+                        <button type="button" id="bOutput4"  class="btn cur-p btn-secondary" onclick="showOutput(4,8,'properties');" style="{{hidepropertiesbutton}}">Properties</button>
+                        <button type="button" id="bOutput5"  class="btn cur-p btn-secondary" onclick="showOutput(5,8,'rights');" style="{{hiderightsbutton}}">Rights</button>
+                        </div>
+                        <div style="margin-top:10px; height:calc(100% - 40px);">  <!-- Output Area -->
+                        
+                        <!-- Project -->
+                        <div id="output1">
+                            <p>This page is currently empty. Select other pages.</p>
+                        </div>
+                        
+                        <!-- Team -->
+                        <div id="output2" style="display:none">
+                                <div id="gridTeam" style="margin:auto;"></div>
+                                                                
+                                <div id="teamadd-dialog" style="display:none;">
+                                <form id="teamadd-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_team_add">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <table align="center"><tbody>
+                                        <tr><td>Name:</td><td><select name="name">{{PROJECTS_PERSONS}}</select></td></tr>
+                                        <tr><td>Supervisor:</td><td><select name="supervisor">{{PROJECTS_PERSONS}}</select></td></tr>
+                                        <tr><td>Position:</td><td><input type="text" name="position" size="50"/></td></tr>
+                                        <tr><td>Hour Cost:</td><td><input type="text" name="hour_cost" size="10" value="0"/></td></tr>
+                                        <tr><td>Max Daily Hours:</td><td><input type="text" name="max_daily_hours" size="10" value="4"/></td></tr>
+                                        <tr><td>Max Month Hours:</td><td><input type="text" name="max_month_hours" size="10" value="0"/></td></tr>
+                                        <tr><td>Max Month Salary:</td><td><input type="text" name="max_month_cost" size="10" value="0"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                        </div>
+
+                        <!-- Work -->
+                        <div id="output3" style="display:none">
+                                <div id="gridWork" style="margin:auto;"></div>
+                                                                
+                                <div id="workadd-dialog" style="display:none;">
+                                <form id="workadd-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_work_add">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <table align="center"><tbody>
+                                        <tr><td>Work Item:</td><td><select name="workitem">{{PROJECT_WORK_ITEMS}}</select></td></tr>
+                                        <tr><td>Name:</td><td><select name="name">{{PROJECT_TEAM_MEMBERS}}</select></td></tr>
+                                        <tr><td>Date:</td><td><input type="date" name="date" size="10" value="{{CURRENT_DATE}}"/></td></tr>
+                                        <tr><td>Hours:</td><td><input type="text" name="hours" size="10" value="0"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="description" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="workeditmonth-dialog" style="display:none;">
+                                <form id="workeditmonth-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <table align="center"><tbody>
+                                        <tr><td>Month:</td><td><input type="month" name="month" size="10"/></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                        </div>
+                        
+                        <!-- Reports -->
+                        <div id="output6" style="display:none">
+                                <div id="gridReports" style="margin:auto;"></div>
+                                                                
+                                <div id="reportsadd-dialog" style="display:none;">
+                                <form id="reportsadd-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_report_add">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <table align="center"><tbody>
+                                        <tr><td>Name:</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>File:</td><td><input type="file" id="fileReport" name="file" size="50" accept="application/docx, application/xlsx"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="description" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+
+                        </div>
+
+                        <!-- Reports Generated -->
+                        <div id="output7" style="display:none">
+                                <div id="gridReportsGenerated" style="margin:auto;"></div>
+                                                                
+                                <div id="reportsGenerateMonth-dialog" style="display:none;">
+                                <form id="reportsGenerateMonth-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_report_generate">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <input type="hidden" name="gentype" value="month">
+                                    <table align="center"><tbody>
+                                        <tr><td>Report:</td><td><select name="name">{{PROJECT_REPORTS}}</select></td></tr>
+                                        <tr><td>Month:</td><td><input type="month" name="month" /></td></tr>
+                                        <tr><td>Person:</td><td><select name="person">
+                                            <option value="ALL">ALL</option>
+                                            {{PROJECT_TEAM_MEMBERS}}
+                                        </select></td></tr>
+                                        <tr><td>Sign Date:</td><td><input type="date" name="signdate" /></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                                <div id="reportsGeneratePeriod-dialog" style="display:none;">
+                                <form id="reportsGeneratePeriod-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_reports_generate_period">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <input type="hidden" name="gentype" value="period">
+                                    <table align="center"><tbody>
+                                        <tr><td>Report:</td><td><select name="name">{{PROJECT_REPORTS}}</select></td></tr>
+                                        <tr><td>Month 1:</td><td><input type="month" name="month" /></td></tr>
+                                        <tr><td>Month 2:</td><td><input type="month" name="month2" /></td></tr>
+                                        <tr><td>Person:</td><td><select name="person">
+                                            <option value="ALL">ALL</option>
+                                            {{PROJECT_TEAM_MEMBERS}}
+                                        </select></td></tr>
+                                        <tr><td>Sign Date:</td><td><input type="date" name="signdate" /></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                        </div>
+                        
+                        <!-- Work Items -->
+                        <div id="output8" style="display:none">
+                                <div id="gridWorkItems" style="margin:auto;"></div>
+                                                                
+                                <div id="workitemsadd-dialog" style="display:none;">
+                                <form id="workitemsadd-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_workitems_add">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <table align="center"><tbody>
+                                        <tr><td>Name:</td><td><input type="text" name="name" size="50"/></td></tr>
+                                        <tr><td>Description:</td><td><textarea name="description" rows="4" cols="50"></textarea></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+
+                        </div>
+                        
+                        
+                        <!-- PROPERTIES -->
+                        <div style="display:none" id="output4">
+                            <form id="projectPropertiesForm" method="POST" enctype="multipart/form-data" action="index.php">
+                                <input type="hidden" name="path" value="projects/project_set_properties">
+                                <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                
+                                <table align="center">
+                                <tbody>
+                                <tr>
+                                    <td><label for="propdesc">Description:</label></td>
+                                    <td><textarea name="propdesc" id="propdesc" rows="4" cols="50">{{propdesc}}</textarea></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:center">
+                                        <input type="submit" name="submit" value="SAVE"/>
+                                    </td>
+                                </tr>
+                                </tbody></table>
+                                
+                            </form>
+                        </div>
+                        
+                        <!-- Rights -->
+                        <div style="display:none" id="output5">
+                                <div id="gridRights" style="margin:auto;"></div>
+
+                                <div id="popup-dialog-crud-rights" style="display:none;">
+                                <form id="crud-form-rights" method="POST" enctype="multipart/form-data" action="index.php" onsubmit="return false;">
+                                    <table align="center"><tbody>
+                                        <tr><td><label for="username_pattern">Username Pattern:</label></td>
+                                            <td><input type="text" name="username_pattern" id="username_pattern" size="50"></td>
+                                        </tr>
+                                        <tr><td><label for="rights">Rights:</label></td>
+                                            <td><select name="rights">
+                                                <option value="admin">Admin</option>
+                                                <option value="readwrite">Read and Write</option>
+                                                <option value="read">Read only</option>
+                                            </select>
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2">
+                                        The username pattern is a regular expression. A complete username means an exact match. 
+                                        ".*" means everyone. 
+                                        ".*@racai[.]ro" means everyone with an email address in the racai.ro domain.
+                                        Don't enter the quotes. 
+                                        The pattern will be applied as preg_match("/^&lt;PATTERN&gt;$/i"). The "i" indicates case-insensitive match.
+                                        </td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
+                        </div>
+                        
+                        
+                        
+                        </div> <!-- End Output Area -->
+                        
+                    </div>                    
+                    
+                    
+                    
+<!-- AICI SE TERMINA ZONA DE BUTOANE -->
+
+                  </div>
+                </div>
+              </div>
