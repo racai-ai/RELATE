@@ -9,7 +9,7 @@ if(!isset($_REQUEST['date']))die("Invalid call");
 if(!isset($_REQUEST['signdate']))die("Invalid call");
 
 $prj=getProjectForReport($_REQUEST['project']);
-$rep=getReportByName($_REQUEST['name']);
+$rep=getReportByName($prj,$_REQUEST['name']);
 $signdate=$_REQUEST['signdate'];
 $pname=$_REQUEST['person'];
 

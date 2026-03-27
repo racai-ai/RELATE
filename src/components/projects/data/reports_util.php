@@ -13,7 +13,7 @@ function getProjectForReport($name){
   return $prj;
 }
 
-function getReportByName($name){
+function getReportByName($prj,$name){
   $found=false;
   foreach($prj->getReports() as $rep){
       if($rep['name']==$name){$found=true; break;}
