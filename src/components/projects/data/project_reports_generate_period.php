@@ -18,20 +18,33 @@ $date1=$_REQUEST['date'];
 $month1=0; if(strlen($date1)>=7)$month1=intval(substr($date1,5,2));
 $year1=intval(substr($date1,0,4));
 
-$date2=$_REQUEST['date'];
+$date2=$_REQUEST['date2'];
 $month2=0; if(strlen($date2)>=7)$month2=intval(substr($date2,5,2));
 $year2=intval(substr($date2,0,4));
 
-for($year=$year1, $month=$month1; $year!=$year2 && $month!=$month2;$year+=($month==12)?(1):(0), $month=($month==12)?(1):($month+1)){
+$year=$year1;
+$month=$month1;
+$finalRepl=false;
+while(true){
     $date="$year-$month";
+
     $repl=getReplDataCommon($date, $signdate, $year, $month, $pname);
     $repl=array_merge($repl, getProjectReplData($prj,false,$year,$month,$pname,$date,$signdate));
 
-    var_dump($repl);
+    if($finalRepl===false)$finalRepl=$repl;
+    else{
+        foreach($repl as $k=>$v){
+            if(isset($finalRepl[$k]) && is_int($v))$finalRepl[$k]+=$v;
+        }
+    }
+
+    if($year==$year2 && $month==$month2)break;
+
+    $year+=($month==12)?(1):(0);
+    $month=($month==12)?(1):($month+1);
 }
 
-die();
-makeReport($repl,$pname, $date, $rep, $prj);
+makeReport($finalRepl,$pname, "${year1}${month1}-${year2}${month2}", $rep, $prj);
 
 
 ?>

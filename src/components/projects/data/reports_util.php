@@ -81,7 +81,7 @@ function getProjectReplData($prj,$prefix,$year,$month,$pname,$date,$signdate){
         $repl["{{WI.${wi}.DESCRIPTION}}"]=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi]["description"]))?($work[$pname][$wi]["description"]):("");
         $totalWIp=0;
         for($i=1;$i<=31;$i++){
-            $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):("0");
+            $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):(0);
             $repl["{{WI.${wi}.${i}}}"]=$wiwork;
             $totalWIp+=intval($wiwork);
         }
@@ -94,7 +94,7 @@ function getProjectReplData($prj,$prefix,$year,$month,$pname,$date,$signdate){
     $wi="";
     $totalWIp=0;
     for($i=1;$i<=31;$i++){
-        $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):("0");
+        $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):(0);
         $repl["{{WI.${wi}.${i}}}"]=$wiwork;
         $repl["{{WI.OTHER.${i}}}"]=$wiwork;
         $totalWIp+=intval($wiwork);
@@ -108,7 +108,7 @@ function getProjectReplData($prj,$prefix,$year,$month,$pname,$date,$signdate){
             $repl["{{WI.${wi}.$mname.DESCRIPTION}}"]=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi]["description"]))?($work[$mname][$wi]["description"]):("");
             $totalWIp=0;
             for($i=1;$i<=31;$i++){
-                $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):("0");
+                $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):(0);
                 $repl["{{WI.${wi}.$mname.${i}}}"]=$wiwork;
                 $totalWIp+=intval($wiwork);
                 if(!isset($repl["{{WORK.$mname.${i}}}"]))$repl["{{WORK.$mname.${i}}}"]=0;
@@ -123,7 +123,7 @@ function getProjectReplData($prj,$prefix,$year,$month,$pname,$date,$signdate){
         $repl["{{WI.OTHER.$mname.DESCRIPTION}}"]="";
         $totalWIp=0;
         for($i=1;$i<=31;$i++){
-            $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):("0");
+            $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):(0);
             $repl["{{WI.${wi}.$mname.${i}}}"]=$wiwork;
             $repl["{{WI.OTHER.$mname.${i}}}"]=$wiwork;
             $totalWIp+=intval($wiwork);
