@@ -5,6 +5,23 @@ require_once "projects.php";
 $months_ro=["","Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
 $months_en=["","January","February","March","April","May","June","July","August","September","October","November","December"];
 
+function getProjectForReport($name){
+  $projects=new Projects();
+  $prj=new Project($projects,$name);
+  if(!$prj->loadData())die("Invalid project");
+  if(!$prj->hasRights("admin"))die("Invalid project");
+  return $prj;
+}
+
+function getReportByName($name){
+  $found=false;
+  foreach($prj->getReports() as $rep){
+      if($rep['name']==$name){$found=true; break;}
+  }
+  if(!$found)die("Invalid report");
+  return $rep;
+}
+
 function getReplDataCommon($date, $signdate, $year, $month, $pname){
     global $months_ro,$months_en;
     

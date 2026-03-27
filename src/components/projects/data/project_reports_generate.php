@@ -1,6 +1,5 @@
 <?php
-require_once "project.php";
-require_once "projects.php";
+require_once "reports_util.php";
 
 if(!isset($_REQUEST['project']))die("Invalid call");
 if(!isset($_REQUEST['name']))die("Invalid call");
@@ -9,164 +8,21 @@ if(!isset($_REQUEST['person']))die("Invalid call");
 if(!isset($_REQUEST['date']))die("Invalid call");
 if(!isset($_REQUEST['signdate']))die("Invalid call");
 
+$prj=getProjectForReport($_REQUEST['project']);
+$rep=getReportByName($_REQUEST['name']);
+$signdate=$_REQUEST['signdate'];
+$pname=$_REQUEST['person'];
+
 $date=$_REQUEST['date'];
 $month=0;
 if(strlen($date)>=7)$month=intval(substr($date,5,2));
 $dint=intval(str_replace("-","",$date));
 $year=intval(substr($_REQUEST['date'],0,4));
 
-$months_ro=["","Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
-$months_en=["","January","February","March","April","May","June","July","August","September","October","November","December"];
+$repl=getReplDataCommon($date, $signdate, $year, $month, $pname);
+$repl=array_merge($repl, getProjectReplData($prj,false,$year,$month,$pname,$date,$signdate));
 
-$projects=new Projects();
-$prj=new Project($projects,$_REQUEST['project']);
-if(!$prj->loadData())die("Invalid project");
-if(!$prj->hasRights("admin"))die("Invalid project");
-
-$found=false;
-foreach($prj->getReports() as $rep){
-    if($rep['name']==$_REQUEST['name']){$found=true; break;}
-}
-if(!$found)die("Invalid report");
-
-$witems=[""];
-foreach($prj->getWorkItems() as $wi)$witems[]=$wi['name'];
-sort($witems);
-$work=$prj->getWorkBreakdown($year, $month);
-$pname=$_REQUEST['person'];
-
-$members=[];
-foreach($prj->getTeamMembers() as $m){
-    $members[$m["name"]]=$m;
-}
-
-$repl=[
-"{{DATE}}" => $_REQUEST['date'],
-"{{SIGNDATE}}" => $_REQUEST['signdate'],
-"{{YEAR}}" => $year,
-"{{MONTH}}" => $month,
-"{{MONTH_RO}}" => $months_ro[$month],
-"{{MONTH_EN}}" => $months_en[$month],
-"{{PERSON}}" => $pname,
-"{{SUPERVISOR}}"=> (isset($members[$pname]) && isset($members[$pname]["supervisor"]))?($members[$pname]["supervisor"]):(""),
-"{{POSITION}}"=> (isset($members[$pname]) && isset($members[$pname]["position"]))?($members[$pname]["position"]):(""),
-"{{WORK}}" => (isset($work[$pname]) && isset($work[$pname]['description']))?($work[$pname]['description']):(""),
-"{{DESCRIPTION}}" => (isset($work[$pname]) && isset($work[$pname]['description']))?($work[$pname]['description']):(""),
-];
-$weekdays=["sun","mon","tue","wed","thu","fri","sat"];
-$max_days=cal_days_in_month(CAL_GREGORIAN, $month, $year);
-for($i=1;$i<=31;$i++){
-    if($i>$max_days)$repl["{{WDAY.$i}}"]="";
-    else $repl["{{WDAY.$i}}"]=$weekdays[date("w",strtotime(sprintf("%4d-%02d-%02d",$year,$month,$i)))];
-}
-
-// Current person
-foreach($witems as $wi){
-    $repl["{{WI.${wi}.DESCRIPTION}}"]=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi]["description"]))?($work[$pname][$wi]["description"]):("");
-    $totalWIp=0;
-    for($i=1;$i<=31;$i++){
-        $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):("0");
-        $repl["{{WI.${wi}.${i}}}"]=$wiwork;
-        $totalWIp+=intval($wiwork);
-    }
-    $repl["{{WI.${wi}.TOTALHOURS}}"]=$totalWIp;
-}
-
-// Add OTHER
-$repl["{{WI.OTHER.DESCRIPTION}}"]="";
-$repl["{{WI..DESCRIPTION}}"]="";
-$wi="";
-$totalWIp=0;
-for($i=1;$i<=31;$i++){
-    $wiwork=(isset($work[$pname]) && isset($work[$pname][$wi]) && isset($work[$pname][$wi][$i]))?($work[$pname][$wi][$i]):("0");
-    $repl["{{WI.${wi}.${i}}}"]=$wiwork;
-    $repl["{{WI.OTHER.${i}}}"]=$wiwork;
-    $totalWIp+=intval($wiwork);
-}
-$repl["{{WI.${wi}.TOTALHOURS}}"]=$totalWIp;
-$repl["{{WI.OTHER.TOTALHOURS}}"]=$totalWIp;
-
-// All persons
-foreach($members as $mname=>$member){
-    foreach($witems as $wi){
-        $repl["{{WI.${wi}.$mname.DESCRIPTION}}"]=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi]["description"]))?($work[$mname][$wi]["description"]):("");
-        $totalWIp=0;
-        for($i=1;$i<=31;$i++){
-            $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):("0");
-            $repl["{{WI.${wi}.$mname.${i}}}"]=$wiwork;
-            $totalWIp+=intval($wiwork);
-        }
-        $repl["{{WI.${wi}.$mname.TOTALHOURS}}"]=$totalWIp;
-    }
-    
-    // Add OTHER
-    $wi="";
-    $repl["{{WI.${wi}.$mname.DESCRIPTION}}"]="";
-    $repl["{{WI.OTHER.$mname.DESCRIPTION}}"]="";
-    $totalWIp=0;
-    for($i=1;$i<=31;$i++){
-        $wiwork=(isset($work[$mname]) && isset($work[$mname][$wi]) && isset($work[$mname][$wi][$i]))?($work[$mname][$wi][$i]):("0");
-        $repl["{{WI.${wi}.$mname.${i}}}"]=$wiwork;
-        $repl["{{WI.OTHER.$mname.${i}}}"]=$wiwork;
-        $totalWIp+=intval($wiwork);
-    }
-    $repl["{{WI.${wi}.$mname.TOTALHOURS}}"]=$totalWIp;
-    $repl["{{WI.OTHER.$mname.TOTALHOURS}}"]=$totalWIp;
-    
-}
-
-$rpath=$prj->getFolderPath()."/reports/".$rep['name'];
-$dpath=$prj->getFolderPath()."/reports_gen/"; @mkdir($dpath);
-$dpath.=$pname."-".$_REQUEST['date']."-".$rep['name'];
-
-@unlink($dpath);
-if(!copy($rpath,$dpath))die("Error creating report");
-
-function processZipFile($zip,$zipname){
-    global $repl;
-    $content = $zip->getFromName($zipname);
-    if($content===false)return false;
-    
-    //Modify contents:
-    foreach($repl as $r=>$c)$content=str_replace($r,$c,$content);
-    //Delete the old...
-    $zip->deleteName($zipname);
-    //Write the new...
-    $zip->addFromString($zipname, $content);
-    return true;
-}
-
-$zip = new ZipArchive;
-if ($zip->open($dpath) === TRUE) {
-    if(processZipFile($zip,"word/document.xml")){
-        $ziptype="docx";
-    }else if(processZipFile($zip,"xl/sharedStrings.xml")){
-        $ziptype="xlsx";
-        
-        // force auto compute formulas on doc open
-        $repl['<calcPr']="<calcPr fullCalcOnLoad=\"1\" calcMode=\"auto\"";
-        processZipFile($zip,"xl/workbook.xml");
-        unset($repl['<calcPr']);
-        
-        for($nsheet=1; processZipFile($zip,"xl/worksheets/sheet{$nsheet}.xml"); $nsheet++);
-        
-    }else{
-        die("Cannot find doc to modify");
-    }
-        
-    //And write back to the filesystem.
-    $zip->close();
-    
-    $finalPath=$dpath.".${ziptype}";
-    rename($dpath,$finalPath);
-    
-    //$pdfPath=$dpath.".pdf";
-    $soffice=shell_exec("soffice --headless --convert-to pdf \"$finalPath\"");
-    
-    echo json_encode(["status"=>"OK","soffice"=>$soffice]);
-} else {
-    die("Cannot open report");
-}
+makeReport($repl,$pname, $date, $rep, $prj);
 
 
 ?>

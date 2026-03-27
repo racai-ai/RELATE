@@ -118,6 +118,23 @@
                                 </form>
                                 </div>                                      
 
+                                <div id="reportsGeneratePeriod-dialog" style="display:none;">
+                                <form id="reportsGeneratePeriod-form" method="POST" enctype="multipart/form-data" action="index.php">
+                                    <input type="hidden" name="path" value="projects/project_reports_generate_period">
+                                    <input type="hidden" name="project" value="{{PROJECT_NAME}}">
+                                    <input type="hidden" name="gentype" value="period">
+                                    <table align="center"><tbody>
+                                        <tr><td>Report:</td><td><select name="name">{{PROJECT_REPORTS}}</select></td></tr>
+                                        <tr><td>Month 1:</td><td><input type="month" name="month" /></td></tr>
+                                        <tr><td>Month 2:</td><td><input type="month" name="month2" /></td></tr>
+                                        <tr><td>Person:</td><td><select name="person">
+                                            <option value="ALL">ALL</option>
+                                            {{PROJECT_TEAM_MEMBERS}}
+                                        </select></td></tr>
+                                        <tr><td>Sign Date:</td><td><input type="date" name="signdate" /></td></tr>
+                                    </tbody></table>
+                                </form>
+                                </div>                                      
                         </div>
                         
                         <!-- Work Items -->

@@ -396,6 +396,7 @@ function gridReportsGenerated_init(){
                 //{ type: 'button', label: 'Copy', listeners: [{ click: gridCopy }] }, 
                 
                 { type: 'button', label: 'Generate Monthly', listeners: [{ click: gridReports_GenerateMonth}], icon: 'ui-icon-plus' },
+                { type: 'button', label: 'Generate Period', listeners: [{ click: gridReports_GeneratePeriod}], icon: 'ui-icon-plus' },
             ]
         };        
 
@@ -474,6 +475,33 @@ function gridReports_GenerateMonth(){
     $("#reportsGenerateMonth-dialog").dialog("open");
 } 
 
+function gridReports_GeneratePeriod(){
+    var $frm = $("form#reportsGeneratePeriod-form");
+    //$frm.find("input").val("");
+
+    $("#reportsGeneratePeriod-dialog").dialog({ title: "Generate Period Report", buttons: {
+        Add: function () { 
+            
+            var data = new FormData();
+            data.append('path', 'projects/project_reports_generate_period');
+            data.append('project','{{PROJECT_NAME}}');
+            data.append('name', $frm.find("select[name='name']").val());
+            data.append('type', 'month');
+            data.append('date', $frm.find("input[name='month']").val());
+            data.append('date2', $frm.find("input[name='month2']").val());
+            data.append('signdate', $frm.find("input[name='signdate']").val());
+            data.append('person', $frm.find("select[name='person']").val());
+            var dia=$(this);
+            loadData(data,function(d){
+                $gridReportsGenerated.pqGrid('refreshDataAndView');
+                dia.dialog("close");
+            }, function(){ alert("Error generating report"); });
+
+        },
+        Cancel: function () { $(this).dialog("close"); }
+    }});
+    $("#reportsGeneratePeriod-dialog").dialog("open");
+} 
 
 /********** GRID WORK ITEMS ******************/
 var $gridWorkItems=false;
