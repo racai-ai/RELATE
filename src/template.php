@@ -59,7 +59,7 @@ window.addEventListener('load', () => {
                       </div>
                     </div>
                     <div class="peer peer-greed">
-                      <h5 class="lh-1 mB-0 logo-text">RELATE</h5>
+                      <h5 class="lh-1 mB-0 logo-text"><img src="components/platform_deepnewsdef/img/logo_mare.png" style="height:100px;"/></h5>
                     </div>
                   </div></a>
               </div>
@@ -119,7 +119,7 @@ window.addEventListener('load', () => {
                 <i class="ti-menu"></i></a>
               </li>
               
-              <li><a>Romanian Portal of Language Technologies</a></li>
+              <li><a>DeepNewsDef - Online Platform</a></li>
             </ul>
 
             <ul class="nav-right">
