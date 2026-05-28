@@ -9,6 +9,13 @@ if(!isset($_REQUEST['data']))addError("Invalid call");
 
 $data=json_decode($_REQUEST['data'],true);
 
+$data['audio']=false;
+$data['image']=true;
+$data['video']=false;
+$data['gold']=false;
+$data['brat_profiles']=false;
+$data['hascorrected']=false;
+
 if(!isset($data['name']))addError("Invalid data");
 if(!isset($data['lang']))addError("Invalid data");
 if(!isset($data['desc']))addError("Invalid data");
@@ -42,6 +49,9 @@ $data['created_by']=$user->getUsername();
 $data['created_date']=strftime("%Y-%m-%d");
 $corpus=new Corpus($corpora,$data['name'],$data);
 if(!$corpus->saveData(false))addError("Can not save data");
+
+$corpus->addRights($user->getUsername(), "admin", $user);
+$corpus->saveData(true);
 
 echo json_encode(["status"=>true]);
 
