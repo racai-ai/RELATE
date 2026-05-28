@@ -9,11 +9,11 @@ if(!isset($_REQUEST['data']))addError("Invalid call");
 
 $data=json_decode($_REQUEST['data'],true);
 
-$data['audio']=false;
-$data['image']=true;
-$data['video']=false;
-$data['gold']=false;
-$data['brat_profiles']=false;
+$data['hasaudio']=false;
+$data['hasimage']=true;
+$data['hasvideo']=false;
+$data['hasgold']=false;
+$data['hasbrat']=false;
 $data['hascorrected']=false;
 
 if(!isset($data['name']))addError("Invalid data");
