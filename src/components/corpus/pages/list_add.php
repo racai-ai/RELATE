@@ -50,6 +50,7 @@ $data['created_date']=strftime("%Y-%m-%d");
 $corpus=new Corpus($corpora,$data['name'],$data);
 if(!$corpus->saveData(false))addError("Can not save data");
 
+$corpus->loadData();
 $corpus->addRights($user->getUsername(), "admin", $user);
 $corpus->saveData(true);
 
