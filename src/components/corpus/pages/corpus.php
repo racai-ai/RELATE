@@ -77,7 +77,7 @@ function corpus_generateClassificationHtml($classProfile, $base){
             if(isset($cp['type']) && $cp['type']=='text'){
                 $classHtml.='<input type="text" name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'" value=""/>';
             }else if(isset($cp['type']) && $cp['type']=='image'){
-                $classHtml.='<img src="" width="200px"/>'. 
+                $classHtml.='<img src="" width="200px"/>'; 
             }else{
               $classHtml.='<select name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'">';
               foreach($cp['values'] as $v){
