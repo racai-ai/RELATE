@@ -1225,17 +1225,20 @@ function loadClassification(file){
                         var value=false;
                         if(data['data'][key]!==undefined)value=data['data'][key];
                         if(value!==false){
-                            var el=false;
-                            el=document.getElementById('fileViewerText_classification_'+key);
-                            if(el===undefined || el==null)el=document.getElementById('fileViewerBrat_classification_'+key);
-                            if(el===undefined || el==null)el=document.getElementById('fileViewerAudio_classification_'+key);
-                            if(el===undefined || el==null)el=document.getElementById('fileViewerImage_classification_'+key);
-                            if(el===undefined || el==null)el=document.getElementById('fileViewerVideo_classification_'+key);
-
-                            if(el!==undefined && el!=null){
-                                if(el.nodeName=="IMG")el.src="data:image/png;base64, "+value;
-                                else el.value=value;
-                            }
+                            [
+                                'fileViewerText_classification_'+key,
+                                'fileViewerBrat_classification_'+key,
+                                'fileViewerAudio_classification_'+key,
+                                'fileViewerImage_classification_'+key,
+                                'fileViewerVideo_classification_'+key
+                            ].forEach(function(objname){
+                                var el=false;
+                                el=document.getElementById(objname);
+                                if(el!==undefined && el!=null){
+                                    if(el.nodeName=="IMG")el.src="data:image/png;base64, "+value;
+                                    else el.value=value;
+                                }
+                            });
                         }
                     }
                 
