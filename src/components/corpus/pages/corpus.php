@@ -77,7 +77,7 @@ function corpus_generateClassificationHtml($classProfile, $base){
             if(isset($cp['type']) && $cp['type']=='text'){
                 $classHtml.='<input type="text" name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'" value=""/>';
             }else if(isset($cp['type']) && $cp['type']=='image'){
-                $classHtml.='<img src="" width="200px"/>'; 
+                $classHtml.='<img name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'" src="" width="200px"/>'; 
             }else{
               $classHtml.='<select name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'">';
               foreach($cp['values'] as $v){
@@ -145,7 +145,20 @@ function getPageContent(){
         $classHtmlImage=corpus_generateClassificationHtml($classProfile,"fileViewerImage");
         $classHtmlVideo=corpus_generateClassificationHtml($classProfile,"fileViewerVideo");
         $classHtmlBrat=corpus_generateClassificationHtml($classProfile,"fileViewerBrat");
-      }      
+
+      }
+      
+      $fname=$corpus->getFolderPath()."/standoff/classification_profile_text.json";
+      if(is_file($fname)){
+        $classProfile=json_decode(file_get_contents($fname),true);
+        $classHtmlFileViewer=corpus_generateClassificationHtml($classProfile,"fileViewerText");
+      }            
+
+      $fname=$corpus->getFolderPath()."/standoff/classification_profile_image.json";
+      if(is_file($fname)){
+        $classProfile=json_decode(file_get_contents($fname),true);
+        $classHtmlImage=corpus_generateClassificationHtml($classProfile,"fileViewerImage");
+      }            
     }
 
     $correctedHtmlBrat="";

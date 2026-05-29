@@ -1225,7 +1225,7 @@ function loadClassification(file){
                             if(el===undefined)el=document.getElementById('fileViewerAudio_classification_'+key);
                             if(el===undefined)el=document.getElementById('fileViewerImage_classification_'+key);
                             if(el===undefined)el=document.getElementById('fileViewerVideo_classification_'+key);
-                            
+
                             if(el!==undefined){
                                 if(el.nodeName=="IMG")el.src="data:image/png;base64, "+value;
                                 else el.value=value;
@@ -1331,8 +1331,9 @@ function fileViewerText_saveFileClassification(){
     var data={};
     for(var i=0;i<classificationProfile.length;i++){
         var key=classificationProfile[i].variable;
-        var value=document.getElementById('fileViewerText_classification_'+key).value;
-        data[key]=value;
+        value=document.getElementById('fileViewerText_classification_'+key).value;
+        if(value!==undefined)
+            data[key]=value;
     }
 
 
