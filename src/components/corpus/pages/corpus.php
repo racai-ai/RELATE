@@ -74,11 +74,15 @@ function corpus_generateClassificationHtml($classProfile, $base){
         $classHtml.='<form id="'.$base.'_classification_form" onsubmit="return false;">';
         foreach($classProfile as $cp){
             $classHtml.='<label for="'.$base.'_classification_'.$cp['variable'].'">'.$cp['message']."</label>";
-            $classHtml.='<select name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'">';
-            foreach($cp['values'] as $v){
-                $classHtml.='<option value="'.$v.'">'.$v."</option>";
+            if(isset($cp['type']) && $cp['type']=='text'){
+                $classHtml.='<input type="text" name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'" value=""/>';
+            }else{
+              $classHtml.='<select name="'.$base.'_classification_'.$cp['variable'].'" id="'.$base.'_classification_'.$cp['variable'].'">';
+              foreach($cp['values'] as $v){
+                  $classHtml.='<option value="'.$v.'">'.$v."</option>";
+              }
+              $classHtml.='</select>';
             }
-            $classHtml.='</select>';
         }
         
         $classHtml.='<button type="button" class="btn cur-p btn-secondary" id="'.$base.'_classification_save" onclick="'.$base.'_saveFileClassification();">Save</button>';
