@@ -1,0 +1,74 @@
+<div class="masonry-item col-md-12"><div class="bgc-white p-20 bd"><h6 class="c-grey-900">Platform Demonstration</h6><div class="mT-30">
+
+<div style="text-align:center; display:inline-block; float:left; margin:20px;">
+<img id="imgArchitecture" src="components/docs_deepnewsdef/img/constr.jpg" width="500px"/><br/>
+</div>
+
+<div style="display:inline-block; height: 250px; align-content: center">
+<p>
+This page will provide a demonstration for the platform usage.
+<br/><br/>
+<font color="red">Currently it displays random data.</font>
+</p>
+</div>
+
+</div></div></div>
+
+
+<div class="masonry-item col-md-12" style="display:{{DISPLAY_ANALYSIS_TEXT}}"><div class="bgc-white p-20 bd"><h6 class="c-grey-900">Text Analysis results</h6><div class="mT-30">
+
+<table style="border-spacing: 10px; border-collapse: separate">
+<tr><td>Result</td><td>{{TEXT_TYPE}}</td></tr>
+<tr><td>Score</td><td>{{TEXT_SCORE}}</td></tr>
+<tr><td>Algorithm 1 Score</td><td>{{TEXT_ALG.1.SCORE}}</td></tr>
+<tr><td>Algorithm 2 Score</td><td>{{TEXT_ALG.2.SCORE}}</td></tr>
+</table>
+
+</div></div></div>
+
+<div class="masonry-item col-md-12" style="display:{{DISPLAY_ANALYSIS_IMAGE}}"><div class="bgc-white p-20 bd"><h6 class="c-grey-900">Image Analysis results</h6><div class="mT-30">
+
+<table style="border-spacing: 10px; border-collapse: separate">
+<tr><td>Result</td><td>{{IMAGE_TYPE}}</td></tr>
+<tr><td>Score</td><td>{{IMAGE_SCORE}}</td></tr>
+<tr><td>Algorithm 1 Score</td><td>{{IMAGE_ALG.1.SCORE}}</td></tr>
+<tr><td>Algorithm 1 Details</td><td>{{IMAGE_ALG.1.DETAIL}}</td></tr>
+<tr><td>Algorithm 1 Mask</td><td><img id="alg1mask" src="{{IMAGE_ALG.1.MASK}}" width="200px"/></td></tr>
+<tr><td>Algorithm 2 Score</td><td>{{IMAGE_ALG.2.SCORE}}</td></tr>
+<tr><td>Algorithm 2 Details</td><td>{{IMAGE_ALG.2.DETAIL}}</td></tr>
+<tr><td>Algorithm 3 Score</td><td>{{IMAGE_ALG.3.SCORE}}</td></tr>
+<tr><td>Algorithm 3 Details</td><td>{{IMAGE_ALG.3.DETAIL}}</td></tr>
+</table>
+
+</div></div></div>
+
+
+<div class="masonry-item col-md-12"><div class="bgc-white p-20 bd"><h6 class="c-grey-900">Data</h6><div class="mT-30">
+
+<p>
+This form allows checking if a text and/or image is a deepfake. 
+It will only check for the usage of AI-based generative models. 
+It will not validate the truthfullness of the information covered in the text.
+You can use only one of the fields or both.
+</p> 
+
+<form method="post" enctype="multipart/form-data" action="index.php">
+<input type="hidden" name="path" value="demo/main"/>
+
+<table>
+<tr>
+<td><label for="text">Text</label></td>
+<td><textarea name="text" id="text" rows="10" cols="150"></textarea></td>
+</tr>
+
+<tr>
+<td><label for="image">Image</label></td>
+<td><input type="file" name="image" id="image"/></td>
+</tr>
+</table>
+
+<input type="submit" name="submit" value="Perform check"/>
+</form>
+
+</div></div></div>
+

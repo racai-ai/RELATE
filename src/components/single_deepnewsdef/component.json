@@ -1,0 +1,21 @@
+{
+"order":90,
+
+"menu":[
+  {
+        "label":"Platform demonstration",
+        "icon":"c-deep-purple-500 ti-comment-alt",
+        "path":"demo/main",
+        "menu":[
+            {"label":"Demo", "path":"demo/main"}
+        ]
+      }
+
+],
+
+"handlers":[
+		{"path":"demo/main","script":"pages/demo.php"}
+
+]
+
+}
