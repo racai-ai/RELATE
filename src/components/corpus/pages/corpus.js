@@ -1602,7 +1602,7 @@ function viewFileImage(file){
         });
     }        
 
-    loadClassification(file);
+    loadClassification(file.substring(6));
 
     loadData("path=corpus/file_getdownload&corpus={{CORPUS_NAME}}&file="+changeFileExtension(file.substring(6),"txt"),function(data){
         if(data=="Invalid file")data="";
