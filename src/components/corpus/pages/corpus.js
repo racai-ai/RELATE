@@ -1200,15 +1200,15 @@ function loadClassification(file){
         if(hasClassification){
         
           var frm=document.getElementById('fileViewerText_classification_form');
-          if(frm!==undefined)frm.reset();
+          if(frm!==undefined && frm!=null)frm.reset();
           frm=document.getElementById('fileViewerBrat_classification_form');
-          if(frm!==undefined)frm.reset();
+          if(frm!==undefined && frm!=null)frm.reset();
           frm=document.getElementById('fileViewerAudio_classification_form');
-          if(frm!==undefined)frm.reset();
+          if(frm!==undefined && frm!=null)frm.reset();
           frm=document.getElementById('fileViewerImage_classification_form');
-          if(frm!==undefined)frm.reset();
+          if(frm!==undefined && frm!=null)frm.reset();
           frm=document.getElementById('fileViewerVideo_classification_form');
-          if(frm!==undefined)frm.reset();
+          if(frm!==undefined && frm!=null)frm.reset();
         
           loadData("path=corpus/file_getclassification&corpus={{CORPUS_NAME}}&file="+file,function(data){
                 data=JSON.parse(data);
