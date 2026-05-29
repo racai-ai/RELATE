@@ -1227,12 +1227,12 @@ function loadClassification(file){
                         if(value!==false){
                             var el=false;
                             el=document.getElementById('fileViewerText_classification_'+key);
-                            if(el===undefined)el=document.getElementById('fileViewerBrat_classification_'+key);
-                            if(el===undefined)el=document.getElementById('fileViewerAudio_classification_'+key);
-                            if(el===undefined)el=document.getElementById('fileViewerImage_classification_'+key);
-                            if(el===undefined)el=document.getElementById('fileViewerVideo_classification_'+key);
+                            if(el===undefined || el==null)el=document.getElementById('fileViewerBrat_classification_'+key);
+                            if(el===undefined || el==null)el=document.getElementById('fileViewerAudio_classification_'+key);
+                            if(el===undefined || el==null)el=document.getElementById('fileViewerImage_classification_'+key);
+                            if(el===undefined || el==null)el=document.getElementById('fileViewerVideo_classification_'+key);
 
-                            if(el!==undefined){
+                            if(el!==undefined && el!=null){
                                 if(el.nodeName=="IMG")el.src="data:image/png;base64, "+value;
                                 else el.value=value;
                             }
