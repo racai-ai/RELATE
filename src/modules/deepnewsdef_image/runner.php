@@ -24,6 +24,14 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $types=["real","fake"];
     $data=[
         "type"=>$types[random_int(0,count($types)-1)],
+        "type"=>$types[random_int(0,count($types)-1)],
+        "score"=>1.0/floatval(random_int(1,100)),
+        "alg.1.score"=>1.0/floatval(random_int(1,100)),
+        "alg.1.details"=>"details from alg1",
+        "alg.2.score"=>1.0/floatval(random_int(1,100)),
+        "alg.2.details"=>"details from alg2",
+        "alg.3.score"=>1.0/floatval(random_int(1,100)),
+        "alg.3.details"=>"details from alg3",
     ];
     
     file_put_contents($finalFile,json_encode($data));
