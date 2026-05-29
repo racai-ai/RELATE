@@ -14,7 +14,7 @@ if(!$corpus->hasRights("read"))die("Invalid corpus");
 $dir=$corpus->getFolderPath()."/standoff/";
 @mkdir($dir);
 $dir.=$fname;
-$dir=changeFileExtension($dir,"classification");
+$dir.=".classification";
 if(is_file($dir)){
     echo json_encode(["status"=>"OK","data"=>json_decode(file_get_contents($dir),true)]);
 }else{

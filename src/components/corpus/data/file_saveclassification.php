@@ -16,7 +16,7 @@ if(!$corpus->hasRights("readwrite"))die("Invalid corpus");
 $dir=$corpus->getFolderPath()."/standoff/";
 @mkdir($dir);
 $dir.=$fname;
-$dir=changeFileExtension($dir,"classification");
+$dir.=".classification";
 file_put_contents($dir,json_encode($data));
 
 file_put_contents($corpus->getFolderPath()."/changed_standoff.json",json_encode(["changed"=>time()]));

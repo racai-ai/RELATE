@@ -4,7 +4,7 @@ namespace Modules\deepnewsdef_text;
 
 function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     $path=$corpus->getFolderPath()."/standoff/";
-    $finalFile=$path.changeFileExtension($fnameOut,"classification");
+    $finalFile=$path.".classification";
     if(is_file($finalFile)){
         if(filesize($finalFile)>0 && isset($taskDesc['overwrite']) && $taskDesc['overwrite']===false){
             echo "SKIP $fnameOut\n";
