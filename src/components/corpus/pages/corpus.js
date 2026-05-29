@@ -1235,8 +1235,21 @@ function loadClassification(file){
                                 var el=false;
                                 el=document.getElementById(objname);
                                 if(el!==undefined && el!=null){
-                                    if(el.nodeName=="IMG")el.src="data:image/png;base64, "+value;
-                                    else el.value=value;
+                                    if(el.nodeName=="IMG"){
+                                        el.src="data:image/png;base64, "+value;
+                                        const viewer = new Viewer(el, {
+                                        inline: false,
+                                        toolbar: {
+                                            zoomIn: 4,
+                                            zoomOut: 4,
+                                            oneToOne: 4,
+                                            reset: 4,
+                                        },  
+                                        viewed() {
+                                            viewer.zoomTo(1);
+                                        },
+                                        });                                        
+                                    }else el.value=value;
                                 }
                             });
                         }
