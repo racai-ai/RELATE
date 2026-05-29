@@ -35,6 +35,8 @@ function getPageContent(){
 
     if($regenerated){
         $html=str_replace("{{error}}","API Key was regenerated",$html);
+    }else{
+        $html=str_replace("{{error}}","",$html);
     }
     $html=str_replace("{{username}}",$user->getUsername(),$html);
     $html=str_replace("{{apikey}}",$user->getProfile("deepnewsdefAPIKey","Key not generated"),$html);
