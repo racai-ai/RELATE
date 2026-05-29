@@ -73,6 +73,8 @@ var hasProperties={{HAS_PROPERTIES}};
 var hasGold={{HAS_GOLD}};
 var hasClassification={{HAS_CLASSIFICATION}};
 var classificationProfile={{CLASSIFICATION_PROFILE}};
+var classificationProfileText={{CLASSIFICATION_PROFILE_TEXT}};
+var classificationProfileImage={{CLASSIFICATION_PROFILE_IMAGE}};
 var last_viewed_file="{{LAST_VIEWED_FILE}}";
 var last_viewed_image="{{LAST_VIEWED_IMAGE}}";
 var last_viewed_audio="{{LAST_VIEWED_AUDIO}}";
@@ -1214,6 +1216,10 @@ function loadClassification(file){
                 data=JSON.parse(data);
                 console.log(data);
                 if(data.status=="OK"){
+                    var cprofile=classificationProfile;
+                    if(file.toLowerCase().endsWith("txt"))cprofile=classificationProfileText;
+                    else cprofile=classificationProfileImage;
+
                     for(var i=0;i<classificationProfile.length;i++){
                         var key=classificationProfile[i].variable;
                         var value=false;

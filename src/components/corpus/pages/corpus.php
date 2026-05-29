@@ -250,6 +250,22 @@ function getPageJS(){
         $classificationProfile=json_encode($classProfile);
       }
     }
+    $classificationProfileText=$classificationProfile;
+    $classificationProfileImage=$classificationProfile;
+    if($corpus->hasClassificationProfiles()){
+      $fname=$corpus->getFolderPath()."/standoff/classification_profile_text.json";
+      if(is_file($fname)){
+        $classProfile=json_decode(file_get_contents($fname),true);
+        $classificationProfileText=json_encode($classProfile);
+      }
+    }
+    if($corpus->hasClassificationProfiles()){
+      $fname=$corpus->getFolderPath()."/standoff/classification_profile_image.json";
+      if(is_file($fname)){
+        $classProfile=json_decode(file_get_contents($fname),true);
+        $classificationProfileImage=json_encode($classProfile);
+      }
+    }
     
     $last_viewed_file=$user->getProfile("last_viewed_file_".$_REQUEST['name'],"");
     
@@ -285,6 +301,8 @@ function getPageJS(){
     $js=str_replace("{{HAS_CORRECTED}}",$hasCorrected,$js);
     $js=str_replace("{{hidebratbutton}}",$hidebratbutton,$js);
     $js=str_replace("{{CLASSIFICATION_PROFILE}}",$classificationProfile,$js);
+    $js=str_replace("{{CLASSIFICATION_PROFILE_TEXT}}",$classificationProfileText,$js);
+    $js=str_replace("{{CLASSIFICATION_PROFILE_IMAGE}}",$classificationProfileImage,$js);
     $js=str_replace("{{LAST_VIEWED_FILE}}",$last_viewed_file,$js);
     $js=str_replace("{{LAST_VIEWED_AUDIO}}",$last_viewed_audio,$js);
     $js=str_replace("{{LAST_VIEWED_IMAGE}}",$last_viewed_image,$js);
