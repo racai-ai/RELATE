@@ -1601,7 +1601,7 @@ function viewFileImage(file){
     
     var h=window.location.hash;
     if(h!==undefined && h!=false && h.length>1)previousHash=h.substring(1);    
-    window.location.hash="#fileviewerimage:"+file+":"+previousHash;
+    window.location.hash="#fileviewerimage:"+file+":image";//+":"+previousHash;
 
     if(viewerjsImage===false){
         viewerjsImage=new Viewer(document.getElementById('inputFileViewerImage'), {
