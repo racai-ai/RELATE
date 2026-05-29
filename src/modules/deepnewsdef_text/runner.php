@@ -27,6 +27,8 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     ];
     
     file_put_contents($finalFile,json_encode($data));
+    @chown($finalFile,$settings->get("owner_user"));
+    @chgrp($finalFile,$settings->get("owner_group"));
     
     file_put_contents($corpus->getFolderPath()."/changed_standoff.json",json_encode(["changed"=>time()]));            
 }
