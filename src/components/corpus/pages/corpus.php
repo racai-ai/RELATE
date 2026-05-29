@@ -83,6 +83,7 @@ function corpus_generateClassificationHtml($classProfile, $base){
               }
               $classHtml.='</select>';
             }
+            $classHtml.="</br>";
         }
         
         $classHtml.='<button type="button" class="btn cur-p btn-secondary" id="'.$base.'_classification_save" onclick="'.$base.'_saveFileClassification();">Save</button>';
