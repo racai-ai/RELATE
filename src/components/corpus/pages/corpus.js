@@ -1220,8 +1220,8 @@ function loadClassification(file){
                     if(file.toLowerCase().endsWith("txt"))cprofile=classificationProfileText;
                     else cprofile=classificationProfileImage;
 
-                    for(var i=0;i<classificationProfile.length;i++){
-                        var key=classificationProfile[i].variable;
+                    for(var i=0;i<cprofile.length;i++){
+                        var key=cprofile[i].variable;
                         var value=false;
                         if(data['data'][key]!==undefined)value=data['data'][key];
                         if(value!==false){
