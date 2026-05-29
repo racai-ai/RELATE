@@ -23,7 +23,7 @@ function runner($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
     
     $types=["real","fake"];
     $data=[
-        "type"=>$types[random_int(0,count($types)],
+        "type"=>$types[random_int(0,count($types))],
     ];
     
     file_put_contents($finalFile,json_encode($data));
