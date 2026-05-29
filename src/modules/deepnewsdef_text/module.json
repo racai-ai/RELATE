@@ -1,0 +1,17 @@
+{
+
+"order":1,
+
+"languages":["*"],
+
+"tasks":[
+    {
+				"name":"DeepNewsDef Text",
+				"type":"deepnewsdef_text",
+				"description":"Run the DeepNewsDef text analysis engine",
+				"scheduler":"scheduler.php:Modules\\deepnewsdef_text\\schedule",
+				"runner":"runner.php:Modules\\deepnewsdef_text\\runner"
+		}
+]
+
+}

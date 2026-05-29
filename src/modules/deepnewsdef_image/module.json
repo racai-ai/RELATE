@@ -1,0 +1,17 @@
+{
+
+"order":2,
+
+"languages":["*"],
+
+"tasks":[
+    {
+				"name":"DeepNewsDef Image",
+				"type":"deepnewsdef_image",
+				"description":"Run the DeepNewsDef image analysis engine",
+				"scheduler":"scheduler.php:Modules\\deepnewsdef_image\\schedule",
+				"runner":"runner.php:Modules\\deepnewsdef_image\\runner"
+		}
+]
+
+}
