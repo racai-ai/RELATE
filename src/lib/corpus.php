@@ -530,6 +530,7 @@ class Corpus {
             "${base_dir}/zip_gold_standoff",
             "${base_dir}/zip_gold_ann",
             "${base_dir}/zip_audio",
+            "${base_dir}/zip_image",
             "${base_dir}/marcell-out",
             "${base_dir}/curlicat-out",
         ];

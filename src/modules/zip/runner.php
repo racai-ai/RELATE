@@ -233,4 +233,8 @@ function runnerZipAudio($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fn
    runZip($corpus->getFolderPath()."/audio",$corpus->getFolderPath()."/zip_audio",$taskDesc['fname']);
 }
 
+function runnerZipImage($runner,$settings,$corpus,$taskDesc,$data,$contentIn,$fnameOut){
+   runZip($corpus->getFolderPath()."/image",$corpus->getFolderPath()."/zip_image",$taskDesc['fname']);
+}
+
 ?>

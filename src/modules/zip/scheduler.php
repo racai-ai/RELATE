@@ -34,4 +34,8 @@ function scheduleZipAudio($settings,$corpus,$task_name,$tdata){
     scheduleFile($corpus,"zip_audio/".$tdata['fname'],$task_name,'zip');
 }
 
+function scheduleZipImage($settings,$corpus,$task_name,$tdata){
+    scheduleFile($corpus,"zip_image/".$tdata['fname'],$task_name,'zip');
+}
+
 ?>

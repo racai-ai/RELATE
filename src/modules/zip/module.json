@@ -36,37 +36,17 @@
 	},
 
     {
-				"name":"ZIP Gold Standoff",
-				"type":"zip_gold_standoff",
+				"name":"ZIP Images",
+				"type":"zip_images",
 				"additionalData":[
-						{"name":"fname","description":"Filename","default":"gold_standoff.zip"}
+						{"name":"fname","description":"Filename","default":"images.zip"}
 				],
-				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipGoldStandoff",
-				"runner":"runner.php:Modules\\zip\\runnerZipGoldStandoff"
+				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipImage",
+				"runner":"runner.php:Modules\\zip\\runnerZipImage"
 	},
 
     {
-				"name":"ZIP Gold Annotated",
-				"type":"zip_gold_annotated",
-				"additionalData":[
-						{"name":"fname","description":"Filename","default":"gold_annotated.zip"}
-				],
-				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipGoldAnnotated",
-				"runner":"runner.php:Modules\\zip\\runnerZipGoldAnnotated"
-	},
-
-    {
-				"name":"ZIP Audio",
-				"type":"zip_audio",
-				"additionalData":[
-						{"name":"fname","description":"Filename","default":"audio.zip"}
-				],
-				"scheduler":"scheduler.php:Modules\\zip\\scheduleZipAudio",
-				"runner":"runner.php:Modules\\zip\\runnerZipAudio"
-	},
-
-    {
-				"name":"UNZIP Text",
+				"name":"UNZIP Text Image",
 				"type":"unzip_text",
 				"additionalData":[
 						{"name":"fname","description":"Filename","default":"raw.zip"}
